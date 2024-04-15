@@ -1,0 +1,112 @@
+<nav class="navbar navbar-expand-lg navbar-styles fixed-top">
+  <div class="container-fluid navbar-styles">
+
+    <div class="navbar-styles">
+      <a class="navbar-brand" href="#">
+        <img src="images/pokeBall.png" alt="Logo" width="34" height="27" class="d-inline-block align-middle me-1 ">
+        <span class="fw-bold d-inline-block align-middle  p-2 h-100 ">Pokemon Collection</span>
+      </a>
+    </div>
+
+    <div data-bs-theme="dark">
+      <button class="navbar-toggler shadow-none border-0 " type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="sidebar offcanvas offcanvas-start w-auto  " tabindex="-1" id="offcanvasNavbar"
+      aria-labelledby="offcanvasNavbarLabel">
+
+      <div class="offcanvas-header border-bottom border-white " data-bs-theme="dark">
+        <a class="navbar-brand" href="#">
+          <img src="images/pokeBall.png" alt="Logo" width="34" height="27" class="d-inline-block align-middle me-1 ">
+          <span class="fw-bold d-inline-block align-middle  h-100 ">Pokemon Collection</span>
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+          <li class="nav-item">
+            <a class="nav-link active mx-2" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Collections</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Expansions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Cards</a>
+          </li>
+
+          <%# More dropdown %>
+            <li class="nav-item dropdown d-none d-lg-block mx-2">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                More
+              </a>
+              <ul class="dropdown-menu dropdown-menu-lg-end">
+                <li><a class="dropdown-item" href="#">About</a></li>
+                <li><a class="dropdown-item" href="#">Contact Us</a></li>
+                <li><a class="dropdown-item" href="#">News</a></li>
+              </ul>
+            </li>
+
+            <%# login dropdown %>
+              <li class="nav-item dropdown ps-5 ms-5  d-inline-block align-middle fixed-left d-none d-lg-block">
+                <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="fas fa-user d-inline-block align-middle" style="color: #ffffff;"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                  <li><a class="dropdown-item" href="#">
+                      <i class="fas fa-arrow-right-to-bracket d-inline-block align-middle pe-2 py-2"></i>
+                      <span>Login</span>
+                    </a></li>
+                  <li><a class="dropdown-item" href="#">
+                      <i class="fas fa-user-plus d-inline-block align-middle pe-2 py-2"></i>
+                      <span>Create Account</span>
+                    </a></li>
+                </ul>
+              </li>
+
+              <%# More and login sidebar content %>
+                <div class="d-lg-none px-0">
+                  <div class="border-top border-white my-2"></div>
+                  <li class="nav-item ">
+                    <a class="nav-link mx-2" href="#">About</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">Contact</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">News</a>
+                  </li>
+
+                  <div class="border-top border-white my-2"></div>
+                  <li class="nav-item ">
+                    <a class="nav-link mx-2" href="#">
+                      <i class="fas fa-arrow-right-to-bracket d-inline-block align-middle pe-2 py-2"></i>
+                      <span>Sign in</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mx-2" href="#">
+                      <i class="fas fa-user-plus pe-2"></i>
+                      <span>Create Account</span>
+                    </a>
+                  </li>
+
+                </div>
+
+
+
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</nav>

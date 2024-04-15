@@ -1,0 +1,68 @@
+:root {
+    --colourMain: #E8E7E7; /* Corrected to white */
+    --colourBold: #203C6B; /* Set to dark blue */
+    --colourAction: #EB1C24; /* Set to pokeball red*/
+}
+
+body{
+    background-color: var(--colourMain);
+    background-image: url('../../images/background/brushed_alu.webp'); 
+    background-repeat: repeat; /* Repeat the pattern */
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+    min-height: 62px;
+}
+
+main{
+    padding-top: 30px;
+    color: darkslategray;
+}
+
+.container-fluid, .container{
+    max-width: 1248px;
+}
+
+footer{
+    background-color: var(--colourBold);
+}
+
+.btn, .btn:hover{
+background-color: var(--colourAction);
+color: white;
+border-radius: 6px;
+}
+
+.btn:hover{
+    opacity: 90%;
+    }
+
+/*Beginning of navbar styles*/
+.navbar-styles{
+   background-color: var(--colourBold);
+   color : white !important;
+}
+
+.navbar-brand, .nav-link, .offcanvas-header {
+    color: white !important;
+}
+
+.nav-link:hover, .nav-link:active{
+    color: var(--colourAction) !important;
+    transform: scale(1.1);
+}
+
+.sidebar{
+    background-color: var(--colourBold);
+}
+
+
+@media (max-width: 768px) {
+    .nav-link{
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+  }
+/*End of navbar styles*/
