@@ -3,13 +3,25 @@ const express = require('express');
 
 // Initialise app and configure settings
 const app = express();
+const path = require("path");
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname,'./public')));
+
+// Get middleware
+const {error404Handler} = require('./middleware/errorMiddleware');
+
+// Get routes
+const indexRoutes = require('./routes/index');
+
+app.use(indexRoutes);
+
+app.use(error404Handler);
 
 
-app.get("/", (req,res)=>{
-    res.render('index');
-});
+
+//app.get("/", (req,res)=>{
+//    res.render('error');
+//});
 
 // Start the server or desired port or 3000 as default
 const PORT = process.env.PORT || 3000;
