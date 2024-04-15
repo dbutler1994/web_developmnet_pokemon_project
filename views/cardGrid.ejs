@@ -18,26 +18,16 @@
 
     <main>
 
-        <div class="container ">
-            <div class="row justify-content-center align-items-center">
-                
-                <div class="col-md-6 align-items-start text-center text-md-start mb-4 mb-md-0">
-                    <h2 class="mb-4 mt-0 ">Start your Pokemon collection journey today</h2>
-                    <h5 class="my-4">
-                        Search your favourite cards and add them to your virtual collection.
-                        Create an account to start collecting.
-                    </h5>
-                    <a href="#" class="btn btn-lg me-2 mb-2">Create Account</a>
-                    <a href="/cards" class="btn btn-lg mb-2"> Search Cards</a>
-                </div>
-                
-                <div class="col-md-6 text-center ">
-                    <img src="images/landingimage.png" alt="Landing Image" class="img-fluid mb-5">
-                </div>
-                
+        <div class="container  ">
+            <div class="row row-cols-2 row-cols-sm-4 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 ">
+                <% for (let i = 0; i < 20; i++) { %>
+                    <div class="col mb-4 px-2 ">
+                        <%- include('./modules/cardPartial.ejs') %>
+                    </div>
+                <% } %>
             </div>
         </div>
-
+        
 
     </main>
 

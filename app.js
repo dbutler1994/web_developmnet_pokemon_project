@@ -12,8 +12,10 @@ const {error404Handler} = require('./middleware/errorMiddleware');
 
 // Get routes
 const indexRoutes = require('./routes/index');
+const cardsRoutes = require('./routes/cards');
 
-app.use(indexRoutes);
+app.use('/',indexRoutes);
+app.use('/cards',cardsRoutes);
 
 app.use(error404Handler);
 

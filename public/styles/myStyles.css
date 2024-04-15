@@ -2,6 +2,7 @@
     --colourMain: #E8E7E7; /* Corrected to white */
     --colourBold: #203C6B; /* Set to dark blue */
     --colourAction: #EB1C24; /* Set to pokeball red*/
+    --colourMatchBg: #EBEBEB /*Set to match background image*/
 }
 
 body{
@@ -18,7 +19,7 @@ header{
 
 main{
     padding-top: 30px;
-    color: darkslategray;
+    color: darkslategray ;
 }
 
 .container-fluid, .container{
@@ -29,6 +30,10 @@ footer{
     background-color: var(--colourBold);
 }
 
+.bgColour{
+    background-color: var(--colourMatchBg);
+}
+
 .btn, .btn:hover{
 background-color: var(--colourAction);
 color: white;
@@ -37,7 +42,11 @@ border-radius: 6px;
 
 .btn:hover{
     opacity: 90%;
-    }
+}
+
+.fontColour{
+    color: darkslategray;
+}
 
 /*Beginning of navbar styles*/
 .navbar-styles{
@@ -66,3 +75,9 @@ border-radius: 6px;
     }
   }
 /*End of navbar styles*/
+
+/*Start of Card Partial Styles*/
+.cardPartial:hover{
+    opacity: 100% !important;
+}
+/*End of Card Partial Styles*/
