@@ -1,12 +1,13 @@
+
 <!-- Image and text overlay for number in collection and set id -->
 <div class="container position-relative px-0">
     <a class="" href="/">
         <img class="img-fluid rounded-2 opacity-50 cardPartial"
-            src="https://static.tcgcollector.com/content/images/2a/99/8c/2a998c029576a75b95def3e1b031147641f650b4752620170925063af12d4771.jpg"
+            src= <%= card.image %>
             alt="">
     </a>
     <p class="card-text fontColour position-absolute start-0 bottom-0 bgColour pe-1 rounded-end-1">
-        <small>1 / 205 | BS</small>
+        <small> <%= card.card_number %> / 205 | BS</small>
     </p>
 </div>
 
@@ -19,9 +20,9 @@
                 alt="">
         </div>
         <div class="col-6 d-flex justify-content-end ">
-            <button id="heartButton<%= index %>" class="btn-sm border-0 bgColour pe-0 " data-bs-toggle="tooltip"
+            <button id="heartButton<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0 " data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Toggle card in wishlist"
-                onclick="toggleHeartColour('heartButton<%= index %>')" href="#">
+                onclick="toggleHeartColour('heartButton<%= card.card_id %>')" href="#">
                 <i class="fas fa-heart" style="color: grey"></i>
             </button>
         </div>
@@ -34,7 +35,7 @@
 
         <%# button to open notes modal %>
         <div class="col-3 d-flex justify-content-start align-items-center ">
-            <button id="card<%= index %>" class="btn-sm border-0 bgColour ps-0" onclick="openNoteModal()">
+            <button id="card<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" onclick= "openNoteModal()" > <%# TEMPORARY SOlUTION %>
                 <i class="far fa-clipboard" style="color: grey" ></i>
             </button>
 
@@ -42,15 +43,15 @@
 
         <div class="col-6 d-flex justify-content-center  align-items-center">
 
-            <button id="minusButton<%= index %>" class="btn-sm border-0 bgColour" 
-                onclick="decreaseCounter('collected<%= index %>')" href="#">
+            <button id="minusButton<%= card.card_id %>" class="btn-sm border-0 bgColour" 
+                onclick="decreaseCounter('collected<%= card.card_id %>')" href="#">
                 <i class="fas fa-minus" style="color: grey"></i>
             </button>
 
-            <span id="collected<%= index %>" class="fw-bold px-1 px-md-2 text-dark  ">0</span>
+            <span id="collected<%= card.card_id %>" class="fw-bold px-1 px-md-2 text-dark  ">0</span>
 
-            <button id="plusButton<%= index %>" class="btn-sm border-0 bgColour"
-                onclick="increaseCounter('collected<%= index %>')" href="#">
+            <button id="plusButton<%= card.card_id %>" class="btn-sm border-0 bgColour"
+                onclick="increaseCounter('collected<%= card.card_id %>')" href="#">
                 <i class="fas fa-plus" style="color: grey"></i>
             </button>
 
@@ -59,7 +60,7 @@
 
         <%# button to open card entries modal %>
         <div class="col-3 d-flex justify-content-end align-items-center ">
-            <button id="card<%= index %>" class="btn-sm border-0 bgColour pe-0" onclick="openCardEntriesModal()">
+            <button id="card<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0" onclick="openCardEntriesModal()">
                 <i class="fa fa-list" style="color: grey" ></i>
             </button>
         </div>

@@ -14,7 +14,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary     me-2" data-dismiss="modal"
-                    onclick="closeModal()">Cancel</button>
+                    onclick="closeNoteModal()">Cancel</button>
                 <button type="button" class="btn actionBtn" onclick="submitNote()">Submit</button>
             </div>
         </div>
@@ -26,7 +26,10 @@
 <script>
 
     const openNoteModal = () => {
-        // Need to come back to this and populate with specicific card info
+        // Populate modal with specific card info
+        //const modalLabel = document.getElementById('noteModalLabel');
+        //modalLabel.innerHTML = `Add note for (${card.name} ${card.card_number} / {card.})`;
+
 
         // Show the modal
         const modal = document.getElementById('noteModal');
@@ -42,7 +45,7 @@
 
     const submitNote = () => {
         // need to come back and add some functionality for sending notes to database
-        closeModal();
+        closeNoteModal();
     };
 
     const closeNoteModal = () => {
