@@ -1,0 +1,54 @@
+<!-- partial to allow user to add notes -->
+<div class="modal fade" id="cardEntriesModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" id="cardEntriesLabel">Add note for (Specific card info)</h5>
+            </div>
+
+            <div class="modal-body">
+                <h1>
+                    NEED TO IMPLEMENT FUNCTIONALITY
+                </h1>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary me-2" data-dismiss="modal"
+                    onclick="closeCardEntriesModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="closeCardEntriesModal()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    const openCardEntriesModal = () => {
+        // Need to come back to this and populate with specicific card info
+
+        // Show the modal
+        const modal = document.getElementById('cardEntriesModal');
+        modal.classList.add('show');
+        modal.style.display = 'block';
+        document.body.classList.add('modal-open');
+
+        // Allow modal to close when clicking outside
+        document.addEventListener('click', handleClickOutside('cardEntriesModal', closeCardEntriesModal));
+
+
+    };
+
+    const closeCardEntriesModal = () => {
+        // get this modal and hide it
+        const modal = document.getElementById('cardEntriesModal');
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+
+        // remove event listener for clicking outside
+        document.removeEventListener('click', handleClickOutside('cardEntriesModal', closeCardEntriesModal));
+    };
+
+
+</script>

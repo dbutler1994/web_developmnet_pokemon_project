@@ -34,7 +34,7 @@ footer{
     background-color: var(--colourMatchBg);
 }
 
-.btn, .btn:hover{
+.actionBtn, .actionBtn:hover{
 background-color: var(--colourAction);
 color: white;
 border-radius: 6px;
