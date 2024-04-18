@@ -1,30 +1,33 @@
 const axios = require('axios');
 
-// controller when the user wants to get all cards
-const getAllCards = ((req, res) =>{
-    let endPoint = 'http://localhost:4000/cards'
-    
-    axios.get(endPoint).then((response)=>{
+// Define an async function
+const getAllCards = async (req, res) => {
+    try {
+        let endPoint = 'http://localhost:4000/cards';
+        let response = await axios.get(endPoint);
         let cardData = response.data;
-        res.render('cardGrid', {cards: cardData});
-    
-    });  
-})
+        res.render('cardGrid', { cards: cardData });
+    } catch (error) {
+        console.error('Error fetching card data:', error.message);
+        res.status(500).render('error');
+    }
+};
 
 
-const getCardById = ((req, res) =>{
-    let cardId = req.params.id;
-    let endPoint = `http://localhost:4000/cards/${cardId}`;
-    
-    axios.get(endPoint).then((response)=>{
-        let cardData = response.data;
-        console.log(cardData);
-        res.render('singleCard', {card: cardData});
-    });
 
 
-    
-})
+const getCardById = async (req, res, next) =>{
+
+    try {
+        let cardId = req.params.id;
+        let endPoint = `http://localhost:4000/cards/${cardId}`;
+        const response = await axios.get(endPoint);
+        const cardData = response.data;
+        res.render('singleCard', { card: cardData});
+    } catch (error) {
+        next(error.response.statuscode);
+    }    
+};
 
 
 module.exports ={

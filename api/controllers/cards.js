@@ -29,14 +29,20 @@ const getSingleCard = async (req, res) => {
     const cardId = req.params.cardId;
 
     try {
-        // Get the necessary card details from the model
+        // Get the card details from the model
         const cardDetails = await cardsModel.getSingleCard(cardId);
+
+        // if no card details are found, return a not found error and abort
+        if(!cardDetails){
+            res.status(404).json({error: "Card not found"});
+            return;
+        }
+
+        // Get the energy type, attacks, weakness and resistance details from the model
         const cardEnergyType = await cardsModel.getSingleCardEnergyType(cardId);
         const cardAttacks = await cardsModel.getSingleCardAttacks(cardId);
         const cardWeakness = await cardsModel.getSingleCardWeakness(cardId);
         const cardResistance = await cardsModel.getSingleCardResistance(cardId);
-
-        //console.log(cardAttacks);
 
         // format returrned data
         const formattedAttacks = await cardFunctions.formatCardAttacks(cardAttacks);
