@@ -1,13 +1,13 @@
 
 <!-- Image and text overlay for number in collection and set id -->
 <div class="container position-relative px-0">
-    <a class="" href="/">
+    <a class="" href='/cards/<%= card.card_id %>' >
         <img class="img-fluid rounded-2 opacity-50 cardPartial"
             src= <%= card.image %>
             alt="">
     </a>
     <p class="card-text fontColour position-absolute start-0 bottom-0 bgColour pe-1 rounded-end-1">
-        <small> <%= card.card_number %> / 205 | BS</small>
+        <small> <%= card.card_number %> / <%= card.total_cards %> | BS</small>
     </p>
 </div>
 
