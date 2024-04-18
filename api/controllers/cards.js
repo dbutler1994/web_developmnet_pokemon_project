@@ -1,11 +1,13 @@
 const cardsModel = require('../models/cards');
 const cardFunctions = require('../js/cardFunctions');
+const { get } = require('../routes/cards');
 
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
     // call the model function to retrieve all cards
     const result = await cardsModel.getAllCards();
+    console.log(result);
 
 
     // for each card in result array create a URL for the card image
@@ -15,12 +17,35 @@ const getAllCards = async (req, res) => {
         // return new object with  card data and specific image URL
         return {
             ...card,
-            image: imageURL
+            image: imageURL,
         };
     });
 
+
+    // for each card create a set object with set name, code and total cards
+    const resultWithSet = result.map(card => {
+        const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
+
+        // return new object with  card data and set data
+        return {
+            ...card,
+            set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards)
+        };
+    });
+
+    // setup json object to send to client
+    const jsonResponse = {
+        card_id: resultWithSet.card_id,
+        card_name: resultWithSet.card_name,
+        card_number: resultWithSet.card_number,
+        set: resultWithSet.set,
+        image: resultWithSet.image
+    };
+
+    
+
     // Send the retrieved cards as a response
-    res.status(200).json(resultWithImage);
+    res.status(200).json(resultWithSet);
 
 };
 
@@ -52,6 +77,7 @@ const getSingleCard = async (req, res) => {
             card_name: cardDetails.card_name,
             card_number: cardDetails.card_number,
             rarity: cardDetails.rarity,
+            set: cardFunctions.formatSetInformation(cardDetails.release_set_name, cardDetails.release_set_code, cardDetails.release_set_total_cards),
             illustrator: cardDetails.illustrator,
             energy: cardEnergyType,
             health: cardDetails.health,

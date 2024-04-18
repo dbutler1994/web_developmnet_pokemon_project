@@ -54,4 +54,13 @@ const createCardURL = (expansion_api_id, release_set_api_id, card_number, image_
 }
 
 
-module.exports = {formatCardAttacks, createCardURL};
+// format set infromation so that it is its own object
+const formatSetInformation = (setName, setCode, totalCards) => {
+    return{
+        set_name: setName,
+        set_code: setCode,
+        total_cards: totalCards
+    }
+};
+
+module.exports = {formatCardAttacks, createCardURL, formatSetInformation};
