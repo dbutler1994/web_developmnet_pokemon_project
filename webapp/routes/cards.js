@@ -3,10 +3,11 @@ const express = require("express");
 const router = express.Router();
 
 // Get controllers
-const {getAllCards} = require('../controllers/cards');
+const cardControllers = require('../controllers/cards');
 
 // Define routes
-router.get('/', getAllCards);
+router.get('/', cardControllers.getAllCards);
+router.get('/:id', cardControllers.getCardById);
 
 
 // export router
