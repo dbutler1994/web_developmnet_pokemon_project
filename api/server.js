@@ -14,7 +14,7 @@ const cardsRoutes = require('./routes/cards');
 app.use('/cards',cardsRoutes);
 
 
-// Start the server or desired port or 3000 as default
+// Start the server or desired port or 4000 as default
 app.listen(PORT, (err) =>{
     if(err){
         console.log(`Error starting server: ${err.message}`);
