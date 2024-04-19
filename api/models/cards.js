@@ -83,7 +83,7 @@ const getSingleCardWeakness = async (cardId) => {
 }
 
 
-// Get the weakness details of a single card
+// Get the retreat cost details of a single card
 const getSingleCardRetreat = async (cardId) => {
 
     let sql = 'SELECT * FROM view_cardRetreatCost  WHERE card_id = ?'
@@ -96,5 +96,27 @@ const getSingleCardRetreat = async (cardId) => {
     }
 }
 
+// Get the retreat cost details of a single card
+const getSingleCardAbility = async (cardId) => {
 
-module.exports = { getAllCards, getSingleCard, getSingleCardEnergyType, getSingleCardAttacks, getSingleCardResistance, getSingleCardWeakness, getSingleCardRetreat};
+    let sql = 'SELECT * FROM view_cardAbility  WHERE card_id = ?'
+
+    try {
+        const result = await dbPool.query(sql, [cardId]);
+        return result[0];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+
+module.exports = {
+     getAllCards, 
+     getSingleCard, 
+     getSingleCardEnergyType, 
+     getSingleCardAttacks, 
+     getSingleCardResistance, 
+     getSingleCardWeakness, 
+     getSingleCardRetreat,
+     getSingleCardAbility
+};

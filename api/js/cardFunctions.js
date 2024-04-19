@@ -29,7 +29,6 @@ const updateExistingAttack = (existingAttack, currentRow) => {
 // formats card attacks from the database to create attack objects in the desired format
 const formatCardAttacks = (cardAttacks) => {
     return cardAttacks.reduce((attackArray, currentRow) => {
-        console.log(currentRow.attack_name);
         const existingAttack = findExistingAttack(attackArray, currentRow.attack_name);
 
         if (existingAttack) {

@@ -46,6 +46,7 @@ const getSingleCard = async (req, res) => {
         const cardWeakness = await cardsModel.getSingleCardWeakness(cardId);
         const cardResistance = await cardsModel.getSingleCardResistance(cardId);
         const cardRetreat = await cardsModel.getSingleCardRetreat(cardId);
+        const cardAbility  = await cardsModel.getSingleCardAbility(cardId);
 
         // format returrned data
         const formattedAttacks = await cardFunctions.formatCardAttacks(cardAttacks);
@@ -68,7 +69,7 @@ const getSingleCard = async (req, res) => {
         // add attacks if there are any
 
         if (formattedAttacks.length > 0) {
-            jsonResponse.attacks = formattedAttacks;
+            jsonResponse.attack = formattedAttacks;
         }
 
         // add weakess if there are any
@@ -86,6 +87,10 @@ const getSingleCard = async (req, res) => {
             jsonResponse.retreat_cost = cardRetreat;
         }
 
+        // add ability if there are any
+        if (cardAbility.length > 0) {
+            jsonResponse.ability = cardAbility;
+        }
 
         res.json(jsonResponse);
     } catch (error) {
