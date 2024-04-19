@@ -99,3 +99,9 @@ border-radius: 6px;
   }
 }
 /*End of Card Partial Styles*/
+
+/*Start of set partial styles*/
+.setLogo{
+    min-width: 110px;
+}
+/*End of set partial styles*/
