@@ -63,4 +63,12 @@ const formatSetInformation = (setName, setCode, totalCards) => {
     }
 };
 
-module.exports = {formatCardAttacks, createCardURL, formatSetInformation};
+// format rarity infromation so that it is its own object
+const formatRarityInformation = (rarityName, rarityIconURL) => {
+    return{
+        rarity_name: rarityName,
+        icon_url: rarityIconURL
+    }
+};
+
+module.exports = {formatCardAttacks, createCardURL, formatSetInformation, formatRarityInformation};
