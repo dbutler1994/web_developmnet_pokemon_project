@@ -6,6 +6,8 @@ const mysql = require('mysql2');
 // Initialise app and configure settings
 const app = express();
 const dbPool = require('./db/connect');
+const path = require("path");
+app.use(express.static(path.join(__dirname,'./public')));
 const PORT = process.env.PORT || 4000;
 
 

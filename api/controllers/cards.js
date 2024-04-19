@@ -7,8 +7,6 @@ const { get } = require('../routes/cards');
 const getAllCards = async (req, res) => {
     // call the model function to retrieve all cards
     const result = await cardsModel.getAllCards();
-    console.log(result);
-
 
     // for each card in result array create a URL for the card image
     const resultWithImage = result.map(card => {
@@ -23,7 +21,7 @@ const getAllCards = async (req, res) => {
 
 
     // for each card create a set object with set name, code and total cards
-    const resultWithSet = result.map(card => {
+    const resultWithSet = resultWithImage.map(card => {
         const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
 
         // return new object with  card data and set data
