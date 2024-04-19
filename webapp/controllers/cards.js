@@ -6,7 +6,7 @@ const getAllCards = async (req, res) => {
         let endPoint = 'http://localhost:4000/cards';
         let response = await axios.get(endPoint);
         let cardData = response.data;
-        res.render('cardGrid', { cards: cardData });
+        res.render('cardGrid', { cards: cardData});
     } catch (error) {
         console.error('Error fetching card data:', error.message);
         res.status(500).render('error');
