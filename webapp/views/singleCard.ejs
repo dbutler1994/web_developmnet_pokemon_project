@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/myStyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body class="d-flex flex-column">
+    <%# Include header navbar %>
+        <header>
+            <%- include('./modules/navbar.ejs') %>
+        </header>
+
+        <main>
+
+            <%# Populate page with cards %>
+                <div class="container " >
+                    
+                    <div class="row justify-content-center  justify-content-md-start">
+
+                        <div class="col-md-5 col-12  text-center text-md-start  cardPartialSingle mb-5">
+                            <div class=" ">
+                                <%- include('./modules/cardPartial.ejs', {card: card, isGrid:false}) %>
+                            </div>
+                        </div>
+                    
+
+                    
+                        <div class=" singleCardDetails col-12 pe ">
+                            <%# Begin details for card name, energy and health %>
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center ">
+                                    <h3 class="mb-0"><%= card.card_name %></h3>
+                                </div>
+
+                                
+                                <div class="col-6 d-flex  justify-content-end align-items-center ">
+                                <%# Skip if no health %>
+                                    <% if (card.health > 0) { %>
+                                        <h4 class="me-3 mb-0  "> HP <%= card.health %></h4> 
+                                    <% } %>
+                                    <% card.energy.forEach(energyType => { %>
+                                        <img class="me-1 " src= <%= energyType.icon_url %> >
+                                    <% }) %>
+                                </div>
+                            </div>
+                        
+                            <%# Begin details for card category and evolves information %>
+                            <div class="row mt-2  border-1 border-bottom border-dark-subtle">
+                                <div class="col-6 d-flex align-items-start ">
+                                    <p class="mb-0"><%= card.category %></p>
+                                </div>
+
+                                <%# Content for pokemon evolution details %>
+                                    <div class="col-6 d-flex  justify-content-end align-items-end">
+                                        <p class= "me-1 "> <%= card.evolution_stage_name %> <% if (card.evolves_from) { %>
+                                        -  <%= card.evolves_from %></p>
+                                        <% } %> 
+                                    </div>
+                            </div>
+
+                            <%# Begin content for card abilities %>
+                            <div class="">
+                                <% if (card.ability) { %>
+                
+                                    <% card.ability.forEach(ability => { %>
+                                        <div class="row mt-3 ">
+                                            <div class="col-auto">
+                                                <p class="mb-0 text-black-25 fw-bold text-danger border border-2 border-danger rounded-2  px-2 "><%= ability.type %></p>
+                                            </div>
+                                            <div class="col-auto ms-0 ps-0">
+                                                <h5 class="mb-0 text-black-25 fw-bold "><%= ability.name %></h5>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 ">
+                                            <p> <%= ability.description %></p>
+                                        </div>
+                                    <% }) %>
+
+                                <% } %>
+                            </div>
+
+
+                            <%# Begin content for card attacks %>
+                            <div class="border-1 border-bottom border-dark-subtle ">
+                                <% if (card.attack) { %>
+                
+                                    <% card.attack.forEach(attack => { %>
+                                        <div class="row mt-3 ">
+                                            <div class="col-auto">
+                                                <% attack.energies.forEach(energyType => { %>
+                                                    <% for (let index = 0; index < energyType.amount; index++) { %>
+                                                        <img class="me-1" src= <%= energyType.icon_url %>>
+                                                    <% } %>
+                                                <% }) %>
+                                            </div>
+                                            <div class="col-auto ms-0 ps-0">
+                                                <h5 class="mb-0 text-black-25 fw-bold "><%= attack.attack_name %></h5>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2 ">
+                                            <p> <%= attack.description %></p>
+                                        </div>
+                                    <% }) %>
+
+                                <% } %>
+                            </div>
+                            
+                            <%# Begin content for Residual card information %>
+                                <div class="row row-cols-lg-3 row-cols-md-2 row-cols-2 mt-3">
+                                    
+                                    <% if (card.category === 'Pokemon') { %>
+                                     
+                                        <div class="col mb-4">
+                                            <p class="fw-bold mb-1 ">Weakness</p>
+                                            <%# add weakness if weakness array exists %>
+                                            <% if (card.weakness) { %>
+                                                <% card.weakness.forEach(weakness => { %>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <img class="me-2 " src= <%= weakness.icon_url %> >
+                                                        <span class="me-2 ">x2</span>
+                                                    </div>
+                                                <% }) %>
+                                            <% } else {%>
+                                                <p class=""> N/A </p>
+                                            <% } %>
+                                        </div>
+
+
+                                        <div class="col mb-4">
+                                            <p class="fw-bold mb-1 ">Resistance</p>
+                                            <%# add resistance if resistance array exists %>
+                                            <% if (card.resistance) { %>
+                                                <% card.resistance.forEach(resistance => { %>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <img class="me-2 " src= <%= resistance.icon_url %> >
+                                                        <span class="me-2 "> <%= resistance.value %></span>
+                                                    </div>
+                                                <% }) %>
+                                            <% } else {%>
+                                                <p class=""> N/A </p>
+                                            <% } %>
+                                        </div>
+
+
+                                        <div class="col mb-4">
+                                            <p class="fw-bold mb-1">Retreat Cost</p>
+                                            <%# add retreat cost if retreat cost array exists %>
+                                            <% if (card.retreat_cost) { %>
+                                                <% card.retreat_cost.forEach(energyType => { %>
+                                                    <div class="d-flex align-items-center mb-3">
+                                                        <% for (let index = 0; index < energyType.amount; index++) { %>
+                                                            <img class="me-1" src= <%= energyType.icon_url %>>
+                                                        <% } %>
+                                                    </div>
+                                                <% }) %>
+                                            <% } else {%>
+                                                <p class=""> N/A </p>
+                                            <% } %>
+                                        </div>
+
+                                    <% } %>
+
+                                    <div class="col mb-4">
+                                        <p class="fw-bold mb-1 ">Expansion</p>
+                                        <p><%= card.set.set_name %></p> 
+                                    </div>
+
+                                    <div class="col mb-4">
+                                        <p class="fw-bold mb-1 ">Card Number</p>
+                                        <p><%= card.card_number %> / <%= card.set.total_cards %></p> 
+                                    </div>
+
+                                    <div class="col mb-4">
+                                        <p class="fw-bold mb-1 ">Rarity</p>
+
+                                        <% if(card.rarity) {%>
+                                            <div class="d-flex align-items-center ">
+                                                <img class="me-2 " src= <%= card.rarity.icon_url %> >
+                                                <span class="me-2 "> <%= card.rarity.rarity_name %></span>
+                                            </div>
+                                        <% } else { %>
+                                            
+                                        <% } %>
+                                    </div>
+
+                                    <div class="col mb-4">
+                                        <p class="fw-bold mb-1 ">Illustrator</p>
+                                        <p><%= card.illustrator %></p> 
+                                    </div>
+
+                                </div>
+                            
+
+                        </div>
+                    </div>
+
+                <%# Bring in modals required for specific page functionality %>
+                    <%- include('./modules/cardNoteModal.ejs')%>
+                    <%- include('./modules/cardEntriesModal.ejs')%>
+
+        </main>
+
+        <%# Display website footer %>
+        <%- include('./modules/footer.ejs') %>
+
+
+            <!-- bootstrap javascript-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+
+            <!-- custom javascript fucntions-->
+            <script src="/js/wishlistButton.js"></script>
+            <script src="/js/increaseDecreaseCounter.js"></script>
+            <script src="/js/handleClickOutside.js"></script>
+</body>
+
+</html>

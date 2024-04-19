@@ -1,13 +1,22 @@
 
 <!-- Image and text overlay for number in collection and set id -->
 <div class="container position-relative px-0">
-    <a class="" href='/cards/<%= card.card_id %>' >
-        <img class="img-fluid rounded-2 opacity-50 cardPartial"
-            src= <%= card.image %>
-            alt="">
-    </a>
+    <% if ( isGrid ) { %>
+        <a class="" href='/cards/<%= card.card_id %>' >
+            <img class="img-fluid rounded-2 opacity-50"
+                src= <%= card.image %>
+                id= 'cardGridImage<%= card.card_id %>'>
+        </a> 
+    <% } else { %>
+        <div class="">
+
+            <img class="img-fluid rounded-2 "
+            src= <%= card.image %>>       
+        </div>
+    <% } %>
+    
     <p class="card-text fontColour position-absolute start-0 bottom-0 bgColour pe-1 rounded-end-1">
-        <small> <%= card.card_number %> / <%= card.total_cards %> | BS</small>
+        <small> <%= card.card_number %> / <%= card.set.total_cards %> | <%= card.set.set_code %></small>
     </p>
 </div>
 
@@ -16,13 +25,16 @@
     <div class="row">
         <div class="col-6 d-flex justify-content-start align-items-start  px-1 ">
             <img class="img-fluid  align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Rare Holo"
-                src="https://static.tcgcollector.com/content/images/39/26/4d/39264dba06e81707203520d206a7a2563f6560d21393399a76af9776e0848870.svg"
-                alt="">
+                src= <%= card.rarity.icon_url %> >
         </div>
         <div class="col-6 d-flex justify-content-end ">
             <button id="heartButton<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0 " data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Toggle card in wishlist"
-                onclick="toggleHeartColour('heartButton<%= card.card_id %>')" href="#">
+                <% if (isGrid) { %>
+                    onclick="toggleHeartColour('heartButton<%= card.card_id %>',  'cardGridImage<%= card.card_id %>')" href="#">
+                <% } else { %>
+                    onclick="toggleHeartColour('heartButton<%= card.card_id %>')" href="#">
+                <% } %>
                 <i class="fas fa-heart" style="color: grey"></i>
             </button>
         </div>
