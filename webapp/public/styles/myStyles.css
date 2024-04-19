@@ -80,4 +80,22 @@ border-radius: 6px;
 .cardPartial:hover{
     opacity: 100% !important;
 }
+
+@media (max-width: 768px) {
+    .cardPartialSingle{
+        max-width: 320px;
+    }
+  }
+
+  .cardPartialSingle{
+    max-width: 320px;
+    min-width: none;
+  }
+
+@media (min-width: 768px) {
+  .singleCardDetails{
+    margin-left: 20px;
+    width: calc(100% - (340px));
+  }
+}
 /*End of Card Partial Styles*/
