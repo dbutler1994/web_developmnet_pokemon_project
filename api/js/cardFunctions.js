@@ -1,6 +1,5 @@
 // checks if an attack with the same name already exists in an array
 const findExistingAttack = (attackArray, attackName) => {
-    console.log(attackArray);
     return attackArray.find(attack => attack.attack_name === attackName);
 };
 

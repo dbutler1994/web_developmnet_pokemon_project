@@ -55,7 +55,7 @@ const getSingleCard = async (req, res) => {
             card_name: cardDetails.card_name,
             card_number: cardDetails.card_number,
             category: cardDetails.category,
-            rarity: cardDetails.rarity,
+            rarity: cardFunctions.formatRarityInformation(cardDetails.rarity, cardDetails.rarity_icon_url),
             set: cardFunctions.formatSetInformation(cardDetails.release_set_name, cardDetails.release_set_code, cardDetails.release_set_total_cards),
             illustrator: cardDetails.illustrator,
             energy: cardEnergyType,
