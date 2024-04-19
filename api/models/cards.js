@@ -34,7 +34,6 @@ const getSingleCardEnergyType = async (cardId) => {
 
     try {
         const result = await dbPool.query(sql, [cardId]);
-        //console.log(result);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
@@ -49,7 +48,6 @@ const getSingleCardAttacks = async (cardId) => {
 
     try {
         const result = await dbPool.query(sql, [cardId]);
-       // console.log(result);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
@@ -64,7 +62,6 @@ const getSingleCardResistance = async (cardId) => {
 
     try {
         const result = await dbPool.query(sql, [cardId]);
-       // console.log(result);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
@@ -79,7 +76,6 @@ const getSingleCardWeakness = async (cardId) => {
 
     try {
         const result = await dbPool.query(sql, [cardId]);
-       // console.log(result);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
@@ -87,4 +83,18 @@ const getSingleCardWeakness = async (cardId) => {
 }
 
 
-module.exports = { getAllCards, getSingleCard, getSingleCardEnergyType, getSingleCardAttacks, getSingleCardResistance, getSingleCardWeakness};
+// Get the weakness details of a single card
+const getSingleCardRetreat = async (cardId) => {
+
+    let sql = 'SELECT * FROM view_cardRetreatCost  WHERE card_id = ?'
+
+    try {
+        const result = await dbPool.query(sql, [cardId]);
+        return result[0];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+
+module.exports = { getAllCards, getSingleCard, getSingleCardEnergyType, getSingleCardAttacks, getSingleCardResistance, getSingleCardWeakness, getSingleCardRetreat};

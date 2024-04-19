@@ -1,6 +1,5 @@
 const cardsModel = require('../models/cards');
 const cardFunctions = require('../js/cardFunctions');
-const { get } = require('../routes/cards');
 
 
 // get all cards from the database, and format the response
@@ -66,6 +65,7 @@ const getSingleCard = async (req, res) => {
         const cardAttacks = await cardsModel.getSingleCardAttacks(cardId);
         const cardWeakness = await cardsModel.getSingleCardWeakness(cardId);
         const cardResistance = await cardsModel.getSingleCardResistance(cardId);
+        const cardRetreat = await cardsModel.getSingleCardRetreat(cardId);
 
         // format returrned data
         const formattedAttacks = await cardFunctions.formatCardAttacks(cardAttacks);
@@ -74,6 +74,7 @@ const getSingleCard = async (req, res) => {
         const jsonResponse = {
             card_name: cardDetails.card_name,
             card_number: cardDetails.card_number,
+            category: cardDetails.category,
             rarity: cardDetails.rarity,
             set: cardFunctions.formatSetInformation(cardDetails.release_set_name, cardDetails.release_set_code, cardDetails.release_set_total_cards),
             illustrator: cardDetails.illustrator,
@@ -85,6 +86,7 @@ const getSingleCard = async (req, res) => {
         };
 
         // add attacks if there are any
+
         if (formattedAttacks.length > 0) {
             jsonResponse.attacks = formattedAttacks;
         }
@@ -97,6 +99,11 @@ const getSingleCard = async (req, res) => {
         // add resistance if there are any
         if (cardResistance.length > 0) {
             jsonResponse.resistance = cardResistance;
+        }
+
+        // add retreat cost if there are any
+        if (cardRetreat.length > 0) {
+            jsonResponse.retrat_cost = cardRetreat;
         }
 
 

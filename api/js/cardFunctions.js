@@ -39,7 +39,7 @@ const formatCardAttacks = (cardAttacks) => {
             attackArray.push(formatNewAttack(currentRow)); // attack does not exist in array so create new attack object
         }
 
-        return attackArray || null;
+        return attackArray;
     }, []); // initialise attack array as empty array
 };
 
