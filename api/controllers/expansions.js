@@ -5,7 +5,6 @@ const expansionsFunctions = require('../js/expansionFunctions');
 
 // get all cards from the database, and format the response
 const getAllExpansions = async (req, res) => {
-
     // get query parameters
     const includeSets = (req.query.includeSets === 'true');
 
