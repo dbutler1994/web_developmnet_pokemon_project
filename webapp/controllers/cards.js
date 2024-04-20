@@ -1,9 +1,9 @@
 const axios = require('axios');
 
-// Define an async function
+// get all cards from the API
 const getAllCards = async (req, res) => {
     try {
-        let endPoint = 'http://localhost:4000/cards';
+        req.endPoint = 'http://localhost:4000/cards';
         let response = await axios.get(endPoint);
         let cardData = response.data;
         res.render('cardGrid', { cards: cardData});
@@ -13,9 +13,7 @@ const getAllCards = async (req, res) => {
     }
 };
 
-
-
-
+// get card by id from the API
 const getCardById = async (req, res, next) =>{
 
     try {
