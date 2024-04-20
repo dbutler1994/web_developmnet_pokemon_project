@@ -9,23 +9,23 @@ app.use(express.static(path.join(__dirname,'./public')));
 
 // Get middleware
 const {error404Handler} = require('./middleware/errorMiddleware');
+const {createQueryParameterString} = require('./middleware/addQueryParams');
 
 // Get routes
 const indexRoutes = require('./routes/index');
 const cardsRoutes = require('./routes/cards');
 const expansionsRoutes = require('./routes/expansions');
 
+// Use middleware before routes handled
+app.use(createQueryParameterString);
+
 app.use('/',indexRoutes);
 app.use('/cards',cardsRoutes);
 app.use('/expansions',expansionsRoutes);
 
+// Use middleware after routes handled
 app.use(error404Handler);
 
-
-
-//app.get("/", (req,res)=>{
-//    res.render('error');
-//});
 
 // Start the server or desired port or 3000 as default
 const PORT = process.env.PORT || 3000;
