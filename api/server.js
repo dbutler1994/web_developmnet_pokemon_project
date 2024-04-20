@@ -12,8 +12,12 @@ const PORT = process.env.PORT || 4000;
 
 
 const cardsRoutes = require('./routes/cards');
+const expansionsRoutes = require('./routes/expansions');
+const setsRoutes = require('./routes/sets');
 
 app.use('/cards',cardsRoutes);
+app.use('/expansions',expansionsRoutes);
+app.use('/sets',setsRoutes);
 
 
 // Start the server or desired port or 4000 as default
