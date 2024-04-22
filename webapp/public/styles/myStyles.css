@@ -40,6 +40,16 @@ color: white;
 border-radius: 6px;
 }
 
+.negativeActionBtn{
+    background-color: var(--colourMatchBg);
+    border-color: grey;
+    border-radius: 6px;
+}
+
+.negativeActionBtn:hover{
+    border-color: var(--colourAction);
+}
+
 .btn:hover{
     opacity: 90%;
 }
@@ -105,3 +115,12 @@ border-radius: 6px;
     min-width: 110px;
 }
 /*End of set partial styles*/
+
+
+/*Start of form styles*/
+.was-validated .form-control:valid{
+    background-image: none ;
+    border-color: #ced4da;
+
+}
+/*End of form styles*/
