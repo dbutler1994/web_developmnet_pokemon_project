@@ -15,6 +15,7 @@ const {createQueryParameterString} = require('./middleware/addQueryParams');
 const indexRoutes = require('./routes/index');
 const cardsRoutes = require('./routes/cards');
 const expansionsRoutes = require('./routes/expansions');
+const accountRoutes = require('./routes/account');
 
 // Use middleware before routes handled
 app.use(createQueryParameterString);
@@ -22,6 +23,7 @@ app.use(createQueryParameterString);
 app.use('/',indexRoutes);
 app.use('/cards',cardsRoutes);
 app.use('/expansions',expansionsRoutes);
+app.use('/account',accountRoutes);
 
 // Use middleware after routes handled
 app.use(error404Handler);
