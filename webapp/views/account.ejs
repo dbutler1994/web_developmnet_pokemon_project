@@ -18,8 +18,15 @@
         </header>
 
         <main>
-            <%# Bring in create account partial %>
-            <%- include('./modules/createAccountPartial.ejs') %>
+
+            <% if (content === "createAccount") { %>
+                <%# Bring in create account partial %>
+                <%- include('./modules/createAccountPartial.ejs') %>
+            <% } else if (content === "login") { %>
+                <%# Bring in login partial %>
+                <%- include('./modules/loginPartial.ejs') %>
+            <% } %>
+            
 
 
         </main>
@@ -33,10 +40,6 @@
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 crossorigin="anonymous"></script>
 
-            <!-- custom javascript fucntions-->
-            <script src="/js/wishlistButton.js"></script>
-            <script src="/js/increaseDecreaseCounter.js"></script>
-            <script src="/js/handleClickOutside.js"></script>
 </body>
 
 </html>

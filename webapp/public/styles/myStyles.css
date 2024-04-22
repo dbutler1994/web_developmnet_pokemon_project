@@ -19,7 +19,7 @@ header{
 
 main{
     padding-top: 30px;
-    color: darkslategray ;
+    color: rgb(23, 26, 26) ;
 }
 
 .container-fluid, .container{
@@ -122,5 +122,9 @@ border-radius: 6px;
     background-image: none ;
     border-color: #ced4da;
 
+}
+
+.form-label{
+    font-weight: bold ;
 }
 /*End of form styles*/
