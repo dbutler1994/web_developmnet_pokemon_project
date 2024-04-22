@@ -7,6 +7,7 @@ const accountControllers = require('../controllers/account.js');
 
 // Define routes for user accounts
 router.get('/createAccount', accountControllers.getCreateAccount);
+router.get('/login', accountControllers.getUserLogin);
 
 
 // export router
