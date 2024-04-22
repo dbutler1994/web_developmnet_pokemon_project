@@ -1,0 +1,66 @@
+<div class="container mb-3">
+    <form class="row g-3 needs-validation" novalidate >
+
+        <h4 class="fw-semibold">
+            Sign in to your account
+        </h4>
+
+        <div class="d-block">
+            <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" placeholder="example@domain.com" class="form-control" id="email" required>
+                
+                <div class="invalid-feedback">
+                    Please provide a valid email.
+                </div>
+            </div>
+        </div>
+
+        <div class="d-block">
+            <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" placeholder="Password" class="form-control" id="password" required>
+
+                <div class="invalid-feedback">
+                    Please enter a password.
+                </div>
+            </div>
+        </div>
+
+        <a href="/account/createAccount">Don't have an acccount?</a>
+
+        <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pt-2">
+            <div class="row justify-content-start">
+                <div class="col-auto">
+                    <button class="btn actionBtn me-2" onclick= "validateFields()" type="submit">Sign in</button>
+                    <a href="/" class="btn negativeActionBtn">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+// Boilerplater code from Bootstrap
+// Checks each form in the page and applies some check such as ensuring it is not empty if required and meets the min and max length requirements
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
