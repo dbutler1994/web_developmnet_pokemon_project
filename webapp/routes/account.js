@@ -11,6 +11,7 @@ router.post('/createAccount', accountControllers.postCreateAccount);
 
 // Define routes for user login
 router.get('/login', accountControllers.getUserLogin);
+router.post('/login', accountControllers.postUserLogin);
 
 
 // export router
