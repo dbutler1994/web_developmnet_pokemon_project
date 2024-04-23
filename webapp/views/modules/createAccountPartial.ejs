@@ -13,12 +13,21 @@
         <a href="/account/login">Sign in here</a>
     </div>
 
-    <form class="row g-3 needs-validation" novalidate >
+    <%# display error message if it exists %>
+    <% if (typeof error !== 'undefined') { %>
+        <div class="col-12 col-sm-10 col-sm-8 col-lg-5 border border-2 rounded-1 border-danger text-danger px-1 ">
+            <p class="fw-semibold my-2">
+                Error: <%= error %>
+            </p>
+        </div>
+    <% } %>
+
+    <form action="/account/createAccount" method="POST"  class="row g-3 needs-validation" novalidate  >
 
         <div class="d-block d-lg-flex justify-content-start">
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 me-lg-4">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="First name" required>
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" required>
                 <div class="invalid-feedback">
                     Please provide a valid first name.
                 </div>
@@ -26,7 +35,7 @@
 
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 mt-3 mt-lg-0">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Last name" required>
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" required>
                 <div class="invalid-feedback">
                     Please provide a valid last name.
                 </div>
@@ -37,7 +46,7 @@
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
                 <label for="username" class="form-label">Username</label>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                     <div class="invalid-feedback">
                         Please choose a username.
                     </div>
@@ -48,7 +57,7 @@
         <div class="d-block">
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
                 <label for="email" class="form-label">Email Address</label>
-                <input type="email" placeholder="example@domain.com" class="form-control" id="email" required>
+                <input type="email" placeholder="example@domain.com" class="form-control" id="email" name="email" required>
                 <div class="invalid-feedback">
                     Please provide a valid email.
                 </div>
@@ -58,7 +67,7 @@
         <div class="d-block">
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
                 <label for="confirmEmail" class="form-label">Confirm Email Address</label>
-                <input type="email" placeholder="example@domain.com" class="form-control" id="confirmEmail"  required>
+                <input type="email" placeholder="example@domain.com" class="form-control" id="confirmEmail" name="confirmEmail"  required>
                 <div class="invalid-feedback" id="confirmEmailInvalid">
                     
                 </div>
@@ -69,7 +78,7 @@
         <div class="d-block">
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" placeholder="Password" class="form-control" id="password" minlength="8" maxlength="20" required>
+                <input type="password" placeholder="Password" class="form-control" id="password" name="password" minlength="8" maxlength="20" required>
                 <small id="passwordHelpBlock" class="form-text text-muted">
                     Your password must be 8-20 characters long.
                 </small>
@@ -82,7 +91,7 @@
         <div class="d-block">
             <div class="col-12 col-sm-10 col-sm-8 col-lg-5 pe-0 me-md-2">
                 <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" placeholder="Password" class="form-control" id="confirmPassword" minlength="8" maxlength="20"   required>
+                <input type="password" placeholder="Password" class="form-control" id="confirmPassword" name="confirmPassword" minlength="8" maxlength="20"   required>
                 <div class="invalid-feedback" id="confirmPasswordInvalid">
                     
                 </div>
