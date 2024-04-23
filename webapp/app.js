@@ -1,5 +1,6 @@
 // Get required modules
 const express = require('express');
+const session = require('express-session');
 
 // Initialise app and configure settings
 const app = express();
@@ -11,7 +12,17 @@ app.use(express.static(path.join(__dirname,'./public')));
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
 
-// Get middleware
+// session middleware
+const halfDay = 1000 * 60 * 60 * 12;
+app.use(session({
+    secret: 'supersecretkeywithsomerandomcharacters5456sfsfc',
+    saveUninitialized: true,
+    cookie: { maxAge: halfDay },
+    resave: false
+}));
+
+
+// Get more middleware
 const {error404Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
 

@@ -76,7 +76,7 @@ const postUserLogin = ( async (req, res) =>{
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
 
-
+    
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
             email,
@@ -85,6 +85,8 @@ const postUserLogin = ( async (req, res) =>{
 
         // handle response from the API for successful account creation
         if(response.status === 200){
+            req.session.user = response.data;
+            req.session.authorised = true;
             res.redirect('/');
         }
 
