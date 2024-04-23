@@ -7,6 +7,10 @@ const path = require("path");
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'./public')));
 
+
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
+
 // Get middleware
 const {error404Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
