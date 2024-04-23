@@ -1,4 +1,5 @@
 // get access to dbPool
+const bcrypt = require('bcrypt');
 const dbPool = require('../db/connect');
 
 // get all accounts from the database based on given username
@@ -78,9 +79,67 @@ const createAccount = async ( firstName, lastName, username, email, password ) =
     }
 };
 
+// controller function to login a user
+const loginAccount = async ( email, password ) => {
+    try {
+        // get the password and acount id from the database if they exist
+        const accountId = await getAccountbyEmail(email);
+        const storedPassword = await getAccountPasswordById(accountId);
+
+        // check input password mataches the stored password
+        const passwordMatch = await bcrypt.compare(password, storedPassword);
+
+        if (!passwordMatch) {
+            const error = new Error("Incorrect Password.");
+            //error.code = 401;
+            throw error;
+        }
+
+        // return the user's account ID if login is successful
+        return accountId;
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+
+const getAccountPasswordById = async (accountId) => {
+    try{
+        const passwordSql = 'SELECT password FROM account_password WHERE account_id = ?';
+        const [passwordResult] = await dbPool.query(passwordSql, accountId);
+        return passwordResult[0].password.toString('utf-8'); // another 2.5 hours wasted on this line
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+
+const getAccountbyEmail = async (email) => {
+    try{
+        const emailSql = `SELECT account_id FROM account_email WHERE email = ?;`;
+        const [accountResult] = await dbPool.query(emailSql, [email]);
+
+        // check if user exists and throw an error if they don't
+        if (accountResult.length === 0) {
+            const error = new Error("Email address not found. Please register first.");
+            //error.code = 401;
+            throw error;
+        }
+
+        // store the account id
+        return accountResult[0].account_id;
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 
 module.exports = {
     getAccountByUserName,
     getAccountByEmail,
-    createAccount
+    createAccount,
+    loginAccount
 };

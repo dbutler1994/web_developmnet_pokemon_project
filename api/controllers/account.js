@@ -2,7 +2,7 @@ const accountModel = require('../models/account');
 const bcrypt = require('bcrypt');
 
 
-registerAccount = async (req, res) => {
+const registerAccount = async (req, res) => {
     try {
 
         //console.log(req.body);
@@ -42,6 +42,32 @@ registerAccount = async (req, res) => {
 };
 
 
+const loginAccount = async (req, res) => {
+    console.log('hello');
+    try {
+        const {email, password } = req.body;
+
+        console.log(password, email);
+
+        // attempt to log in the user
+        const account = await accountModel.loginAccount( email, password );
+
+        // return the user's account ID if login is successful
+        res.status(200).json({ account: account });
+    } catch (error) {
+
+        // send errors. Send a unauthorized response if the email is not found or the password is incorrect        
+        if (error.message === 'Email address not found. Please register first.' || error.message === 'Incorrect Password.') {
+            console.log('hello');
+            res.status(401).json({ error: 'Invalid username or password' });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+};
+
+
 module.exports = {
-    registerAccount
+    registerAccount,
+    loginAccount
 };
