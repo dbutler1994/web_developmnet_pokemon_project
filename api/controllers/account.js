@@ -43,11 +43,11 @@ const registerAccount = async (req, res) => {
 
 
 const loginAccount = async (req, res) => {
-    console.log('hello');
+    
     try {
         const {email, password } = req.body;
 
-        console.log(password, email);
+        //console.log(password, email);
 
         // attempt to log in the user
         const account = await accountModel.loginAccount( email, password );

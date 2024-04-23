@@ -83,10 +83,13 @@ const createAccount = async ( firstName, lastName, username, email, password ) =
 const loginAccount = async ( email, password ) => {
     try {
         // get the password and acount id from the database if they exist
-        const accountId = await getAccountbyEmail(email);
+        const account = await getAccountbyEmail(email);
+        const accountId = account.account_id;
+
         const storedPassword = await getAccountPasswordById(accountId);
 
         // check input password mataches the stored password
+        console.log('BEOFRE PASSWORD MATCH');
         const passwordMatch = await bcrypt.compare(password, storedPassword);
 
         if (!passwordMatch) {
@@ -95,8 +98,9 @@ const loginAccount = async ( email, password ) => {
             throw error;
         }
 
-        // return the user's account ID if login is successful
-        return accountId;
+        console.log('AFTER PASSWORD MATCH');
+        // return the user's account if login is successful
+        return account;
 
     } catch (error) {
         throw new Error(error.message);
@@ -118,7 +122,7 @@ const getAccountPasswordById = async (accountId) => {
 
 const getAccountbyEmail = async (email) => {
     try{
-        const emailSql = `SELECT account_id FROM account_email WHERE email = ?;`;
+        const emailSql = `SELECT * FROM account_email WHERE email = ?;`;
         const [accountResult] = await dbPool.query(emailSql, [email]);
 
         // check if user exists and throw an error if they don't
@@ -129,7 +133,7 @@ const getAccountbyEmail = async (email) => {
         }
 
         // store the account id
-        return accountResult[0].account_id;
+        return accountResult[0];
 
     } catch (error) {
         throw new Error(error.message);
