@@ -22,9 +22,10 @@ app.use(session({
 }));
 
 
-// Get more middleware
+// Get custom middleware
 const {error404Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
+const {sessionDataToLocals} = require('./middleware/sessionDataToLocals');
 
 // Get routes
 const indexRoutes = require('./routes/index');
@@ -34,6 +35,8 @@ const accountRoutes = require('./routes/account');
 
 // Use middleware before routes handled
 app.use(createQueryParameterString);
+app.use(sessionDataToLocals);
+
 
 app.use('/',indexRoutes);
 app.use('/cards',cardsRoutes);

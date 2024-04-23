@@ -86,7 +86,7 @@ const postUserLogin = ( async (req, res) =>{
         // handle response from the API for successful account creation
         if(response.status === 200){
             req.session.user = response.data;
-            req.session.authorised = true;
+            req.session.loggedIn = true;
             res.redirect('/');
         }
 
