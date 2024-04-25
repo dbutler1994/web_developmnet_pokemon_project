@@ -3,7 +3,7 @@ const axios = require('axios');
 // get all cards from the API
 const getAllCards = async (req, res) => {
     try {
-        endPoint = 'http://localhost:4000/cards';
+        endPoint = 'http://localhost:4000/cards' + req.paramString;
         let response = await axios.get(endPoint);
         let cardData = response.data;
         res.render('cardGrid', { cards: cardData});
