@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-md p-2">
+  <div class="container-fluid ps-0  justify-content-end ">
+
+
+    <button class="navbar-toggler shadow-none border-0 ms-auto" type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#cardSortOptions" >
+      <i class="fas fa-arrow-down-short-wide"></i>
+    </button>
+
+    <%# start of content %>
+    <div class=" offcanvas offcanvas-start w-100  " tabindex="-1" id="cardSortOptions">
+      <div class="offcanvas-body" >
+        <ul class="navbar-nav">
+
+
+          <li class="d-flex align-items-center">
+            <label class="align-items-center align-content-center text-center  fw-semibold pb-1" for="pageSizeSelect">Show</label>
+          </li>
+
+            <select class="form-select bg-transparent noFocusOutline selectBox text-primary pb-md-1 pt-md-0" id="pageSizeSelect">
+              <option class="p-3 m-3" value="30">30 cards</option>
+              <option class="" value="60">60 cards</option>
+              <option class="" value="120">120 cards</option>
+            </select>
+
+        </ul>
+      </div>
+
+      <%# hide the close button on screen sizes medium and bigger %>
+      <div class="offcanvas-footer d-md-none  border-1 border-top   border-dark-subtle   pt-2 d-flex  justify-content-end ">
+        <button type="button" class="btn btn-lg actionBtn m-2 me-3" data-bs-dismiss="offcanvas">Close</button>
+      </div>
+    </div>
+  
+  </div>
+
+</nav>
+
+
+<script>
+  // get the select box for selecting the page size 
+  const pageSizeSelect = document.getElementById('pageSizeSelect');
+
+  // function to update the query parameter list in the url
+  const updateUrlQueryParam = (queryParamKey, queryParamValue) => {
+      const url = new URL(window.location.href); // get current url
+      url.searchParams.set(queryParamKey, queryParamValue); // add / update query parameter
+      window.location.href = url.toString(); // update url in browser
+  };
+
+  // add event listener to select box to update query parameter on change and call updateUrlQueryParam function
+  pageSizeSelect.addEventListener('change', () => {
+      const selectedPageSize = pageSizeSelect.value;
+      updateUrlQueryParam('cardsPerPage', selectedPageSize);
+  });
+
+
+
+  // make sure that the select box is set to reflect the value of cardPerPage query parameter in the url
+  const urlParams = new URLSearchParams(window.location.search);
+  const cardsPerPage = urlParams.get('cardsPerPage');
+  if (cardsPerPage) {
+    pageSizeSelect.value = cardsPerPage;
+  }
+
+
+  // protect against invlid values in the cards per page query parameter
+  if (cardsPerPage && !document.querySelector(`#pageSizeSelect option[value="${cardsPerPage}"]`)) {
+
+    // if invalid for cards per page is found in the url we update the url to use the first value in the pageSizeSelect element 
+    const defaultPageSize = document.querySelector('#pageSizeSelect option:first-child').value; // get first element in page size select box
+    updateUrlQueryParam('cardsPerPage', defaultPageSize); // update url with default value
+  }
+
+</script>
