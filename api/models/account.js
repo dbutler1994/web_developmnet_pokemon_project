@@ -84,7 +84,7 @@ const loginAccount = async ( email, password ) => {
     try {
         // get the password and acount id from the database if they exist
         const account = await getAccountbyEmail(email);
-        const accountId = account.account_id;
+        const accountId = account.id;
 
         const storedPassword = await getAccountPasswordById(accountId);
 
@@ -122,7 +122,7 @@ const getAccountPasswordById = async (accountId) => {
 
 const getAccountbyEmail = async (email) => {
     try{
-        const emailSql = `SELECT * FROM account_email WHERE email = ?;`;
+        const emailSql = `SELECT * FROM view_account WHERE email = ?;`;
         const [accountResult] = await dbPool.query(emailSql, [email]);
 
         // check if user exists and throw an error if they don't
