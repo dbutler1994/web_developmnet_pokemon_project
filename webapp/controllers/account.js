@@ -56,7 +56,7 @@ const postCreateAccount = ( async (req, res) =>{
 });
 
 
-// BEGIN CONTROLLERS FOR CREATE ACCOUNT
+// BEGIN CONTROLLERS FOR USER LOGIN
 // Controller for rendering the login page to the user
 const getUserLogin = ((req, res) =>{
     res.render("account", {content: "login"});
@@ -104,9 +104,20 @@ const postUserLogin = ( async (req, res) =>{
 });
 
 
+// BEGIN CONTROLLERS FOR USER LOGOUT
+// Controller for logging user out, destroying the session and redirecting to the home page
+const getUserLogout = ( async (req, res) =>{
+    await req.session.destroy();
+    //console.log(req.session);
+
+    res.redirect("/");
+});
+
+
 module.exports ={
     getCreateAccount,
     postCreateAccount,
     getUserLogin,
-    postUserLogin
+    postUserLogin,
+    getUserLogout
 }

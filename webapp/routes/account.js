@@ -13,6 +13,9 @@ router.post('/createAccount', accountControllers.postCreateAccount);
 router.get('/login', accountControllers.getUserLogin);
 router.post('/login', accountControllers.postUserLogin);
 
+// Define routes for user logout
+router.get('/logout', accountControllers.getUserLogout);
+
 
 // export router
 module.exports = router;
