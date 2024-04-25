@@ -24,7 +24,7 @@
 <div class="container mt-1 pb-1  border-bottom border-1 border-dark-subtle ">
     <div class="row">
         <div class="col-6 d-flex justify-content-start align-items-start  px-1 ">
-            <img class="img-fluid  align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Rare Holo"
+            <img class="img-fluid  align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title= <%= card.rarity.rarity_name %>
                 src= <%= card.rarity.icon_url %> >
         </div>
         <div class="col-6 d-flex justify-content-end ">
@@ -46,8 +46,8 @@
     <div class="row">
 
         <%# button to open notes modal %>
-        <div class="col-3 d-flex justify-content-start align-items-center ">
-            <button id="card<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" onclick= "openNoteModal()" > <%# TEMPORARY SOlUTION %>
+        <div class="col-3 d-flex justify-content-start align-items-center ps-2 ">
+            <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card"  onclick= "openNoteModal()" > <%# TEMPORARY SOlUTION %>
                 <i class="far fa-clipboard" style="color: grey" ></i>
             </button>
 
@@ -56,14 +56,14 @@
         <div class="col-6 d-flex justify-content-center  align-items-center">
 
             <button id="minusButton<%= card.card_id %>" class="btn-sm border-0 bgColour" 
-                onclick="decreaseCounter('collected<%= card.card_id %>')" href="#">
+                onclick="decreaseCounter('collected<%= card.card_id %>')" title="Decrease number owned"  href="#">
                 <i class="fas fa-minus" style="color: grey"></i>
             </button>
 
             <span id="collected<%= card.card_id %>" class="fw-bold px-1 px-md-2 text-dark  ">0</span>
 
             <button id="plusButton<%= card.card_id %>" class="btn-sm border-0 bgColour"
-                onclick="increaseCounter('collected<%= card.card_id %>')" href="#">
+                onclick="increaseCounter('collected<%= card.card_id %>')" title="Increase number owned"  href="#">
                 <i class="fas fa-plus" style="color: grey"></i>
             </button>
 
@@ -72,7 +72,7 @@
 
         <%# button to open card entries modal %>
         <div class="col-3 d-flex justify-content-end align-items-center ">
-            <button id="card<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0" onclick="openCardEntriesModal()">
+            <button id="cardEntries<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0" title="View card entries" onclick="openCardEntriesModal()">
                 <i class="fa fa-list" style="color: grey" ></i>
             </button>
         </div>
@@ -81,4 +81,26 @@
 
 </div>
 
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // get the loggedIn variable from res.locals and set it to a js variable
+            const loggedIn = <%= typeof loggedIn !== 'undefined' ? JSON.stringify(loggedIn) : 'false' %>;
+        
+            // console.log(loggedIn);
+            // change on click attribute for each button to open not logged in modal if user isn't logged in
+            if(!loggedIn){
+                document.getElementById("minusButton<%= card.card_id %>").onclick = openNotLoggedInModal;
+                document.getElementById("plusButton<%= card.card_id %>").onclick = openNotLoggedInModal;
+                document.getElementById("heartButton<%= card.card_id %>").onclick = openNotLoggedInModal;
+                document.getElementById("cardEntries<%= card.card_id %>").onclick = openNotLoggedInModal;
+                document.getElementById("cardNote<%= card.card_id %>").onclick = openNotLoggedInModal;
+            }
+            
+
+            
+
+
+        });
+
+    </script>
 

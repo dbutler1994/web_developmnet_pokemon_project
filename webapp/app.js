@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 const halfDay = 1000 * 60 * 60 * 12;
 app.use(session({
     secret: 'supersecretkeywithsomerandomcharacters5456sfsfc',
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { maxAge: halfDay },
     resave: false
 }));

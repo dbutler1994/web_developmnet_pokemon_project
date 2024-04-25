@@ -92,16 +92,20 @@
                                 <% if (card.attack) { %>
                 
                                     <% card.attack.forEach(attack => { %>
-                                        <div class="row mt-3 ">
-                                            <div class="col-auto">
-                                                <% attack.energies.forEach(energyType => { %>
-                                                    <% for (let index = 0; index < energyType.amount; index++) { %>
-                                                        <img class="me-1" src= <%= energyType.icon_url %>>
-                                                    <% } %>
-                                                <% }) %>
-                                            </div>
-                                            <div class="col-auto ms-0 ps-0">
-                                                <h5 class="mb-0 text-black-25 fw-bold "><%= attack.attack_name %></h5>
+                                        <div class="container-fluid mt-3">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto d-flex align-items-center ps-0">
+                                                    <% attack.energies.forEach(energyType => { %>
+                                                        <% for (let index = 0; index < energyType.amount; index++) { %>
+                                                            <img class="me-2" src="<%= energyType.icon_url %>">
+                                                        <% } %>
+                                                    <% }) %>
+
+                                                    <h5 class="ms-2  mb-0 text-black-25 fw-bold"><%= attack.attack_name %></h5>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h5 class="mb-0 text-black-25 fw-bold text-end"><%= attack.damage %></h5>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row mt-2 ">
@@ -204,6 +208,7 @@
                 <%# Bring in modals required for specific page functionality %>
                     <%- include('./modules/cardNoteModal.ejs')%>
                     <%- include('./modules/cardEntriesModal.ejs')%>
+                    <%- include('./modules/notLoggedInModal.ejs')%>
 
         </main>
 

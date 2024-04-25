@@ -1,0 +1,57 @@
+<!-- partial to allow user to add notes -->
+<div class="modal fade" id="notLoggedInModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" id="notLoggedInModalLabel">Please sign in</h5>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <p class="m-0">
+                        You need to be <a href="account/login">signed in</a>  to use card tracking features. 
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn actionBtn btn-secondary     me-2" data-dismiss="modal"
+                    onclick="closeNotLoggedInModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    const openNotLoggedInModal = () => {
+
+        // Show the modal
+        const modal = document.getElementById('notLoggedInModal');
+        modal.classList.add('show');
+        modal.style.display = 'block';
+        document.body.classList.add('modal-open');
+
+        // Allow modal to close when clicking outside
+        document.addEventListener('click', handleClickOutside('notLoggedInModal', closeNotLoggedInModal));
+
+
+    };
+
+
+    const closeNotLoggedInModal = () => {
+        // get this modal and hide it
+        const modal = document.getElementById('notLoggedInModal');
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+
+        // remove event listener for clicking outside
+        document.removeEventListener('click', handleClickOutside('notLoggedInModal', closeNotLoggedInModal));
+    };
+
+
+
+</script>
