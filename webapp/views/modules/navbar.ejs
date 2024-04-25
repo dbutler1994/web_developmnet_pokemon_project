@@ -57,6 +57,33 @@
             </li>
 
             <%# login dropdown %>
+            <% if (loggedIn) { %>
+             <li class="nav-item dropdown ps-5 ms-5  d-inline-block align-middle fixed-left d-none d-lg-block">
+                <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="fas fa-user d-inline-block align-middle" style="color: #EB1C24;"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                  <li class=" border-bottom border-1 border-light-subtle  px-3 ">
+                    <span>Logged in as </span>
+                    <span class="fw-semibold "><%= user.account.user_name %></span>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/account/login">
+                      <i class="fas fa-gear d-inline-block align-middle pe-2 py-2"></i>
+                      <span>View Profile Page</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/account/logout">
+                      <i class="fas fa-right-from-bracket d-inline-block align-middle pe-2 py-2"></i>
+                      <span>Logout</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            <% } else { %>
               <li class="nav-item dropdown ps-5 ms-5  d-inline-block align-middle fixed-left d-none d-lg-block">
                 <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -72,7 +99,9 @@
                       <span>Create Account</span>
                     </a></li>
                 </ul>
-              </li>
+            <% } %>
+            </li>
+              
 
               <%# More and login sidebar content %>
                 <div class="d-lg-none px-0">
@@ -87,19 +116,37 @@
                     <a class="nav-link mx-2" href="#">News</a>
                   </li>
 
-                  <div class="border-top border-white my-2"></div>
-                  <li class="nav-item ">
-                    <a class="nav-link mx-2" href="/account/login">
-                      <i class="fas fa-arrow-right-to-bracket d-inline-block align-middle pe-2 py-2"></i>
-                      <span>Sign in</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="/account/createAccount">
-                      <i class="fas fa-user-plus pe-2"></i>
-                      <span>Create Account</span>
-                    </a>
-                  </li>
+                  <% if (loggedIn) { %>
+                    <div class="border-top border-white my-2"></div>
+                    <li class="nav-item ">
+                      <a class="nav-link mx-2" href="#">
+                        <i class="fas fa-gear d-inline-block align-middle pe-2 py-2"></i>
+                        <span>View Profile Page</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link mx-2" href="/account/logout">
+                        <i class="fas fa-right-from-bracket pe-2"></i>
+                        <span>Logout</span>
+                      </a>
+                    </li>
+                   
+                  <% } else { %>
+                    <div class="border-top border-white my-2"></div>
+                    <li class="nav-item ">
+                      <a class="nav-link mx-2" href="/account/login">
+                        <i class="fas fa-arrow-right-to-bracket d-inline-block align-middle pe-2 py-2"></i>
+                        <span>Sign in</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link mx-2" href="/account/createAccount">
+                        <i class="fas fa-user-plus pe-2"></i>
+                        <span>Create Account</span>
+                      </a>
+                    </li>
+                  <% } %>
+                  
 
                 </div>
         </ul>
