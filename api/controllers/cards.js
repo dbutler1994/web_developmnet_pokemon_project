@@ -4,8 +4,19 @@ const cardFunctions = require('../js/cardFunctions');
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
+
+    console.log(req.query);
+
+    // get pagination details from the request
+    // use parseInt to make sure the values are treated as numbers
+    const page = parseInt(req.query.page) || 1;
+    const cardsPerPage = parseInt(req.query.cardsPerPage) || 30;
+    
+    // calculate the start index for the query
+    const startIndex = (page - 1) * cardsPerPage;
+
     // call the model function to retrieve all cards
-    const result = await cardsModel.getAllCards();
+    const result = await cardsModel.getAllCards(startIndex, cardsPerPage);
 
     // format the response and add necessary objects such as rarity and set info
     const jsonResponse= result.map(card => {

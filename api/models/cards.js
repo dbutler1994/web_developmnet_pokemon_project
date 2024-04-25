@@ -2,12 +2,12 @@
 const dbPool = require('../db/connect');
 
 // Get all cards from the database
-const getAllCards = async () => {
+const getAllCards = async (startIndex, cardsPerPage) => {
 
-    let sql = 'SELECT * FROM view_CardGridInformation';
+    let sql = 'SELECT * FROM view_CardGridInformation LIMIT ?, ?';
 
     try {
-        const result = await dbPool.query(sql);
+        const result = await dbPool.query(sql, [startIndex, cardsPerPage]);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
