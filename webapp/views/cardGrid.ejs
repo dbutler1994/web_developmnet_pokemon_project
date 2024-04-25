@@ -18,6 +18,10 @@
         </header>
 
         <main>
+            <div class="container ">
+            
+                <%- include('./modules/cardOrderBar.ejs') %>        
+   
             <%# Populate page with cards %>
                 <div class="container" id="cardContainer">
                     <div class="row row-cols-2  row-cols-sm-4 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 ">
@@ -53,3 +57,18 @@
 </body>
 
 </html>
+
+<script>
+    const pageSizeSelect = document.getElementById('pageSizeSelect');
+
+    pageSizeSelect.addEventListener('change', () => {
+        const selectedPageSize = pageSizeSelect.value;
+        updateUrlQueryParam('cardsPerPage', selectedPageSize);
+    });
+
+    const updateUrlQueryParam = (key, value) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value);
+        window.location.href = url.toString();
+    };
+</script>

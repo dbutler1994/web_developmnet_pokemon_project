@@ -34,6 +34,13 @@ footer{
     background-color: var(--colourMatchBg);
 }
 
+ /***** hide form control outline on focus *****/ 
+.noFocusOutline:focus {
+    outline: none;
+    box-shadow: none;
+}
+  
+
 .actionBtn, .actionBtn:hover{
 background-color: var(--colourAction);
 color: white;
@@ -128,3 +135,12 @@ border-radius: 6px;
     font-weight: bold ;
 }
 /*End of form styles*/
+
+
+/*Start of select box styles*/
+@media (min-width: 768px) {
+    .selectBox{
+      border: transparent;
+    }
+  }
+/*End of select box styles*/
