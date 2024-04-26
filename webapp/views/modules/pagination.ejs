@@ -1,0 +1,45 @@
+<%# Boilerplate pagination from bootstrap, modified to dynamically populate pages %>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+    
+    <%# logic dealing with previous option. disable when current page is 1 %>
+    <li class="page-item  <%= parseInt(page)  === 1 ? 'disabled ' : ''%>">
+        <span class="page-link " onclick= "updatePageQueryParam('page', '<%= page -1 %>' )" >
+            Previous
+       </span>
+      </li>
+
+      <%# generate total number of pages that can be displayed %>
+      <% for( let index = 1; index <= Math.ceil(totalCards / pageSize); index++) { %>
+        <li class="page-item">
+            <span class="page-link" onclick= "updatePageQueryParam('page', '<%= index %>' )" >
+                 <%= index %>
+            </span>
+        </li>
+      <% } %>
+      
+      <%# logic dealing with next option. disable when current page is at the maximum number of pages %>
+      <li class="page-item <%= parseInt(page) ===  Math.ceil(totalCards / pageSize) ? 'disabled ' : ''%>">
+        <span class="page-link " onclick= "updatePageQueryParam('page', parseInt('<%= page  %>') +1 )" >
+            Next
+       </span>
+      </li>
+    </ul>
+  </nav>
+
+
+<script>
+    // function to update the page query parameter in the url
+    const updatePageQueryParam = (key, value) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value);
+        
+        // send updated url to browser
+        window.location.href = url.toString();
+    };
+
+    // protect against invlid values in the cards per page query parameter i.e. user manually entering a number
+    if ('<%= page %>' > Math.ceil('<%= totalCards  / pageSize %>')) {
+        updatePageQueryParam('page', 1); // update url with page value 1
+    }
+</script>

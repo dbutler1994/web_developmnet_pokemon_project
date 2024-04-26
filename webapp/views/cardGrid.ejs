@@ -14,7 +14,7 @@
 <body class="d-flex flex-column">
     <%# Include header navbar %>
         <header>
-            <%- include('./modules/navbar.ejs') %>
+            <%- include('./modules/navbar.ejs', {totalCards: totalCards}) %>
         </header>
 
         <main>
@@ -32,6 +32,10 @@
                             <% }) %>
                     </div>
                 </div>
+
+                <%# Include pagination %>
+                <%- include('./modules/pagination.ejs', {totalCards : totalCards, pageSize: pageSize, page: page}) %>
+            </div>
 
                 <%# Bring in modals required for specific page functionality %>
                     <%- include('./modules/cardNoteModal.ejs')%>
@@ -58,17 +62,4 @@
 
 </html>
 
-<script>
-    const pageSizeSelect = document.getElementById('pageSizeSelect');
 
-    pageSizeSelect.addEventListener('change', () => {
-        const selectedPageSize = pageSizeSelect.value;
-        updateUrlQueryParam('cardsPerPage', selectedPageSize);
-    });
-
-    const updateUrlQueryParam = (key, value) => {
-        const url = new URL(window.location.href);
-        url.searchParams.set(key, value);
-        window.location.href = url.toString();
-    };
-</script>
