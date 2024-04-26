@@ -12,16 +12,40 @@
       <div class="offcanvas-body" >
         <ul class="navbar-nav">
 
+          <%# sort by %>
+          <li class="d-flex align-items-center text-nowrap ">
+            <label class="align-items-center align-content-center text-center  fw-semibold pb-1 " for="sortBySelect">Sort by</label>
+          </li>
 
+            <select class="form-select bg-transparent noFocusOutline selectBox text-primary w-auto  pb-md-1 pt-md-0 me-3 mb-4 mb-md-0  " id="sortBySelect">
+              <option value="card_number_asc">Card Number</option>
+              <option value="name_asc">Name (A-Z)</option>
+              <option value="name_desc">Name (Z-A)</option>
+            </select>
+
+          
+          <%# release date sort %>
+          <li class="d-flex align-items-center text-nowrap ">
+            <label class="align-items-center align-content-center text-center  fw-semibold pb-1 " for="releaseDateSelect">Release Date</label>
+          </li>
+
+            <select class="form-select bg-transparent noFocusOutline selectBox text-primary pb-md-1 pt-md-0 me-3 mb-4 mb-md-0  w-auto" id="releaseDateSelect">
+              <option value="old_first">Old to New</option>
+              <option value="new_first">New to Old</option>
+            </select>
+
+          <%# cards per page %>
           <li class="d-flex align-items-center">
             <label class="align-items-center align-content-center text-center  fw-semibold pb-1" for="pageSizeSelect">Show</label>
           </li>
 
-            <select class="form-select bg-transparent noFocusOutline selectBox text-primary pb-md-1 pt-md-0" id="pageSizeSelect">
-              <option class="p-3 m-3" value="30">30 cards</option>
-              <option class="" value="60">60 cards</option>
-              <option class="" value="120">120 cards</option>
+            <select class="form-select bg-transparent noFocusOutline selectBox text-primary w-auto  pb-md-1 pt-md-0 me-3 mb-4 mb-md-0  " id="pageSizeSelect">
+              <option value="30">30 cards</option>
+              <option value="60">60 cards</option>
+              <option value="120">120 cards</option>
             </select>
+
+            
 
         </ul>
       </div>
@@ -38,23 +62,21 @@
 
 
 <script>
-  // get the select box for selecting the page size 
-  const pageSizeSelect = document.getElementById('pageSizeSelect');
 
   // function to update the query parameter list in the url
-  const updatePageSizeQueryParam = (queryParamKey, queryParamValue) => {
+  const updateQueryParam = (queryParamKey, queryParamValue) => {
       const url = new URL(window.location.href); // get current url
 
-      const totalCards = parseInt('<%= totalCards %>'); // get total number of cards from ejs template
-      const currentPage = url.searchParams.get('page') || 1; // get current page from url query parameter or default to 1  
-      const totalPages = Math.ceil(totalCards / queryParamValue); // calculate total number of pages based on new page size
+      if(queryParamValue === 'cardsPerPage'){
+        const totalCards = parseInt('<%= totalCards %>'); // get total number of cards from ejs template
+        const currentPage = url.searchParams.get('page') || 1; // get current page from url query parameter or default to 1  
+        const totalPages = Math.ceil(totalCards / queryParamValue); // calculate total number of pages based on new page size
 
-      
-      // protect against cases where the current page is greater than the total number of pages for the selected page size
-      if (currentPage > totalPages) {
-        url.searchParams.set('page',1); 
+        // protect against cases where the current page is greater than the total number of pages for the selected page size
+        if (currentPage > totalPages) {
+          url.searchParams.set('page',1); 
+        }
       }
-      
 
       url.searchParams.set(queryParamKey, queryParamValue); // add / update query parameter
       window.location.href = url.toString(); // update url in browser
@@ -71,7 +93,7 @@
   // add event listener to select box to update page size query parameter in the url when a new value is selected
   pageSizeSelect.addEventListener('change', () => {
       const selectedPageSize = pageSizeSelect.value;
-      updatePageSizeQueryParam('cardsPerPage', selectedPageSize);
+      updateQueryParam('cardsPerPage', selectedPageSize);
   });
 
   // protect against invlid values in the cards per page query parameter
@@ -79,9 +101,40 @@
 
       // if invalid for cards per page is found in the url we update the url to use the first value in the pageSizeSelect element 
       const defaultPageSize = document.querySelector('#pageSizeSelect option:first-child').value; // get first element in page size select box
-      updatePageSizeQueryParam('cardsPerPage', defaultPageSize); // update url with default value
+      updateQueryParam('cardsPerPage', defaultPageSize); // update url with default value
   }
 
-  
 
+  // refactored and generalised the code that existed for handling the cards per page select box into a function so that it could be used 
+  // by any select box
+  // adds event listener to box on change and protects against invalid values in the query parameter
+  const selectBoxOperations = (selectBoxId, queryParamKey) => {
+    const selectBox = document.getElementById(selectBoxId);
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParamValue = urlParams.get(queryParamKey);
+
+    // make sure that the select box is set to reflect the value of specific query parameter in the url
+    if (queryParamValue) {
+        selectBox.value = queryParamValue;
+    }
+
+    // add event listener to select box to update specific query parameter in the url when a new value is selected
+    selectBox.addEventListener('change', () => {
+        const selectedValue = selectBox.value;
+        updateQueryParam(queryParamKey, selectedValue);
+    });
+
+    // protect against invlid values being entered in the specific query parameter
+    // if invalid value is found in the url we update the url to use the first value in the select box
+    if (queryParamValue && !document.querySelector(`#${selectBoxId} option[value="${queryParamValue}"]`)) {
+        const defaultValue = document.querySelector(`#${selectBoxId} option:first-child`).value;
+        updateQueryParam(queryParamKey, defaultValue);
+    }
+};
+
+  // call the selectBoxOperations function for each select box
+  selectBoxOperations('pageSizeSelect', 'cardsPerPage');
+  selectBoxOperations('sortBySelect', 'sortBy');
+  selectBoxOperations('releaseDateSelect', 'releaseDateSort');
+  
 </script>
