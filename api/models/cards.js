@@ -4,11 +4,18 @@ const dbPool = require('../db/connect');
 // Get all cards from the database
 const getAllCards = async (startIndex, cardsPerPage) => {
 
-    let sql = 'SELECT * FROM view_CardGridInformation LIMIT ?, ?';
+    let cardsSQL = 'SELECT * FROM view_CardGridInformation LIMIT ?, ?';
+    let countSQL = 'SELECT COUNT(*) as totalCards FROM view_CardGridInformation';
 
     try {
-        const result = await dbPool.query(sql, [startIndex, cardsPerPage]);
-        return result[0];
+        // get the total number of cards and all cards
+        const cardsResult = await dbPool.query(cardsSQL, [startIndex, cardsPerPage]);
+        const countResult = await dbPool.query(countSQL);
+        
+        return{
+            totalCards: countResult[0][0],
+            cards: cardsResult[0]
+        } ;
     } catch (error) {
         throw new Error(error.message);
     }

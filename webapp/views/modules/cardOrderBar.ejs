@@ -49,11 +49,7 @@
       const currentPage = url.searchParams.get('page') || 1; // get current page from url query parameter or default to 1  
       const totalPages = Math.ceil(totalCards / queryParamValue); // calculate total number of pages based on new page size
 
-
-      console.log(currentPage, totalPages);
-      console.log(totalCards, queryParamValue);
-      console.log(currentPage > totalPages);
-
+      
       // protect against cases where the current page is greater than the total number of pages for the selected page size
       if (currentPage > totalPages) {
         url.searchParams.set('page',1); 
