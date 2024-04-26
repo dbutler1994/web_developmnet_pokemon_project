@@ -83,28 +83,6 @@
   };
 
 
-  // make sure that the select box is set to reflect the value of cardPerPage query parameter in the url
-  const urlParams = new URLSearchParams(window.location.search);
-  const cardsPerPage = urlParams.get('cardsPerPage');
-  if (cardsPerPage) {
-      pageSizeSelect.value = cardsPerPage;
-  }
-
-  // add event listener to select box to update page size query parameter in the url when a new value is selected
-  pageSizeSelect.addEventListener('change', () => {
-      const selectedPageSize = pageSizeSelect.value;
-      updateQueryParam('cardsPerPage', selectedPageSize);
-  });
-
-  // protect against invlid values in the cards per page query parameter
-  if (cardsPerPage && !document.querySelector(`#pageSizeSelect option[value="${cardsPerPage}"]`)) {
-
-      // if invalid for cards per page is found in the url we update the url to use the first value in the pageSizeSelect element 
-      const defaultPageSize = document.querySelector('#pageSizeSelect option:first-child').value; // get first element in page size select box
-      updateQueryParam('cardsPerPage', defaultPageSize); // update url with default value
-  }
-
-
   // refactored and generalised the code that existed for handling the cards per page select box into a function so that it could be used 
   // by any select box
   // adds event listener to box on change and protects against invalid values in the query parameter

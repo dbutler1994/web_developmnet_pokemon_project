@@ -4,18 +4,43 @@
     
     <%# logic dealing with previous option. disable when current page is 1 %>
     <li class="page-item  <%= parseInt(page)  === 1 ? 'disabled ' : ''%>">
-        <span class="page-link " onclick= "updatePageQueryParam('page', '<%= page -1 %>' )" >
+        <span class="page-link me-1" onclick= "updatePageQueryParam('page', '<%= page -1 %>' )" >
             Previous
        </span>
       </li>
 
-      <%# generate total number of pages that can be displayed %>
-      <% for( let index = 1; index <= Math.ceil(totalCards / pageSize); index++) { %>
+      <%# generate start and end parameters for pages (limiting to 7 pages being able to be chosen at any one time) %>
+      <% let startLoop = Math.max(1, (page -3)) %>
+      <% let totalPages = Math.ceil(totalCards / pageSize) %>
+      <% let endLoop = Math.min(totalPages, (startLoop + 6)) %>
+
+      <%# add quicklink to first page if needed %>
+      <% if (startLoop > 1) { %>
         <li class="page-item">
-            <span class="page-link" onclick= "updatePageQueryParam('page', '<%= index %>' )" >
+          <span class="page-link me-1" onclick= "updatePageQueryParam('page', 1)" >
+              1
+          </span>
+        </li>
+      <span class="px-3 align-bottom ">  ...  </span>
+      <% } %>
+
+      <%# generate total number of pages that can be displayed %>
+      <% for( let index = startLoop; index <= endLoop; index++) { %>
+        <li class="page-item">
+            <span class="page-link me-1 rounded-2  " onclick= "updatePageQueryParam('page', '<%= index %>' )" >
                  <%= index %>
             </span>
         </li>
+      <% } %>
+
+      <%# add quicklink to last page %>
+      <% if (totalPages > endLoop) { %>
+        <span class="px-3 align-bottom me-1">  ...  </span>
+        <li class="page-item">
+          <span class="page-link" onclick= "updatePageQueryParam('page', '<%= totalPages %>')" >
+               <%= totalPages %>
+          </span>
+      </li>
       <% } %>
       
       <%# logic dealing with next option. disable when current page is at the maximum number of pages %>

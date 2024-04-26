@@ -20,6 +20,9 @@
         <main>
             <div class="container ">
             
+                <p class="fw-semibold border-1 border-bottom border-dark-subtle mx-2 pb-2 mb-1">
+                    <%= Math.floor((page -1) * pageSize) +1 %> - <%= Math.min(page * pageSize, totalCards) %> of <%= totalCards %> cards
+                </p>
                 <%- include('./modules/cardOrderBar.ejs') %>        
    
             <%# Populate page with cards %>
