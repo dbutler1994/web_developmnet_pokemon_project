@@ -79,7 +79,7 @@
 
       // if invalid for cards per page is found in the url we update the url to use the first value in the pageSizeSelect element 
       const defaultPageSize = document.querySelector('#pageSizeSelect option:first-child').value; // get first element in page size select box
-      updateUrlQueryParam('cardsPerPage', defaultPageSize); // update url with default value
+      updatePageSizeQueryParam('cardsPerPage', defaultPageSize); // update url with default value
   }
 
   
