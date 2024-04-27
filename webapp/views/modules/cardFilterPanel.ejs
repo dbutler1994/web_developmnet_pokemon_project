@@ -1,0 +1,371 @@
+<div id="filterPanel" class="offcanvas offcanvas-start w-100" tabindex="-1">
+
+    <%# header content %>
+        <div class="bgBoldColour">
+            <div class="offcanvas-header container filterContainer">
+                <h5 class="offcanvas-title">Filter Options</h5>
+            </div>
+        </div>
+
+
+        <div class="offcanvas-body container filterContainer">
+            <%# general filter categories %>
+                <div class="accordion mb-4" id="generalFilterAccordion">
+
+                    <div>
+                        <div class="mb-3">
+                            <i class="fas fa-filter me-2"></i>
+                            <span class="fw-bold ">General</span>
+                        </div>
+
+                        <%# Card Type %>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filterCardType">
+                                    <button class="accordion-button bgColour" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#typeCollapse" aria-expanded="true"
+                                        aria-controls="typeCollapse">
+                                        Card Type
+                                    </button>
+                                </h2>
+                                <div id="typeCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="typeHeading">
+                                    <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                        <!-- Type filter options (checkboxes, select boxes, etc.) -->
+                                        <label class="mb-1"><input name="cardType" type="checkbox" class="me-2"
+                                                value="pokemon"> Pokémon</label><br>
+                                        <label class="mb-1"><input name="cardType" type="checkbox" class="me-2"
+                                                value="trainer"> Trainer</label><br>
+                                        <!-- Add more filter options as needed -->
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                    <%# Energy Type %>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="filterEnergyType">
+                                <button class="accordion-button bgColour" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#energyCollapse" aria-expanded="true"
+                                    aria-controls="energyCollapse">
+                                    Energy Type
+                                </button>
+                            </h2>
+                            <div id="energyCollapse" class="accordion-collapse collapse"
+                                aria-labelledby="energyHeading">
+                                <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                    <!-- Energy filter options (checkboxes, select boxes, etc.) -->
+                                    <label class="mb-1"><input name="energyType" type="checkbox" class="me-2"
+                                            value="electric"> Electric</label><br>
+                                    <label class="mb-1"><input name="energyType" type="checkbox" class="me-2"
+                                            value="fire"> Fire</label><br>
+                                    <!-- Add more filter options as needed -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <%# Rarity %>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="filterRarity">
+                                    <button class="accordion-button bgColour" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#rarityCollapse" aria-expanded="true"
+                                        aria-controls="rarityCollapse">
+                                        Rarity
+                                    </button>
+                                </h2>
+                                <div id="rarityCollapse" class="accordion-collapse collapse"
+                                    aria-labelledby="rarityHeading">
+                                    <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                        <!-- Energy filter options (checkboxes, select boxes, etc.) -->
+                                        <label class="mb-1"><input name="rarity" type="checkbox" class="me-2"
+                                                value="electric">Electric</label><br>
+                                        <label class="mb-1"><input name="rarity" type="checkbox" class="me-2"
+                                                value="fire">Fire</label><br>
+                                        <!-- Add more filter options as needed -->
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+
+
+                <%# card text filter categories %>
+                    <div class="accordion mb-4" id="cardTextFilterAccordion">
+
+                        <div>
+                            <div class="mb-3">
+                                <i class="fas fa-file-lines me-2"></i>
+                                <span class="fw-bold ">Card Text</span>
+                            </div>
+
+                            <%# Card Name %>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="filterCardName">
+                                        <button class="accordion-button bgColour" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#nameCollapse"
+                                            aria-expanded="true" aria-controls="nameCollapse">
+                                            Card Name
+                                        </button>
+                                    </h2>
+                                    <div id="nameCollapse" class="accordion-collapse collapse"
+                                        aria-labelledby="nameHeading">
+                                        <div class="accordion-body">
+                                            <input type="text" class="form-control" name="cardName"
+                                                placeholder="Enter card name.....">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <%# Evolution Stage %>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="filterEvolutionStage">
+                                            <button class="accordion-button bgColour" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#evolutionStageCollapse"
+                                                aria-expanded="true" aria-controls="evolutionStageCollapse">
+                                                Evolution Stage
+                                            </button>
+                                        </h2>
+                                        <div id="evolutionStageCollapse" class="accordion-collapse collapse"
+                                            aria-labelledby="evolutionStageHeading">
+                                            <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                                <!-- Energy filter options (checkboxes, select boxes, etc.) -->
+                                                <label class="mb-1"><input name="evolutionStage" type="checkbox"
+                                                        class="me-2" value="electric">Basic</label><br>
+                                                <label class="mb-1"><input name="evolutionStage" type="checkbox"
+                                                        class="me-2" value="fire">Stage 1</label><br>
+                                                <!-- Add more filter options as needed -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <%# Illustrator %>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="filterIllustrator">
+                                                <button class="accordion-button bgColour" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#illustratorCollapse"
+                                                    aria-expanded="true" aria-controls="illustratorCollapse">
+                                                    Illustrator
+                                                </button>
+                                            </h2>
+                                            <div id="illustratorCollapse" class="accordion-collapse collapse"
+                                                aria-labelledby="illustratorHeading">
+                                                <div class="accordion-body">
+                                                    <input type="text" class="form-control" name="illustrator"
+                                                        id="illustratorFilter"
+                                                        placeholder="Enter card illustrator.....">
+                                                </div>
+                                            </div>
+                                        </div>
+                        </div>
+
+                    </div>
+
+
+                    <%# card status filters %>
+                        <div class="accordion mb-4" id="cardStatusAccordion">
+
+                            <div>
+                                <div class="mb-3">
+                                    <i class="fas fa-temperature-half me-2"></i>
+                                    <span class="fw-bold ">Status</span>
+                                </div>
+
+                            </div>
+
+
+                            <%# Weakness %>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="filterWeakness">
+                                        <button class="accordion-button bgColour" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#weaknessCollapse"
+                                            aria-expanded="true" aria-controls="weaknessCollapse">
+                                            Weakness
+                                        </button>
+                                    </h2>
+                                    <div id="weaknessCollapse" class="accordion-collapse collapse"
+                                        aria-labelledby="weaknessHeading">
+                                        <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                            <!-- Energy filter options (checkboxes, select boxes, etc.) -->
+                                            <label class="mb-1"><input name="weakness" type="checkbox" class="me-2"
+                                                    value=1>Basic</label><br>
+                                            <label class="mb-1"><input name="weakness" type="checkbox" class="me-2"
+                                                    value=2>Stage 1</label><br>
+                                            <!-- Add more filter options as needed -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <%# Resistance %>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="filterResistance">
+                                            <button class="accordion-button bgColour" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#resistanceCollapse"
+                                                aria-expanded="true" aria-controls="resistanceCollapse">
+                                                Resistance
+                                            </button>
+                                        </h2>
+                                        <div id="resistanceCollapse" class="accordion-collapse collapse"
+                                            aria-labelledby="resistanceHeading">
+                                            <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                                <!-- Energy filter options (checkboxes, select boxes, etc.) -->
+                                                <label class="mb-1"><input name="resistance" type="checkbox"
+                                                        class="me-2" value="electric">Basic</label><br>
+                                                <label class="mb-1"><input name="resistance" type="checkbox"
+                                                        class="me-2" value="fire">Stage 1</label><br>
+                                                <!-- Add more filter options as needed -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                        </div>
+
+        </div>
+
+
+
+
+
+        <%# buttons to clear filters, or show cards with any filters added %>
+            <div class="border-1 border-top  border-dark-subtle">
+                <div class="offcanvas-footer d-flex  justify-content-end container filterContainer pt-2">
+                    <button class="btn  negativeActionBtn m-2 me-3" onclick="clearFilters()">Clear Filters</button>
+                    <button class="btn  actionBtn m-2 me-3" onclick="applyFilters()">Show Cards</button>
+                </div>
+            </div>
+
+
+
+</div>
+
+<div class="container mb-4 d-flex ps-0">
+
+    <form class="d-flex col-lg-4 " role="search">
+        <input class="form-control me-2" name="cardName" type="text" placeholder="Search card name....."
+            aria-label="Search">
+        <button class="btn actionBtn" type="submit">Search</button>
+    </form>
+
+    <button class="btn actionBtn border-0 ms-1" id="filterButton" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#filterPanel">
+        <i class="fas fa-filter"></i>
+        <span id="filterOpenSpan">Filter</span>
+    </button>
+
+    <button class="btn actionBtn border-0 ms-1" id="clearFilterOptional" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#filterPanel">
+        <i class="fas fa-circle-xmark"></i>
+        <span >Clear filters </span>
+    </button>
+
+</div>
+
+
+<script>
+
+    // Function to update checkboxes based on query parameters
+    const updateFilterElementsFromQuery = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+        const searchBoxes = document.querySelectorAll('input[type="text"]');
+
+        // update checkboxes based on query parameters
+        checkBoxes.forEach(checkbox => {
+            const paramName = checkbox.name;
+            const paramValue = checkbox.value;
+            const isChecked = urlParams.get(paramName) === paramValue;
+            console.log(isChecked);
+
+            checkbox.checked = isChecked;
+        });
+
+        // update search boxes based on query parameters
+        searchBoxes.forEach(searchBox => {
+            const paramName = searchBox.name;
+            const paramValue = urlParams.get(paramName);
+
+            searchBox.value = paramValue;
+        });
+    };
+
+    // function to update the text and visibility of filter buttons based on if there are query parameters
+    const updateButtonText = () => {
+        const url = new URL(window.location.href);
+        const queryParamSize = url.searchParams.size;
+        const filterOpenSpan = document.getElementById('filterOpenSpan');
+        const clearAllOptional = document.getElementById('clearFilterOptional');
+
+        //console.log(url.searchParams.size);
+        //console.log(clearAllOptional.hidden);
+
+        // update the button text and visibility based on the number of query parameters
+        if(queryParamSize > 0){
+            clearAllOptional.hidden = false;
+            filterOpenSpan.innerText = 'Filter ('  + queryParamSize + ')';
+        } else {
+            clearAllOptional.hidden = true;
+            filterOpenSpan.innerText = 'Filter'
+        }
+    };
+
+    // update checkboxes based on query parameters when the page loads
+    window.addEventListener('load', updateFilterElementsFromQuery);
+    window.addEventListener('load', updateButtonText);
+
+
+    // Function to update the query parameter list in the URL
+    const updateFilterQueryParam = (queryParamKey, queryParamValue) => {
+        const url = new URL(window.location.href);
+
+        // delete key if param value is empty otherwise update or set the value
+        if (queryParamValue === '') {
+            url.searchParams.delete(queryParamKey);
+        } else {
+            url.searchParams.set(queryParamKey, queryParamValue);
+        }
+
+        // replace %2C with commas in the URL
+        let updatedUrl = url.toString().replace(/%2C/g, ',');
+
+        // update the URL without reloading the page
+        window.history.replaceState({}, '', updatedUrl);
+
+        // update the buttons based on the new query parameters
+        updateButtonText();
+    };
+
+    // Function to handle changes for checkboxes and search boxes
+    const handleFilterChange = (element) => {
+
+        // get the name, type and value of the element that has changed
+        const name = element.name;
+        const type = element.type;
+        const value  = element.value;
+
+        console.log(name, type, value);
+
+        // check the type and act appropriately
+        if (type === 'checkbox') {
+            
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`); // get all checked checkboxes with the same name as the box that has just been clicked
+            let selectedOptions = Array.from(checkboxes).map(checkbox => checkbox.value) // create an array of the values of the checked checkboxes
+            selectedOptions = selectedOptions.join(','); // join the array into a string with commas between each value
+            updateFilterQueryParam(name, selectedOptions); 
+
+        } else if (type === 'text') {
+            updateFilterQueryParam(name, value);
+        }
+    };
+
+    // get all checkboxes and search boxes and add event listeners to each which calls the handleFilterChange function on change events
+    const filterElements = document.querySelectorAll('input[type="checkbox"], input[type="text"]');
+    filterElements.forEach(element => {
+        element.addEventListener('change', () => {
+            handleFilterChange(element);
+        });
+    });
+
+
+
+    
+
+</script>

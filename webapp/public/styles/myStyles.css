@@ -80,7 +80,7 @@ border-radius: 6px;
     transform: scale(1.1);
 }
 
-.sidebar{
+.sidebar, .bgBoldColour{
     background-color: var(--colourBold);
 }
 
@@ -144,3 +144,15 @@ border-radius: 6px;
     }
   }
 /*End of select box styles*/
+
+/*Start of filter styles*/
+@media screen and (min-width: 840px){
+    .filterContainer{
+        width: 820px;
+    }
+}
+
+.accordion-item{
+    margin-bottom: 8px;
+}
+/*End of filter styles*/
