@@ -1,5 +1,6 @@
 const axios = require('axios');
 const filterController = require('./filters');
+const filterDefinitions = require('../functions/filterKeys');
 
 // get all cards from the API
 const getAllCards = async (req, res) => {
@@ -18,13 +19,16 @@ const getAllCards = async (req, res) => {
         let pageSize = res.req.query.cardsPerPage || 30;
         let page = res.req.query.page || 1;
 
+        //console.log(filterData);
+
         // render the card grid view
         res.render('cardGrid', { 
             cards: cardData, 
             totalCards: cardCount, 
             pageSize: pageSize, 
             page: page,
-            filters : filterData
+            filters : filterData,
+            filterKeys: filterDefinitions.filterKeys
         });
 
 
@@ -42,7 +46,10 @@ const getCardById = async (req, res, next) =>{
         let endPoint = `http://localhost:4000/cards/${cardId}`;
         const response = await axios.get(endPoint);
         const cardData = response.data;
-        res.render('singleCard', { card: cardData});
+        res.render('singleCard', {
+             card: cardData,
+             filterDefinitions: filterDefinitions
+        });
     } catch (error) {
         next(error.response.statuscode);
     }    

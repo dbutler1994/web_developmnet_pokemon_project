@@ -33,7 +33,7 @@
                                         <% filters.cardCategories.forEach(category => { %>
                                             <div class="my-1 d-flex align-items-center">
                                                 <label class="mb-0 mx-0">
-                                                    <input name="filter_categoryId" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
+                                                    <input name=<%= filterKeys.categoryId %> type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
                                                 </label><br>
                                             </div>
                                         <% }) %>
@@ -58,7 +58,7 @@
                                         <div class="my-1 d-flex align-items-center">
                                             <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                             <label class="mb-0 mx-0">
-                                                <input name="filter_energyTypeId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.name %>
+                                                <input name= <%= filterKeys.energyTypeId %> type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.name %>
                                             </label><br>
                                         </div>
                                     <% }) %>
@@ -82,7 +82,7 @@
                                             <div class="my-1 d-flex align-items-center">
                                                 <img class="img-fluid me-1" src=<%= rarity.icon_url %> alt="">
                                                 <label class="mb-0 mx-0">
-                                                    <input name="filter_rarityId" type="checkbox"class="mx-2 checkboxInput" value=<%= rarity.id %> ><%= rarity.name %>
+                                                    <input name=<%= filterKeys.rarityId %> type="checkbox"class="mx-2 checkboxInput" value=<%= rarity.id %> ><%= rarity.name %>
                                                 </label><br>
                                             </div>
                                         <% }) %>
@@ -114,7 +114,7 @@
                                     <div id="nameCollapse" class="accordion-collapse collapse"
                                         aria-labelledby="nameHeading">
                                         <div class="accordion-body">
-                                            <input type="text" class="form-control" name="filter_name"
+                                            <input type="text" class="form-control" name= <%= filterKeys.name %>
                                                 placeholder="Enter card name.....">
                                         </div>
                                     </div>
@@ -135,7 +135,7 @@
                                                 <% filters.evolutionStages.forEach(evolution => { %>
                                                     <div class="my-1 d-flex align-items-center">
                                                         <label class="mb-0 mx-0">
-                                                            <input name="filter_evolutionStageId" type="checkbox"class="mx-2 checkboxInput" value=<%= evolution.id %> ><%= evolution.name %>
+                                                            <input name= <%= filterKeys.evolutionStageId %> type="checkbox"class="mx-2 checkboxInput" value=<%= evolution.id %> ><%= evolution.name %>
                                                         </label><br>
                                                     </div>
                                                 
@@ -157,7 +157,7 @@
                                             <div id="illustratorCollapse" class="accordion-collapse collapse"
                                                 aria-labelledby="illustratorHeading">
                                                 <div class="accordion-body">
-                                                    <input type="text" class="form-control" name="filter_illustrator"
+                                                    <input type="text" class="form-control" name= <%= filterKeys.illustrator %>
                                                         id="illustratorFilter"
                                                         placeholder="Enter card illustrator.....">
                                                 </div>
@@ -196,7 +196,7 @@
                                                 <div class="my-1 d-flex align-items-center">
                                                     <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                                     <label class="mb-0 mx-0">
-                                                        <input name="filter_weaknessId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.id %>
+                                                        <input name= <%= filterKeys.weaknessId %> type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> > <%= energyType.name %>
                                                     </label><br>
                                                 </div>
                                             <% }) %>
@@ -220,7 +220,7 @@
                                                     <div class="my-1 d-flex align-items-center">
                                                         <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                                         <label class="mb-0 mx-0">
-                                                            <input name="filter_resistanceId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.energy_type_id %> ><%= energyType.name %>
+                                                            <input name= <%= filterKeys.resistanceId %> type="checkbox" class="mx-2 checkboxInput" value=<%= energyType.id %> > <%= energyType.name %>
                                                         </label><br>
                                                     </div>
                                                 <% }) %>
@@ -353,6 +353,8 @@
         const name = element.name;
         const type = element.type;
         const value  = element.value;
+
+        console.log(name, type, value);
 
         //console.log(name, type, value);
 
