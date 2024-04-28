@@ -33,7 +33,7 @@
                                         <% filters.cardCategories.forEach(category => { %>
                                             <div class="my-1 d-flex align-items-center">
                                                 <label class="mb-0 mx-0">
-                                                    <input name="cardType" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
+                                                    <input name="filter_categoryId" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
                                                 </label><br>
                                             </div>
                                         <% }) %>
@@ -58,7 +58,7 @@
                                         <div class="my-1 d-flex align-items-center">
                                             <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                             <label class="mb-0 mx-0">
-                                                <input name="energyType" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.name %>
+                                                <input name="filter_energyTypeId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.name %>
                                             </label><br>
                                         </div>
                                     <% }) %>
@@ -82,7 +82,7 @@
                                             <div class="my-1 d-flex align-items-center">
                                                 <img class="img-fluid me-1" src=<%= rarity.icon_url %> alt="">
                                                 <label class="mb-0 mx-0">
-                                                    <input name="rarity" type="checkbox"class="mx-2 checkboxInput" value=<%= rarity.id %> ><%= rarity.name %>
+                                                    <input name="filter_rarityId" type="checkbox"class="mx-2 checkboxInput" value=<%= rarity.id %> ><%= rarity.name %>
                                                 </label><br>
                                             </div>
                                         <% }) %>
@@ -114,7 +114,7 @@
                                     <div id="nameCollapse" class="accordion-collapse collapse"
                                         aria-labelledby="nameHeading">
                                         <div class="accordion-body">
-                                            <input type="text" class="form-control" name="cardName"
+                                            <input type="text" class="form-control" name="filter_name"
                                                 placeholder="Enter card name.....">
                                         </div>
                                     </div>
@@ -131,13 +131,16 @@
                                         </h2>
                                         <div id="evolutionStageCollapse" class="accordion-collapse collapse"
                                             aria-labelledby="evolutionStageHeading">
-                                            <% filters.cardCategories.forEach(category => { %>
-                                                <div class="my-1 d-flex align-items-center">
-                                                    <label class="mb-0 mx-0">
-                                                        <input name="cardType" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
-                                                    </label><br>
-                                                </div>
-                                            <% }) %>
+                                            <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                                                <% filters.evolutionStages.forEach(evolution => { %>
+                                                    <div class="my-1 d-flex align-items-center">
+                                                        <label class="mb-0 mx-0">
+                                                            <input name="filter_evolutionStageId" type="checkbox"class="mx-2 checkboxInput" value=<%= evolution.id %> ><%= evolution.name %>
+                                                        </label><br>
+                                                    </div>
+                                                
+                                                <% }) %>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -154,7 +157,7 @@
                                             <div id="illustratorCollapse" class="accordion-collapse collapse"
                                                 aria-labelledby="illustratorHeading">
                                                 <div class="accordion-body">
-                                                    <input type="text" class="form-control" name="illustrator"
+                                                    <input type="text" class="form-control" name="filter_illustrator"
                                                         id="illustratorFilter"
                                                         placeholder="Enter card illustrator.....">
                                                 </div>
@@ -193,7 +196,7 @@
                                                 <div class="my-1 d-flex align-items-center">
                                                     <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                                     <label class="mb-0 mx-0">
-                                                        <input name="wekaness" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.id %>
+                                                        <input name="filter_weaknessId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.id %>
                                                     </label><br>
                                                 </div>
                                             <% }) %>
@@ -217,7 +220,7 @@
                                                     <div class="my-1 d-flex align-items-center">
                                                         <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
                                                         <label class="mb-0 mx-0">
-                                                            <input name="resistance" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.energy_type_id %> ><%= energyType.name %>
+                                                            <input name="filter_resistanceId" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.energy_type_id %> ><%= energyType.name %>
                                                         </label><br>
                                                     </div>
                                                 <% }) %>
@@ -243,7 +246,7 @@
 <div class="container mb-4 d-flex ps-0">
 
     <form class="d-flex col-lg-4 " role="search">
-        <input class="form-control me-2" name="cardName" type="text" placeholder="Search card name....."
+        <input class="form-control me-2" name="filter_name" type="text" placeholder="Search card name....."
             aria-label="Search">
         <button class="btn actionBtn" type="submit">Search</button>
     </form>
@@ -296,17 +299,21 @@
     // function to update the text and visibility of filter buttons based on if there are query parameters
     const updateButtonText = () => {
         const url = new URL(window.location.href);
-        const queryParamSize = url.searchParams.size;
+        const queryParams = url.searchParams;
+        let filterParams = 0;
         const filterOpenSpan = document.getElementById('filterOpenSpan');
         const clearAllOptional = document.getElementById('clearFilterOptional');
 
-        //console.log(url.searchParams.size);
-        //console.log(clearAllOptional.hidden);
+        // count number of filter params in the query
+        queryParams.keys().forEach(key => {
+            key.toString().startsWith('filter_') ? filterParams++ : null;
+        });
+
 
         // update the button text and visibility based on the number of query parameters
-        if(queryParamSize > 0){
+        if(filterParams > 0){
             clearAllOptional.hidden = false;
-            filterOpenSpan.innerText = 'Filter ('  + queryParamSize + ')';
+            filterOpenSpan.innerText = 'Filter ('  + filterParams + ')';
         } else {
             clearAllOptional.hidden = true;
             filterOpenSpan.innerText = 'Filter'

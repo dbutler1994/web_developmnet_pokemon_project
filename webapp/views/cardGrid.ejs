@@ -42,7 +42,10 @@
                 </div>
 
                 <%# Include pagination %>
-                <%- include('./modules/pagination.ejs', {totalCards : totalCards, pageSize: pageSize, page: page}) %>
+                <% if (totalCards > 0 ) { %>
+                    <%- include('./modules/pagination.ejs', {totalCards : totalCards, pageSize: pageSize, page: page}) %> 
+                <% } %>
+                
             </div>
 
                 <%# Bring in modals required for specific page functionality %>
