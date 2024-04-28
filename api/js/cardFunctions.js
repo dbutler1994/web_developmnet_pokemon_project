@@ -62,11 +62,35 @@ const formatSetInformation = (setName, setCode, totalCards) => {
 };
 
 // format rarity infromation so that it is its own object
-const formatRarityInformation = (rarityName, rarityIconURL) => {
+const formatRarityInformation = (rarityId, rarityName, rarityIconURL) => {
     return{
-        rarity_name: rarityName,
+        id: rarityId,
+        name: rarityName,
         icon_url: rarityIconURL
     }
 };
 
-module.exports = {formatCardAttacks, createCardURL, formatSetInformation, formatRarityInformation};
+const formatCategoryInformation = (categoryId,categoryName) => {
+    return{
+        id : categoryId,
+        name: categoryName
+    }
+};
+
+const formatEvolutionInformation = (evolutionStageId, evolutionStageName, evolves_from) => {
+    return{
+        evolution_stage_id : evolutionStageId,
+        evolution_stage_name : evolutionStageName,
+        evolves_from: evolves_from
+    }
+};
+
+
+module.exports = {
+    formatCardAttacks, 
+    createCardURL, 
+    formatSetInformation, 
+    formatRarityInformation,
+    formatCategoryInformation,
+    formatEvolutionInformation
+};
