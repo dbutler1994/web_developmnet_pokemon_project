@@ -24,7 +24,7 @@
 <div class="container mt-1 pb-1  border-bottom border-1 border-dark-subtle ">
     <div class="row">
         <div class="col-6 d-flex justify-content-start align-items-start  px-1 ">
-            <img class="img-fluid  align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title= <%= card.rarity.rarity_name %>
+            <img class="img-fluid  align-self-center" data-bs-toggle="tooltip" data-bs-placement="top" title= <%= card.rarity.name %>
                 src= <%= card.rarity.icon_url %> >
         </div>
         <div class="col-6 d-flex justify-content-end ">
@@ -84,7 +84,7 @@
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             // get the loggedIn variable from res.locals and set it to a js variable
-            const loggedIn = <%= typeof loggedIn !== 'undefined' ? JSON.stringify(loggedIn) : 'false' %>;
+            const loggedIn = '<%= typeof loggedIn !== undefined ? true : false %>';
         
             // console.log(loggedIn);
             // change on click attribute for each button to open not logged in modal if user isn't logged in

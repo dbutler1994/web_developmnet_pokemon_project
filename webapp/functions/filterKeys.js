@@ -1,6 +1,6 @@
 const filterKeys = {
   categoryId: "filter_categoryId",
-  name: "filter_name",
+  nameString: "filter_name",
   energyTypeId: "filter_energyTypeId",
   rarityId: "filter_rarityId",
   evolutionStageId: "filter_evolutionStageId",
