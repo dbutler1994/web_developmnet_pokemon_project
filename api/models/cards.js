@@ -12,6 +12,7 @@ const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filter
     let cardsSQL = 'SELECT card_id, '
     cardsSQL += 'MIN(card_number) as card_number, ' 
     cardsSQL += 'MIN(name) as card_name, ' 
+    cardsSQL += 'MIN(rarityId) as rarity_id, '
     cardsSQL += 'MIN(rarity) as rarity, '
     cardsSQL += 'MIN(rarity_icon_url) as rarity_icon_url, '
     cardsSQL += 'MIN(set_name) as set_name, '
@@ -34,7 +35,7 @@ const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filter
     // add the order by an limit clauses to the SQL statement
     cardsSQL += getOrderByString(sortBy, releaseSort);
     cardsSQL += ' LIMIT ?, ?';
-    console.log(cardsSQL);
+    //console.log(cardsSQL);
 
     try {
         // get the total number of cards and all cards
@@ -123,7 +124,7 @@ const getSingleCardAttacks = async (cardId) => {
 // Get the resistance details of a single card
 const getSingleCardResistance = async (cardId) => {
 
-    let sql = 'SELECT * FROM view_cardResistance WHERE card_id = ?'
+    let sql = 'SELECT energy_type_id, energy_type, icon_url, value from view_cardResistance WHERE card_id = ?'
 
     try {
         const result = await dbPool.query(sql, [cardId]);
@@ -137,7 +138,7 @@ const getSingleCardResistance = async (cardId) => {
 // Get the weakness details of a single card
 const getSingleCardWeakness = async (cardId) => {
 
-    let sql = 'SELECT * FROM view_cardWeakness  WHERE card_id = ?'
+    let sql = 'SELECT energy_type_id, energy_type, icon_url, value FROM view_cardWeakness  WHERE card_id = ?'
 
     try {
         const result = await dbPool.query(sql, [cardId]);

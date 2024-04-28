@@ -30,7 +30,7 @@ const getAllCards = async (req, res) => {
             card_number: card.card_number,
             card_name: card.card_name,
             set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
-            rarity: cardFunctions.formatRarityInformation(card.rarity, card.rarity_icon_url),
+            rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
             image: imageURL
         };
     })
@@ -72,19 +72,17 @@ const getSingleCard = async (req, res) => {
         const jsonResponse = {
             card_name: cardDetails.card_name,
             card_number: cardDetails.card_number,
-            category: cardDetails.category,
-            rarity: cardFunctions.formatRarityInformation(cardDetails.rarity, cardDetails.rarity_icon_url),
+            category : cardFunctions.formatCategoryInformation(cardDetails.category_id, cardDetails.category_name),
+            rarity: cardFunctions.formatRarityInformation(cardDetails.rarity_id, cardDetails.rarity, cardDetails.rarity_icon_url),
             set: cardFunctions.formatSetInformation(cardDetails.release_set_name, cardDetails.release_set_code, cardDetails.release_set_total_cards),
             illustrator: cardDetails.illustrator,
             energy: cardEnergyType,
             health: cardDetails.health,
-            evolution_stage_name: cardDetails.evolution_stage_name,
-            evolves_from: cardDetails.evolves_from,
+            evolution : cardFunctions.formatEvolutionInformation(cardDetails.evolution_stage_id, cardDetails.evolution_stage_name, cardDetails.evolves_from),
             image: cardFunctions.createCardURL(cardDetails.expansion_api_id, cardDetails.release_set_api_id, cardDetails.card_number, 'high'),
         };
 
         // add attacks if there are any
-
         if (formattedAttacks.length > 0) {
             jsonResponse.attack = formattedAttacks;
         }
