@@ -30,12 +30,13 @@
                                 <div id="typeCollapse" class="accordion-collapse collapse"
                                     aria-labelledby="typeHeading">
                                     <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                        <!-- Type filter options (checkboxes, select boxes, etc.) -->
-                                        <label class="mb-1"><input name="cardType" type="checkbox" class="me-2"
-                                                value="pokemon"> Pokémon</label><br>
-                                        <label class="mb-1"><input name="cardType" type="checkbox" class="me-2"
-                                                value="trainer"> Trainer</label><br>
-                                        <!-- Add more filter options as needed -->
+                                        <% filters.cardCategories.forEach(category => { %>
+                                            <div class="my-1 d-flex align-items-center">
+                                                <label class="mb-0 mx-0">
+                                                    <input name="cardType" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
+                                                </label><br>
+                                            </div>
+                                        <% }) %>
                                     </div>
                                 </div>
                             </div>
@@ -53,12 +54,14 @@
                             <div id="energyCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="energyHeading">
                                 <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                    <!-- Energy filter options (checkboxes, select boxes, etc.) -->
-                                    <label class="mb-1"><input name="energyType" type="checkbox" class="me-2"
-                                            value="electric"> Electric</label><br>
-                                    <label class="mb-1"><input name="energyType" type="checkbox" class="me-2"
-                                            value="fire"> Fire</label><br>
-                                    <!-- Add more filter options as needed -->
+                                    <% filters.energyTypes.forEach(energyType => { %>
+                                        <div class="my-1 d-flex align-items-center">
+                                            <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
+                                            <label class="mb-0 mx-0">
+                                                <input name="energyType" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.name %>
+                                            </label><br>
+                                        </div>
+                                    <% }) %>
                                 </div>
                             </div>
                         </div>
@@ -75,12 +78,14 @@
                                 <div id="rarityCollapse" class="accordion-collapse collapse"
                                     aria-labelledby="rarityHeading">
                                     <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                        <!-- Energy filter options (checkboxes, select boxes, etc.) -->
-                                        <label class="mb-1"><input name="rarity" type="checkbox" class="me-2"
-                                                value="electric">Electric</label><br>
-                                        <label class="mb-1"><input name="rarity" type="checkbox" class="me-2"
-                                                value="fire">Fire</label><br>
-                                        <!-- Add more filter options as needed -->
+                                        <% filters.rarityTypes.forEach(rarity => { %>
+                                            <div class="my-1 d-flex align-items-center">
+                                                <img class="img-fluid me-1" src=<%= rarity.icon_url %> alt="">
+                                                <label class="mb-0 mx-0">
+                                                    <input name="rarity" type="checkbox"class="mx-2 checkboxInput" value=<%= rarity.id %> ><%= rarity.name %>
+                                                </label><br>
+                                            </div>
+                                        <% }) %>
                                     </div>
                                 </div>
                             </div>
@@ -126,14 +131,13 @@
                                         </h2>
                                         <div id="evolutionStageCollapse" class="accordion-collapse collapse"
                                             aria-labelledby="evolutionStageHeading">
-                                            <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                                <!-- Energy filter options (checkboxes, select boxes, etc.) -->
-                                                <label class="mb-1"><input name="evolutionStage" type="checkbox"
-                                                        class="me-2" value="electric">Basic</label><br>
-                                                <label class="mb-1"><input name="evolutionStage" type="checkbox"
-                                                        class="me-2" value="fire">Stage 1</label><br>
-                                                <!-- Add more filter options as needed -->
-                                            </div>
+                                            <% filters.cardCategories.forEach(category => { %>
+                                                <div class="my-1 d-flex align-items-center">
+                                                    <label class="mb-0 mx-0">
+                                                        <input name="cardType" type="checkbox"class="mx-2 checkboxInput" value=<%= category.id %> ><%= category.name %>
+                                                    </label><br>
+                                                </div>
+                                            <% }) %>
                                         </div>
                                     </div>
 
@@ -185,12 +189,14 @@
                                     <div id="weaknessCollapse" class="accordion-collapse collapse"
                                         aria-labelledby="weaknessHeading">
                                         <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                            <!-- Energy filter options (checkboxes, select boxes, etc.) -->
-                                            <label class="mb-1"><input name="weakness" type="checkbox" class="me-2"
-                                                    value=1>Basic</label><br>
-                                            <label class="mb-1"><input name="weakness" type="checkbox" class="me-2"
-                                                    value=2>Stage 1</label><br>
-                                            <!-- Add more filter options as needed -->
+                                            <% filters.energyTypes.forEach(energyType => { %>
+                                                <div class="my-1 d-flex align-items-center">
+                                                    <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
+                                                    <label class="mb-0 mx-0">
+                                                        <input name="wekaness" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.id %> ><%= energyType.id %>
+                                                    </label><br>
+                                                </div>
+                                            <% }) %>
                                         </div>
                                     </div>
                                 </div>
@@ -207,31 +213,28 @@
                                         <div id="resistanceCollapse" class="accordion-collapse collapse"
                                             aria-labelledby="resistanceHeading">
                                             <div class="accordion-body row row-cols-1 row-cols-sm-2 row-cols-md-3">
-                                                <!-- Energy filter options (checkboxes, select boxes, etc.) -->
-                                                <label class="mb-1"><input name="resistance" type="checkbox"
-                                                        class="me-2" value="electric">Basic</label><br>
-                                                <label class="mb-1"><input name="resistance" type="checkbox"
-                                                        class="me-2" value="fire">Stage 1</label><br>
-                                                <!-- Add more filter options as needed -->
+                                                <% filters.energyTypes.forEach(energyType => { %>
+                                                    <div class="my-1 d-flex align-items-center">
+                                                        <img class="img-fluid me-1" src=<%= energyType.icon_url %> alt="">
+                                                        <label class="mb-0 mx-0">
+                                                            <input name="resistance" type="checkbox"class="mx-2 checkboxInput" value=<%= energyType.energy_type_id %> ><%= energyType.name %>
+                                                        </label><br>
+                                                    </div>
+                                                <% }) %>
                                             </div>
                                         </div>
                                     </div>
-
                         </div>
 
         </div>
 
-
-
-
-
         <%# buttons to clear filters, or show cards with any filters added %>
-            <div class="border-1 border-top  border-dark-subtle">
-                <div class="offcanvas-footer d-flex  justify-content-end container filterContainer pt-2">
-                    <button class="btn  negativeActionBtn m-2 me-3" onclick="clearFilters()">Clear Filters</button>
-                    <button class="btn  actionBtn m-2 me-3" onclick="applyFilters()">Show Cards</button>
-                </div>
+        <div class="border-1 border-top  border-dark-subtle">
+            <div class="offcanvas-footer d-flex  justify-content-end container filterContainer pt-2">
+                <button class="btn  negativeActionBtn m-2 me-3" onclick="clearFilters()">Clear Filters</button>
+                <button class="btn  actionBtn m-2 me-3" onclick="refreshPage()">Show Cards</button>
             </div>
+        </div>
 
 
 
@@ -251,8 +254,7 @@
         <span id="filterOpenSpan">Filter</span>
     </button>
 
-    <button class="btn actionBtn border-0 ms-1" id="clearFilterOptional" type="button" data-bs-toggle="offcanvas"
-        data-bs-target="#filterPanel">
+    <button class="btn actionBtn border-0 ms-1" id="clearFilterOptional" type="button" onclick="clearFilters()">    
         <i class="fas fa-circle-xmark"></i>
         <span >Clear filters </span>
     </button>
@@ -271,9 +273,13 @@
         // update checkboxes based on query parameters
         checkBoxes.forEach(checkbox => {
             const paramName = checkbox.name;
-            const paramValue = checkbox.value;
-            const isChecked = urlParams.get(paramName) === paramValue;
-            console.log(isChecked);
+            const paramValues = urlParams.getAll(paramName); // get all values for the parameter
+            const checkboxValue = checkbox.value;
+
+            //console.log(paramValues);
+
+            // check if the checkbox value is included in the query parameter values. need to split paramValues on comma to test each value in the array
+            const isChecked = paramValues.some(value => value.split(',').includes(checkboxValue));
 
             checkbox.checked = isChecked;
         });
@@ -364,6 +370,32 @@
         });
     });
 
+    // Function to update checkboxes based on query parameters
+    const clearFilters = () => {
+        //const url = new URL(window.location.href); // get current url
+        const checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+        const searchBoxes = document.querySelectorAll('input[type="text"]');
+
+        // update checkboxes based on query parameters & trigger change event
+        checkBoxes.forEach( checkbox => {
+             checkbox.checked = false;
+             checkbox.dispatchEvent(new Event('change'));
+        });
+
+        // update search boxes based on query parameters & trigger change event
+        searchBoxes.forEach(searchBox => {
+            searchBox.value = '';
+            searchBox.dispatchEvent(new Event('change'));
+        });
+
+        // reload the page to reutrn unfiltered results
+        refreshPage();
+    };
+
+    const refreshPage = (url) => {
+        url = url || window.location.href;
+        window.location.href = window.location.href;
+    };
 
 
     

@@ -155,4 +155,8 @@ border-radius: 6px;
 .accordion-item{
     margin-bottom: 8px;
 }
+
+.checkboxInput{
+    transform: scale(1.5);
+}
 /*End of filter styles*/
