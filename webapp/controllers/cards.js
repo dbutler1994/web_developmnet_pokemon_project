@@ -48,7 +48,7 @@ const getCardById = async (req, res, next) =>{
         const cardData = response.data;
         res.render('singleCard', {
              card: cardData,
-             filterDefinitions: filterDefinitions
+             filterKeys: filterDefinitions.filterKeys
         });
     } catch (error) {
         next(error.response.statuscode);

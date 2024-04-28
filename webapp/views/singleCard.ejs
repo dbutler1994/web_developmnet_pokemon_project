@@ -36,7 +36,10 @@
                             <%# Begin details for card name, energy and health %>
                             <div class="row">
                                 <div class="col-6 d-flex align-items-center ">
-                                    <h3 class="mb-0"><%= card.card_name %></h3>
+                                    <a class="text-decoration-none " href= /cards?<%= filterKeys.nameString %>=<%= card.card_name %>>
+                                        <h3 class="mb-0"><%= card.card_name %></h3>
+                                    </a>
+                                    
                                 </div>
 
                                 
@@ -46,7 +49,10 @@
                                         <h4 class="me-3 mb-0  "> HP <%= card.health %></h4> 
                                     <% } %>
                                     <% card.energy.forEach(energyType => { %>
-                                        <img class="me-1 " src= <%= energyType.icon_url %> >
+                                        <a class="text-decoration-none " href= "/cards?<%= filterKeys.energyTypeId %>=<%= energyType.energy_id %>">
+                                            <img class="me-1 " src= <%= energyType.icon_url %> >
+                                        </a>
+                                        
                                     <% }) %>
                                 </div>
                             </div>
@@ -54,13 +60,23 @@
                             <%# Begin details for card category and evolves information %>
                             <div class="row mt-2  border-1 border-bottom border-dark-subtle">
                                 <div class="col-6 d-flex align-items-start ">
-                                    <p class="mb-0"><%= card.category %></p>
+                                    <a class="text-decoration-none " href= "/cards?<%= filterKeys.categoryId %>=<%= card.category.id %>">
+                                        <p class="mb-0"><%= card.category.name %></p>
+                                    </a>
                                 </div>
 
                                 <%# Content for pokemon evolution details %>
                                     <div class="col-6 d-flex  justify-content-end align-items-end">
-                                        <p class= "me-1 "> <%= card.evolution_stage_name %> <% if (card.evolves_from) { %>
-                                        -  <%= card.evolves_from %></p>
+                                        <a class="text-decoration-none d-flex " href= "/cards?<%= filterKeys.evolutionStageId %>=<%= card.evolution.evolution_stage_id %>">
+                                            <span class= "me-1 "> <%= card.evolution.evolution_stage_name %> </span>
+                                        </a>
+                                        
+                                        <% if (card.evolution.evolves_from) { %>
+                                            <span class="me-1"> evolves from </span>
+                                            <a class="text-decoration-none d-flex " href= "/cards?<%= filterKeys.nameString %>=<%= card.evolution.evolves_from %>">
+                                                <span><%= card.evolution.evolves_from %></span>
+                                            </a>
+                                            
                                         <% } %> 
                                     </div>
                             </div>
@@ -119,7 +135,7 @@
                             <%# Begin content for Residual card information %>
                                 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-2 mt-3">
                                     
-                                    <% if (card.category === 'Pokemon') { %>
+                                    <% if (card.category.name === 'Pokemon') { %>
                                      
                                         <div class="col mb-4">
                                             <p class="fw-bold mb-1 ">Weakness</p>
@@ -127,8 +143,10 @@
                                             <% if (card.weakness) { %>
                                                 <% card.weakness.forEach(weakness => { %>
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <img class="me-2 " src= <%= weakness.icon_url %> >
-                                                        <span class="me-2 ">x2</span>
+                                                        <a class="text-decoration-none " href= "/cards?<%= filterKeys.weaknessId %>=<%= weakness.energy_type_id %>">
+                                                            <img class="me-2 " src= <%= weakness.icon_url %> >
+                                                            <span class="me-2 "> <%= weakness.value %></span>
+                                                        </a>
                                                     </div>
                                                 <% }) %>
                                             <% } else {%>
@@ -143,8 +161,10 @@
                                             <% if (card.resistance) { %>
                                                 <% card.resistance.forEach(resistance => { %>
                                                     <div class="d-flex align-items-center mb-3">
-                                                        <img class="me-2 " src= <%= resistance.icon_url %> >
-                                                        <span class="me-2 "> <%= resistance.value %></span>
+                                                        <a class="text-decoration-none " href= "/cards?<%= filterKeys.resistanceId %>=<%= resistance.energy_type_id %>">
+                                                            <img class="me-2 " src= <%= resistance.icon_url %> >
+                                                            <span class="me-2 "> <%= resistance.value %></span>
+                                                        </a>
                                                     </div>
                                                 <% }) %>
                                             <% } else {%>
@@ -186,8 +206,11 @@
 
                                         <% if(card.rarity) {%>
                                             <div class="d-flex align-items-center ">
-                                                <img class="me-2 " src= <%= card.rarity.icon_url %> >
-                                                <span class="me-2 "> <%= card.rarity.rarity_name %></span>
+                                                <a class="text-decoration-none " href= "/cards?<%= filterKeys.rarityId %>=<%= card.rarity.id %>">
+                                                    <img class="me-2 " src= <%= card.rarity.icon_url %> >
+                                                    <span class="me-2 "> <%= card.rarity.name %></span>
+                                                </a>
+                                                
                                             </div>
                                         <% } else { %>
                                             
@@ -196,7 +219,10 @@
 
                                     <div class="col mb-4">
                                         <p class="fw-bold mb-1 ">Illustrator</p>
-                                        <p><%= card.illustrator %></p> 
+                                        <a class="text-decoration-none " href= "/cards?<%= filterKeys.illustrator %>=<%= card.illustrator %>">
+                                            <p><%= card.illustrator %></p>
+                                        </a>
+                                         
                                     </div>
 
                                 </div>
