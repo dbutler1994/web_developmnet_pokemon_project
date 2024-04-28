@@ -1,24 +1,25 @@
 const cardsModel = require('../models/cards');
 const cardFunctions = require('../js/cardFunctions');
+const queryParamFunctions = require('../js/queryParamFunctions');
 
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
-
-    //console.log(req.query);
-
     // get pagination details from the request
-    // use parseInt to make sure the values are treated as numbers
     const page = parseInt(req.query.page) || 1; //  default to 1 if not specified
+
     const cardsPerPage = parseInt(req.query.cardsPerPage) || 30; // default to 30 if not specified
     const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
     const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
+
+    const filterParams = queryParamFunctions.getFilterParams(req.query);
+    
     
     // calculate the start index for the query
     const startIndex = (page - 1) * cardsPerPage; // figure out first card to retrieve
 
     // call the model function to retrieve all cards
-    const result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort);
+    const result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
 
     // format the response and add necessary objects such as rarity and set info
     const jsonResponse= result.cards.map(card => {

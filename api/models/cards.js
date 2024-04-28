@@ -1,20 +1,45 @@
 // get access to dbPool
 const dbPool = require('../db/connect');
+const constructFilterWhereClause = require('../js/constructFIlterWhereClause');
 
 // Get all cards from the database
-const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort) => {
+const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filterParams) => {
 
-    let cardsSQL = 'SELECT * FROM view_CardGridInformation ';
-    let countSQL = 'SELECT COUNT(*) as totalCards FROM view_CardGridInformation';
+    // SQL to get the total number of cards
+    let countSQL = 'SELECT COUNT(Distinct card_id) as totalCards FROM view_CardGridInformation WHERE 1=1';
 
+    // SQL to get all cards
+    let cardsSQL = 'SELECT card_id, '
+    cardsSQL += 'MIN(card_number) as card_number, ' 
+    cardsSQL += 'MIN(name) as card_name, ' 
+    cardsSQL += 'MIN(rarity) as rarity, '
+    cardsSQL += 'MIN(rarity_icon_url) as rarity_icon_url, '
+    cardsSQL += 'MIN(set_name) as set_name, '
+    cardsSQL += 'MIN(set_code) as set_code, '
+    cardsSQL += 'MIN(release_set_total_cards)  as release_set_total_cards, '
+    cardsSQL += 'MIN(expansion_api_id) as expansion_api_id, '
+    cardsSQL += 'MIN(release_set_api_id) as release_set_api_id '
+    cardsSQL += 'FROM view_cardgridinformation '
+    cardsSQL += 'WHERE 1=1 ' // initial where clause
+    
+    // add the filter parameters to the SQL statement
+    const whereClause = constructFilterWhereClause.constructFilterWhereClause(filterParams);
+    cardsSQL += whereClause.whereClause;
+    countSQL += whereClause.whereClause;
+
+    // add group by clause to the SQL statement
+    cardsSQL += ' GROUP BY card_id';
+    
+
+    // add the order by an limit clauses to the SQL statement
     cardsSQL += getOrderByString(sortBy, releaseSort);
     cardsSQL += ' LIMIT ?, ?';
-    //console.log(cardsSQL);
+    console.log(cardsSQL);
 
     try {
         // get the total number of cards and all cards
-        const cardsResult = await dbPool.query(cardsSQL, [startIndex, cardsPerPage]);
-        const countResult = await dbPool.query(countSQL);
+        const cardsResult = await dbPool.query(cardsSQL, [...whereClause.values, startIndex, cardsPerPage]);
+        const countResult = await dbPool.query(countSQL, [...whereClause.values]);
         
         return{
             totalCards: countResult[0][0],
