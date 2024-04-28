@@ -1,4 +1,5 @@
 const axios = require('axios');
+const filterController = require('./filters');
 
 // get all cards from the API
 const getAllCards = async (req, res) => {
@@ -10,6 +11,9 @@ const getAllCards = async (req, res) => {
         let cardData = response.data.cardData;
         let cardCount = response.data.summaryData.totalCards;
 
+        // get the filter data
+        let filterData = await filterController.getAllFilters(req, res);
+
         // get the cardsPerPage parameter value and page value from the request
         let pageSize = res.req.query.cardsPerPage || 30;
         let page = res.req.query.page || 1;
@@ -19,7 +23,8 @@ const getAllCards = async (req, res) => {
             cards: cardData, 
             totalCards: cardCount, 
             pageSize: pageSize, 
-            page: page
+            page: page,
+            filters : filterData
         });
 
 
