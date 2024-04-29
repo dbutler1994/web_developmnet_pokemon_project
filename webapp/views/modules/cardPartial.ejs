@@ -1,9 +1,8 @@
-
 <!-- Image and text overlay for number in collection and set id -->
 <div class="container position-relative px-0">
     <% if ( isGrid ) { %>
         <a class="" href='/cards/<%= card.card_id %>' >
-            <img class="img-fluid rounded-2 opacity-50 cardPartial"
+            <img class= <% if (card.wishlist) { %> "img-fluid rounded-2 cardPartial" <% } else { %> "img-fluid rounded-2 opacity-50 cardPartial" <% } %>   
                 src= <%= card.image %>
                 id= 'cardGridImage<%= card.card_id %>'>
         </a> 
@@ -31,11 +30,11 @@
             <button id="heartButton<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0 " data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Toggle card in wishlist"
                 <% if (isGrid) { %>
-                    onclick="toggleHeartColour('heartButton<%= card.card_id %>',  'cardGridImage<%= card.card_id %>')" href="#">
+                    onclick="toggleHeartColour('heartButton<%= card.card_id %>',  'cardGridImage<%= card.card_id %>', <%= card.wishlist %> )" href="#">
                 <% } else { %>
                     onclick="toggleHeartColour('heartButton<%= card.card_id %>')" href="#">
                 <% } %>
-                <i class="fas fa-heart" style="color: grey"></i>
+                <i class="fas fa-heart" style=<% if (card.wishlist) { %> "color: red" <% } else { %>  "color: grey" <% } %> ></i>
             </button>
         </div>
     </div>
@@ -80,11 +79,11 @@
     </div>
 
 </div>
-
     <script>
+
         window.addEventListener('DOMContentLoaded', (event) => {
             // get the loggedIn variable from res.locals and set it to a js variable
-            const loggedIn = '<%= typeof loggedIn !== undefined ? true : false %>';
+            const loggedIn = '<%= typeof loggedIn !== undefined ? JSON.stringify(loggedIn) : false %>';
         
             // console.log(loggedIn);
             // change on click attribute for each button to open not logged in modal if user isn't logged in
@@ -95,11 +94,6 @@
                 document.getElementById("cardEntries<%= card.card_id %>").onclick = openNotLoggedInModal;
                 document.getElementById("cardNote<%= card.card_id %>").onclick = openNotLoggedInModal;
             }
-            
-            
-
-
         });
 
     </script>
-

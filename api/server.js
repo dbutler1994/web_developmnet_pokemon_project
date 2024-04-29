@@ -19,12 +19,14 @@ const expansionsRoutes = require('./routes/expansions');
 const setsRoutes = require('./routes/sets');
 const accountRoutes = require('./routes/account');
 const filtersRoutes = require('./routes/filters');
+const wishlistRoutes = require('./routes/wishlist');   
 
 app.use('/cards',cardsRoutes);
 app.use('/expansions',expansionsRoutes);
 app.use('/sets',setsRoutes);
 app.use('/account',accountRoutes);
 app.use('/filters',filtersRoutes);
+app.use('/wishlist', wishlistRoutes);
 
 
 // Start the server or desired port or 4000 as default

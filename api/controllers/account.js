@@ -11,7 +11,7 @@ const registerAccount = async (req, res) => {
         // get the user account details from the request
         const { firstName, lastName, username, email, password } = req.body;
 
-        console.log(firstName, lastName, username, email, password);
+        //console.log(firstName, lastName, username, email, password);
 
         // check if username already exists and send a conflict response if it does
         const existingUser = await accountModel.getAccountByUserName(username);

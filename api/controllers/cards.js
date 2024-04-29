@@ -21,8 +21,8 @@ const getAllCards = async (req, res) => {
     const result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
 
     // get the wishlist for the user if they are logged in
-    //const wishlist = req.userId ? await wishlistModel.getWishlist(req.user.user_id) : [];
-    const wishlist = await wishlistModel.getWishlist(1);
+    const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
+
     // Create a Set of card IDs present in the wishlist
     const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
 
@@ -45,8 +45,7 @@ const getAllCards = async (req, res) => {
     // Send the retrieved cards as a response
     res.status(200).json({
         summaryData: result.totalCards,
-        cardData: jsonResponse,
-        wishlist: wishlist
+        cardData: jsonResponse
     });
 
 };

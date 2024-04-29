@@ -1,5 +1,4 @@
-
-const toggleHeartColour = (buttonId, cardGridImage) => {
+const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
     // Get the heart button
     const heartButton = document.getElementById(buttonId);
     const cardImage = document.getElementById(cardGridImage);
@@ -22,5 +21,22 @@ const toggleHeartColour = (buttonId, cardGridImage) => {
                 cardImage.classList.add('opacity-50');
             }
         }
+
+        // Make AJAX POST request to update wishlist
+        const cardId = buttonId.replace('heartButton', ''); // get card ID from button ID
+        const rotueToCall = (inWishlist ? 'remove' : 'add'); // determine wishlist status based on heart color
+
+        $.ajax({
+            url: `/wishlist/${rotueToCall}`, // enpdoint to update wishlist
+            type: 'POST',
+            data: { cardId: cardId},
+            success: (response) => {
+                console.log('Wishlist updated successfully:', response);
+            },
+            error: (xhr, status, error) => {
+                console.error('Error updating wishlist:', error);
+             }
+        });
+
     }
 };
