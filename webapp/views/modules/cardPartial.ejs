@@ -46,7 +46,8 @@
 
         <%# button to open notes modal %>
         <div class="col-3 d-flex justify-content-start align-items-center ps-2 ">
-            <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card"  onclick= "openNoteModal()" > <%# TEMPORARY SOlUTION %>
+            <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
+                onclick= "openNoteModal('<%= card.card_id%>', '<%=card.card_name%>', '<%= card.card_number %>', '<%= card.set.set_name %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].note %> <% } else { %>   <% } %>' )" >
                 <i class="far fa-clipboard" style="color: grey" ></i>
             </button>
 
@@ -59,7 +60,9 @@
                 <i class="fas fa-minus" style="color: grey"></i>
             </button>
 
-            <span id="collected<%= card.card_id %>" class="fw-bold px-1 px-md-2 text-dark  ">0</span>
+            <span id="collected<%= card.card_id %>" class="fw-bold px-1 px-md-2 text-dark  ">
+                <% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].copies %> <% } else { %>  0 <% } %>
+            </span>
 
             <button id="plusButton<%= card.card_id %>" class="btn-sm border-0 bgColour"
                 onclick="increaseCounter('collected<%= card.card_id %>')" title="Increase number owned"  href="#">

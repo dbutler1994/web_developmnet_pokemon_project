@@ -4,7 +4,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h3 class="modal-title" id="noteModalLabel">Add note for (Specific card info)</h5>
+                <h6 class="modal-title fw-bold " id="noteModalLabel">Add note for (Specific card info)</h6>
             </div>
 
             <div class="modal-body">
@@ -25,12 +25,19 @@
 
 <script>
 
-    const openNoteModal = () => {
+    const openNoteModal = (cardId, cardName, cardNumber, set_name, cardNote ) => {
         // Populate modal with specific card info
-        //const modalLabel = document.getElementById('noteModalLabel');
-        //modalLabel.innerHTML = `Add note for (${card.name} ${card.card_number} / {card.})`;
-
-
+        const modalLabel = document.getElementById('noteModalLabel');
+        const textArea = document.getElementById('cardNoteTextArea');
+        
+        // update the modal label to show current cards name and set
+        modalLabel.innerHTML = `Add note for ${cardName} (${set_name} - Card no. ${cardNumber} )`;
+        
+        // update the text area with any existing note
+        if(cardNote && cardNote != ''){
+            textArea.value = cardNote.trim();
+        }
+        
         // Show the modal
         const modal = document.getElementById('noteModal');
         modal.classList.add('show');
