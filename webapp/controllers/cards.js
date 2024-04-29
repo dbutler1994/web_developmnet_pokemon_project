@@ -1,11 +1,15 @@
 const axios = require('axios');
 const filterController = require('./filters');
 const filterDefinitions = require('../functions/filterKeys');
+const constructUrlWithUserId = require('../functions/constructUrlWithUserId');
 
 // get all cards from the API
 const getAllCards = async (req, res) => {
     try {
-        endPoint = 'http://localhost:4000/cards' + req.paramString;
+        // specify endpoint and add the userId to the endpoint along with the query parameters
+        let endPoint = 'http://localhost:4000/cards' + req.paramString;
+        endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.UserId);
+
         let response = await axios.get(endPoint);
         
         // get card data and count data
