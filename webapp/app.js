@@ -34,6 +34,7 @@ const cardsRoutes = require('./routes/cards');
 const expansionsRoutes = require('./routes/expansions');
 const accountRoutes = require('./routes/account');
 const wishlistRoutes = require('./routes/wishlist');
+const collectionsRoutes = require('./routes/collections');
 
 
 // Use middleware before routes handled
@@ -47,6 +48,7 @@ app.use('/cards',cardsRoutes);
 app.use('/expansions',expansionsRoutes);
 app.use('/account',accountRoutes);
 app.use('/wishlist',wishlistRoutes);
+app.use('/collections',collectionsRoutes);
 
 // Use middleware after routes handled
 app.use(error404Handler);
