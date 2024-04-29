@@ -26,6 +26,7 @@ app.use(session({
 const {error404Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
 const {sessionDataToLocals} = require('./middleware/sessionDataToLocals');
+const {getUserIdFromSession}  = require('./middleware/getUserIdFromSession');
 
 // Get routes
 const indexRoutes = require('./routes/index');
@@ -33,9 +34,11 @@ const cardsRoutes = require('./routes/cards');
 const expansionsRoutes = require('./routes/expansions');
 const accountRoutes = require('./routes/account');
 
+
 // Use middleware before routes handled
 app.use(createQueryParameterString);
 app.use(sessionDataToLocals);
+app.use(getUserIdFromSession)
 
 
 app.use('/',indexRoutes);
