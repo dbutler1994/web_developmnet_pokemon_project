@@ -1,7 +1,7 @@
 const cardsModel = require('../models/cards');
 const cardFunctions = require('../js/cardFunctions');
 const queryParamFunctions = require('../js/queryParamFunctions');
-
+const wishlistModel = require('../models/wishlist');
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
@@ -13,17 +13,23 @@ const getAllCards = async (req, res) => {
     const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
 
     const filterParams = queryParamFunctions.getFilterParams(req.query);
-    
-    
+
     // calculate the start index for the query
     const startIndex = (page - 1) * cardsPerPage; // figure out first card to retrieve
 
     // call the model function to retrieve all cards
     const result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
 
+    // get the wishlist for the user if they are logged in
+    //const wishlist = req.userId ? await wishlistModel.getWishlist(req.user.user_id) : [];
+    const wishlist = await wishlistModel.getWishlist(1);
+    // Create a Set of card IDs present in the wishlist
+    const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+
     // format the response and add necessary objects such as rarity and set info
     const jsonResponse= result.cards.map(card => {
         const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
+        const isInWishlist = wishlistCardIds.has(card.card_id);
 
         return {
             card_id: card.card_id,
@@ -31,14 +37,16 @@ const getAllCards = async (req, res) => {
             card_name: card.card_name,
             set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
             rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
-            image: imageURL
+            image: imageURL,
+            wishlist: isInWishlist
         };
     })
-    
+ 
     // Send the retrieved cards as a response
     res.status(200).json({
         summaryData: result.totalCards,
-        cardData: jsonResponse
+        cardData: jsonResponse,
+        wishlist: wishlist
     });
 
 };
