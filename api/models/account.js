@@ -1,6 +1,7 @@
 // get access to dbPool
 const bcrypt = require('bcrypt');
 const dbPool = require('../db/connect');
+const collectionsModel = require('./collections');
 
 // get all accounts from the database based on given username
 const getAccountByUserName = async (userName) => {
@@ -58,6 +59,9 @@ const createAccount = async ( firstName, lastName, username, email, password ) =
             // insert email into the account_email table
             await dbConnection.query(emailSql, [accountId, email]);
 
+            // create a default collection for the user named owned
+            await collectionsModel.createCollection(accountId, 'Owned', true, dbConnection);
+
             // all gone well so commit the transaction
             await dbConnection.commit();
 
@@ -89,7 +93,6 @@ const loginAccount = async ( email, password ) => {
         const storedPassword = await getAccountPasswordById(accountId);
 
         // check input password mataches the stored password
-        console.log('BEOFRE PASSWORD MATCH');
         const passwordMatch = await bcrypt.compare(password, storedPassword);
 
         if (!passwordMatch) {
@@ -98,7 +101,6 @@ const loginAccount = async ( email, password ) => {
             throw error;
         }
 
-        console.log('AFTER PASSWORD MATCH');
         // return the user's account if login is successful
         return account;
 

@@ -43,12 +43,25 @@ const removeFromWishlist = async (userId, cardId) => {
 };
 
 // get all cards in a specified user's wishlist
-const getWishlist = async (userId) => {
-    // get all cards in the wishlist for the specified user
-    let sql = 'SELECT card_id FROM Wishlist WHERE account_id = ?';
+const getWishlist = async (userId, cardId) => {
+    // get all cards in the wishlist 
+    let sql = 'SELECT card_id FROM Wishlist WHERE 1 = 1';
+    let queryValues = [];
+
+    // add condition for account id if it is present
+    if(userId){
+        sql += ' AND account_id = ?';
+        queryValues.push(userId);
+    };
+
+    // add condition for card id if it is present
+    if(cardId){
+        sql += ' AND card_id = ?';
+        queryValues.push(cardId);
+    };
 
     try {
-        const result = await dbPool.query(sql, [userId]);
+        const result = await dbPool.query(sql, [...queryValues]);
         return result[0];
     } catch (error) {
         throw new Error(error.message);
