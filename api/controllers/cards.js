@@ -2,6 +2,8 @@ const cardsModel = require('../models/cards');
 const cardFunctions = require('../js/cardFunctions');
 const queryParamFunctions = require('../js/queryParamFunctions');
 const wishlistModel = require('../models/wishlist');
+const collectionModel = require('../models/collections');
+const collectionFunctions = require('../js/collectionFunctions');
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
@@ -23,8 +25,13 @@ const getAllCards = async (req, res) => {
     // get the wishlist for the user if they are logged in
     const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
 
+    // get the collections for the user if they are logged in
+    const collectedCards = req.query.userId ? await collectionModel.getCollectionsCards(req.query.userId) : [];
+    const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+
     // Create a Set of card IDs present in the wishlist
     const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+    
 
     // format the response and add necessary objects such as rarity and set info
     const jsonResponse= result.cards.map(card => {
@@ -38,7 +45,8 @@ const getAllCards = async (req, res) => {
             set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
             rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
             image: imageURL,
-            wishlist: isInWishlist
+            wishlist: isInWishlist,
+            collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
         };
     })
  
@@ -75,6 +83,16 @@ const getSingleCard = async (req, res) => {
         // format returrned data
         const formattedAttacks = await cardFunctions.formatCardAttacks(cardAttacks);
 
+        // get the wishlist for the user if they are logged in
+        const wishlist = 6 ? await wishlistModel.getWishlist(6, cardId) : [];
+        const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+        const isInWishlist = wishlistCardIds.has(parseInt(cardId));
+        console.log(wishlistCardIds);
+
+        // get the collections for the user if they are logged in
+        const collectedCards = 6 ? await collectionModel.getCollectionsCards(6, cardId) : [];
+        const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+
         // setup response object
         const jsonResponse = {
             card_name: cardDetails.card_name,
@@ -87,6 +105,8 @@ const getSingleCard = async (req, res) => {
             health: cardDetails.health,
             evolution : cardFunctions.formatEvolutionInformation(cardDetails.evolution_stage_id, cardDetails.evolution_stage_name, cardDetails.evolves_from),
             image: cardFunctions.createCardURL(cardDetails.expansion_api_id, cardDetails.release_set_api_id, cardDetails.card_number, 'high'),
+            wishlist: isInWishlist,
+            collections: collectedCardsGroupedById[cardId] || { defaultCollection: [], customCollections: [] }
         };
 
         // add attacks if there are any
