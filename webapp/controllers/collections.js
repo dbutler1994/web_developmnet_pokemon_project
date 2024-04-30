@@ -5,6 +5,7 @@ const axios = require('axios');
 const updateCollectionEntry = ( async (req, res) =>{ 
     try {
         let endPoint = 'http://localhost:4000/collections/update';
+        const config = {headers: res.customHeaders};
 
         // get data from the request body
         const cardId = req.body.cardId;
@@ -17,10 +18,6 @@ const updateCollectionEntry = ( async (req, res) =>{
         if(!userId){
             res.status(401).send('User not authenticated');
             return;
-        }
-
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
         
         // send post request to the API to create a new account

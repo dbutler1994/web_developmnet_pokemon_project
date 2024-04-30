@@ -25,6 +25,7 @@ const getUserWishlist = ( async (req, res) =>{
 const addCardToWishlist = ( async (req, res) =>{ 
     try {
         let endPoint = 'http://localhost:4000/wishlist/add';
+        const config = {headers: res.customHeaders};
 
 
         // get data from the request body
@@ -37,11 +38,6 @@ const addCardToWishlist = ( async (req, res) =>{
             return;
         }
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-    
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
             cardId,
@@ -62,7 +58,7 @@ const removeCardFromWishlist = ( async (req, res) =>{
         console.log(req.body);
 
         let endPoint = 'http://localhost:4000/wishlist/remove';
-        //console.log(endPoint);
+        const config = {headers: res.customHeaders};
 
         // get data from the request body
         const cardId = req.body.cardId;
@@ -73,11 +69,6 @@ const removeCardFromWishlist = ( async (req, res) =>{
             res.status(401).send('User not authenticated');
             return;
         }
-
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
     
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {

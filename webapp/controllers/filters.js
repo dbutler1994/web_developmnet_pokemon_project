@@ -4,7 +4,10 @@ const axios = require('axios');
 const getAllFilters = async (req, res) => {
     try {
         endPoint = 'http://localhost:4000/filters' + req.paramString;
-        let response = await axios.get(endPoint);
+
+        const config = {headers: res.customHeaders}
+
+        let response = await axios.get(endPoint, config);
         
         //console.log(response.data);
         return response.data;

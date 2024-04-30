@@ -5,8 +5,9 @@ const dateFunctions = require('../functions/dateFunctions');
 const getExpansions = async (req, res) =>{
     try{
         let endPoint = 'http://localhost:4000/expansions' + req.paramString;  // middleware creates paramString property for query parameters
+        const config = {headers: res.customHeaders};
 
-        let response = await axios.get(endPoint); 
+        let response = await axios.get(endPoint, config); 
         let expansionData = response.data;
 
         res.render("setGrid", {expansions: expansionData, dateFunctions: dateFunctions});

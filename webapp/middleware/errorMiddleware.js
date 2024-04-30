@@ -5,6 +5,7 @@ const error404Handler = (req, res, next) => {
   };
 
 
+
 module.exports= {
-    error404Handler 
+    error404Handler
 }

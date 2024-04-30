@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // Get required modules
 const express = require('express');
 const session = require('express-session');
@@ -27,6 +29,7 @@ const {error404Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
 const {sessionDataToLocals} = require('./middleware/sessionDataToLocals');
 const {getUserIdFromSession}  = require('./middleware/getUserIdFromSession');
+const {setHeaders} = require('./middleware/setCustomHeaders');
 
 // Get routes
 const indexRoutes = require('./routes/index');
@@ -40,7 +43,9 @@ const aboutRoutes = require('./routes/about');
 // Use middleware before routes handled
 app.use(createQueryParameterString);
 app.use(sessionDataToLocals);
-app.use(getUserIdFromSession)
+app.use(getUserIdFromSession);
+app.use(setHeaders);
+
 
 
 app.use('/',indexRoutes);

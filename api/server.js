@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 4000;
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
 
+// Get middleware functions
+const apiKeyMiddleware = require('./middleware/apiKeyAuthentication');
 
+// Get routes
 const cardsRoutes = require('./routes/cards');
 const expansionsRoutes = require('./routes/expansions');
 const setsRoutes = require('./routes/sets');
@@ -21,6 +24,10 @@ const accountRoutes = require('./routes/account');
 const filtersRoutes = require('./routes/filters');
 const wishlistRoutes = require('./routes/wishlist');
 const collectionRoutes = require('./routes/collections');   
+
+
+// Use middleware functions
+app.use(apiKeyMiddleware);
 
 app.use('/cards',cardsRoutes);
 app.use('/expansions',expansionsRoutes);

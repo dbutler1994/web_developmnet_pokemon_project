@@ -1,6 +1,7 @@
 
 const axios = require('axios');
 
+
 // BEGIN CONTROLLERS FOR CREATE ACCOUNT
 // Controller for rendering the create account page to the user
 const getCreateAccount = ((req, res) =>{
@@ -11,7 +12,7 @@ const getCreateAccount = ((req, res) =>{
 const postCreateAccount = ( async (req, res) =>{   
     try {
         let endPoint = 'http://localhost:4000/account/createAccount';
-        //console.log(endPoint);
+        const config = {headers: res.customHeaders};
 
         // get data from the request body
         const firstName = req.body.firstName;
@@ -20,11 +21,7 @@ const postCreateAccount = ( async (req, res) =>{
         const email = req.body.email;
         const password = req.body.password;
 
-        //console.log(firstName, lastName, username, email, password); 
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
 
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
@@ -66,15 +63,13 @@ const postUserLogin = ( async (req, res) =>{
 
     try{
         let endPoint = 'http://localhost:4000/account/loginAccount';
-        //console.log(endPoint);
+        const config = {headers: res.customHeaders};
+        
 
         // get data from the request body
         const email = req.body.email;
         const password = req.body.password; 
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
 
     
         // send post request to the API to create a new account
@@ -131,6 +126,7 @@ const getAccountSettings = ((req, res) =>{
 const postUpdateUsername = ( async (req, res) =>{   
     try {
         let endPoint = 'http://localhost:4000/account/settings/updateUsername';
+        const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
         if(typeof req.userId === 'undefined'){
@@ -142,9 +138,7 @@ const postUpdateUsername = ( async (req, res) =>{
         const username = req.body.username;
         const password = req.body.password;
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
+        
 
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
@@ -159,6 +153,8 @@ const postUpdateUsername = ( async (req, res) =>{
             req.session.user.account.user_name = username;
             res.render('accountSettings', {success: 'Username updated successfully'})
         }
+
+        
 
     } catch (error) {
         // handle response from the API for incorrect password
@@ -183,6 +179,7 @@ const postUpdateUsername = ( async (req, res) =>{
 const postUpdateEmail = ( async (req, res) =>{   
     try {
         let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+        const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
         if(typeof req.userId === 'undefined'){
@@ -194,9 +191,6 @@ const postUpdateEmail = ( async (req, res) =>{
         const email = req.body.email;
         const password = req.body.password;
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
 
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
@@ -234,6 +228,7 @@ const postUpdateEmail = ( async (req, res) =>{
 const postUpdatePassword = ( async (req, res) =>{   
     try {
         let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+        const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
         if(typeof req.userId === 'undefined'){
@@ -245,9 +240,6 @@ const postUpdatePassword = ( async (req, res) =>{
         const newPassword = req.body.newPassword;
         const currentPassword = req.body.password;
 
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
 
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
@@ -285,6 +277,7 @@ const postUpdatePassword = ( async (req, res) =>{
 const postCloseAccount = ( async (req, res) =>{   
     try {
         let endPoint = 'http://localhost:4000/account/settings/closeAccount';
+        const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
         if(typeof req.userId === 'undefined'){
@@ -294,11 +287,6 @@ const postCloseAccount = ( async (req, res) =>{
         // get data from the request body
         const userId = req.userId;
         const password = req.body.password;
-
-
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
 
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {

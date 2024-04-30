@@ -10,8 +10,10 @@ const getAllCards = async (req, res) => {
         let endPoint = 'http://localhost:4000/cards' + req.paramString;
         endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.userId);
 
+        const config = {headers: res.customHeaders};
+
         // get card data from the API
-        let response = await axios.get(endPoint);
+        let response = await axios.get(endPoint, config);
         
         // get card data and count data
         let cardData = response.data.cardData;
@@ -23,8 +25,6 @@ const getAllCards = async (req, res) => {
         // get the cardsPerPage parameter value and page value from the request
         let pageSize = res.req.query.cardsPerPage || 30;
         let page = res.req.query.page || 1;
-
-        //console.log(filterData);
 
         // render the card grid view
         res.render('cardGrid', { 
@@ -50,7 +50,9 @@ const getCardById = async (req, res, next) =>{
     try {
         let cardId = req.params.id;
         let endPoint = `http://localhost:4000/cards/${cardId}`;
-        const response = await axios.get(endPoint);
+        const config = {headers: res.customHeaders};
+
+        const response = await axios.get(endPoint,config);
         const cardData = response.data;
         res.render('singleCard', {
              card: cardData,
@@ -69,12 +71,14 @@ const getCardsBySetId = async (req, res) => {
         let endPoint = `http://localhost:4000/cards/sets/${setId}` + req.paramString;
         let setEndPoint = `http://localhost:4000/sets/${setId}`;
 
+        const config = {headers: res.customHeaders};
+
         // get card data from the API
-        const response = await axios.get(endPoint);
+        const response = await axios.get(endPoint, config);
         const cardData = response.data.cardData;
 
         // get set data from the API
-        const setResponse = await axios.get(setEndPoint);
+        const setResponse = await axios.get(setEndPoint, config);
         const setData = setResponse.data[0];
 
         // get the filter data

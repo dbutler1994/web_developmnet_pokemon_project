@@ -1,4 +1,4 @@
-// wishlistButton.js
+
 
 const increaseCounter = (targetId, cardId, collectionId) => {
     // Get the target to increase
