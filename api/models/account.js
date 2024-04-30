@@ -18,7 +18,7 @@ const getAccountByUserName = async (userName) => {
     }
 }
 
-// get all accounts from the database based on given email
+//get all accounts from the database based on given email
 const getAccountByEmail = async (email) => {
     // sql statement
     let sql = 'SELECT * FROM account_email WHERE email = ?'
@@ -31,6 +31,8 @@ const getAccountByEmail = async (email) => {
         throw new Error(error.message);
     }
 }
+
+
 
 // create a new account in the database. Inserts into account, account_password, and account_email tables
 // could have used multi statements here but decided to use transactions instead for better security 
@@ -119,7 +121,7 @@ const getAccountPasswordById = async (accountId) => {
     } catch (error) {
         throw new Error(error.message);
     }
-}
+};
 
 
 const getAccountbyEmail = async (email) => {
@@ -140,12 +142,96 @@ const getAccountbyEmail = async (email) => {
     } catch (error) {
         throw new Error(error.message);
     }
-}
+};
+
+// update the users username
+const updateUsername = async (accountId, username ) => {
+    try{
+        const emailSql = `update account set user_name = ? where account_id = ?;`;
+
+        const result = await dbPool.query(emailSql, [username,accountId]);
+
+        // check if the update was successful
+        if (result[0].affectedRows > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+
+    } catch (error) {
+        throw new Error(error.message);
+    }  
+};
+
+// update the users email
+const updateEmail = async (accountId, email ) => {
+    try{
+        const emailSql = `update account_email set email = ? where account_id = ?;`;
+        const result = await dbPool.query(emailSql, [email,accountId]);
+
+        // check if the update was successful
+        if (result[0].affectedRows > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+
+    } catch (error) {
+        throw new Error(error.message);
+    }  
+};
+
+// update the users password
+const updatePassword = async (accountId, password ) => {
+    try{
+        const passwordSql = `update account_password set password = ? where account_id = ?;`;
+        const result = await dbPool.query(passwordSql, [password,accountId]);
+
+        // check if the update was successful
+        if (result[0].affectedRows > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+
+    } catch (error) {
+        throw new Error(error.message);
+    }  
+};
+
+
+// update the users password
+const closeAccount = async (accountId ) => {
+    try{
+        const passwordSql = `delete from account  where account_id = ?;`;
+        const result = await dbPool.query(passwordSql, [accountId]);
+
+        // check if the update was successful
+        if (result[0].affectedRows > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+
+    } catch (error) {
+        throw new Error(error.message);
+    }  
+};
+
 
 
 module.exports = {
     getAccountByUserName,
     getAccountByEmail,
     createAccount,
-    loginAccount
+    loginAccount,
+    getAccountPasswordById,
+    updateUsername,
+    updateEmail,
+    updatePassword,
+    closeAccount
 };
