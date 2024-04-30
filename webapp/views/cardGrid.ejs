@@ -18,10 +18,13 @@
 <body class="d-flex flex-column">
     <%# Include header navbar %>
         <header>
-            <%- include('./modules/navbar.ejs', {totalCards: totalCards}) %>
+            <%- include('./modules/navbar.ejs') %>
         </header>
 
         <main>
+            
+            
+            
             <div class="container ">
             
                 <%# Include filter panel %>
@@ -30,12 +33,19 @@
 
                 <%# Number of cards information and options to order results %>
                 <p class="fw-semibold border-1 border-bottom border-dark-subtle mx-2 pb-2 mb-1">
-                    <% if (totalCards >0) { %>
-                        <%= Math.floor((page -1) * pageSize) +1 %> - <%= Math.min(page * pageSize, totalCards) %> of <%= totalCards %> cards 
+                    <% if (content != 'set') { %>
+                        <% if (totalCards >0) { %>
+                            <%= Math.floor((page -1) * pageSize) +1 %> - <%= Math.min(page * pageSize, totalCards) %> of <%= totalCards %> cards 
+                        <% } %>
+                    <% } else {%>
+                        <%= set.release_set_name %> <small class="ms-1 "> <%= set.set_code %></small> (Collected <span ><%= set.userCollectedCount ||0 %></span> of <%= set.total_cards %>)
                     <% } %>
                     
                 </p>
-                <%- include('./modules/cardOrderBar.ejs') %>        
+                <div>
+                    <%- include('./modules/cardOrderBar.ejs', {content : content}) %>
+                </div>
+                        
    
                 <%# Populate page with cards %>
                 <div class="container" id="cardContainer">
@@ -49,8 +59,10 @@
                 </div>
 
                 <%# Include pagination %>
-                <% if (totalCards > 0 ) { %>
-                    <%- include('./modules/pagination.ejs', {totalCards : totalCards, pageSize: pageSize, page: page}) %> 
+                <% if (totalCards > 0 && content != 'set' ) { %>
+                    <% if (totalCards >0) { %>
+                        <%- include('./modules/pagination.ejs', {totalCards : totalCards, pageSize: pageSize, page: page}) %> 
+                    <% } %>
                 <% } %>
                 
             </div>
