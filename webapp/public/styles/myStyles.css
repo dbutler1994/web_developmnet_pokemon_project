@@ -160,3 +160,7 @@ border-radius: 6px;
     transform: scale(1.5);
 }
 /*End of filter styles*/
+
+.accountSettingsBtn{
+    max-width: 205px;
+}
