@@ -28,6 +28,7 @@ const updateCollectionEntry = async (req, res) => {
                
         } else {
             // if record doesn't exist, add new entry
+            console.log('adding new entry');
             await collectionsModel.addCardCollectionEntry(userId,collectionId, cardId, copies, notes);
         }
 

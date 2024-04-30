@@ -61,10 +61,14 @@ const addCardCollectionEntry = async (userId, collectionId, cardId, copies, note
         let cardCollectionSql = 'INSERT IGNORE INTO card_collection (collection_id, card_id, note, copies) VALUES (?, ?, ?, ?)';
  
         // if no collection id is specified we get the default collection id for the user and update that
-        if(!collectionId){
+        console.log(collectionId.length);
+        console.log(typeof collectionId);
+        if(collectionId.length ===0){
+            console.log('no collection id specified');
             const collectionIdSQl = 'SELECT collection_id FROM collection WHERE is_default = 1 AND account_id = ?';
             collectionId = await dbPool.query(collectionIdSQl, [userId]);
             collectionId = collectionId[0][0].collection_id;
+            console.log(collectionId);
         }
 
         // insert the new entry into the card_collection table
@@ -117,6 +121,18 @@ const updateCollectionEntryNotes = async (userId, collectionId, cardId, notes) =
     }
 }; 
 
+const getCardsInDefaultCollection = async (userId) => {
+    try {
+        let collectionSql = 'SELECT * from view_allcollectionsentries as t1 left join view_cardgridinformation as t2 on t1.card_id = t2.card_id WHERE account_id = ? AND is_default = 1';
+        
+        const result = await dbPool.query(collectionSql, [userId]);
+
+        return result[0];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 
 
 
@@ -125,5 +141,6 @@ module.exports = {
     getCollectionsCards,
     addCardCollectionEntry,
     updateCollectionEntryCopies,
-    updateCollectionEntryNotes
+    updateCollectionEntryNotes,
+    getCardsInDefaultCollection
 };
