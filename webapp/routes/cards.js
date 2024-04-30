@@ -8,6 +8,7 @@ const cardControllers = require('../controllers/cards');
 // Define routes
 router.get('/', cardControllers.getAllCards);
 router.get('/:id', cardControllers.getCardById);
+router.get('/sets/:id', cardControllers.getCardsBySetId);
 
 
 // export router

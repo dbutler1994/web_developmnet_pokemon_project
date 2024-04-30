@@ -33,7 +33,8 @@ const getAllCards = async (req, res) => {
             pageSize: pageSize, 
             page: page,
             filters : filterData,
-            filterKeys: filterDefinitions.filterKeys
+            filterKeys: filterDefinitions.filterKeys,
+            content: 'all'
         });
 
 
@@ -61,7 +62,41 @@ const getCardById = async (req, res, next) =>{
 };
 
 
+const getCardsBySetId = async (req, res) => {
+    try {
+        // setup parameters and endpoint
+        let setId = req.params.id;
+        let endPoint = `http://localhost:4000/cards/sets/${setId}` + req.paramString;
+        let setEndPoint = `http://localhost:4000/sets/${setId}`;
+
+        // get card data from the API
+        const response = await axios.get(endPoint);
+        const cardData = response.data.cardData;
+
+        // get set data from the API
+        const setResponse = await axios.get(setEndPoint);
+        const setData = setResponse.data[0];
+
+        // get the filter data
+        let filterData = await filterController.getAllFilters(req, res);
+
+        // render the card grid view with the appropriate content
+        res.render('cardGrid', { 
+            cards: cardData, 
+            content: 'set',
+            filters : filterData,
+            filterKeys: filterDefinitions.filterKeys,
+            totalCards: cardData.length,
+            set: setData});
+
+    } catch (error) {
+        console.error('Error fetching card data:', error.message);
+        res.status(500).render('error');
+    }
+};
+
 module.exports ={
     getAllCards,
-    getCardById
+    getCardById,
+    getCardsBySetId
 }
