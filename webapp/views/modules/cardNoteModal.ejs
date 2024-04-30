@@ -4,7 +4,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h6 class="modal-title fw-bold " id="noteModalLabel">Add note for (Specific card info)</h6>
+                <h6 class="modal-title fw-bold " id="noteModalLabel<%=  %>">Hello </h6>
             </div>
 
             <div class="modal-body">
@@ -24,34 +24,55 @@
 
 
 <script>
+    // modal label and text area compontents
+    const modalLabel = document.getElementById('noteModalLabel');
+    const textArea = document.getElementById('cardNoteTextArea');
+    let lastOpenedCardId = null;
 
-    const openNoteModal = (cardId, cardName, cardNumber, set_name, cardNote ) => {
-        // Populate modal with specific card info
-        const modalLabel = document.getElementById('noteModalLabel');
-        const textArea = document.getElementById('cardNoteTextArea');
-        
+    const openNoteModal = (cardId, cardName, cardNumber, set_name, cardNote, collectionId ) => {
         // update the modal label to show current cards name and set
         modalLabel.innerHTML = `Add note for ${cardName} (${set_name} - Card no. ${cardNumber} )`;
-        
-        // update the text area with any existing note
-        if(cardNote && cardNote != ''){
-            textArea.value = cardNote.trim();
+
+        // check to see if we need to update the text area
+        if(lastOpenedCardId != cardId){
+            // populate text area  with existing note, if any
+            $('#cardNoteTextArea').val(cardNote.trim());
         }
         
-        // Show the modal
+        // store attribute values for card and colelction id for use when submitting note
+        $('#noteModal').attr('data-card-id', cardId);
+        $('#noteModal').attr('data-collection-id', collectionId);
+
+        // show the modal
         const modal = document.getElementById('noteModal');
         modal.classList.add('show');
         modal.style.display = 'block';
         document.body.classList.add('modal-open');
 
-        // Allow modal to close when clicking outside
+        // allow modal to close when clicking outside
         document.addEventListener('click', handleClickOutside('noteModal', closeNoteModal));
-
 
     };
 
+    // invoke post reques to update the record in the database or create a new one if required.
     const submitNote = () => {
-        // need to come back and add some functionality for sending notes to database
+        $.ajax({
+        url: `/collections/updateRecord`,
+        type: 'POST',
+        data: { 
+            cardId:  $('#noteModal').attr('data-card-id').trim(), 
+            collectionId: $('#noteModal').attr('data-collection-id').trim(),
+            copies: null,
+            notes: textArea.value
+        },
+        success: (response) => {
+            console.log('Collection entry updated successfully:', response);
+        },
+        error: (xhr, status, error) => {
+            console.error('Error updating Collection entry:', error);
+        }
+    });
+
         closeNoteModal();
     };
 
@@ -61,9 +82,6 @@
         modal.classList.remove('show');
         modal.style.display = 'none';
         document.body.classList.remove('modal-open');
-
-        // clear the text area
-        document.getElementById('cardNoteTextArea').value = '';
 
         // remove event listener for clicking outside
         document.removeEventListener('click', handleClickOutside('noteModal', closeNoteModal));

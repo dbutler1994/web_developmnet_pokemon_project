@@ -47,7 +47,7 @@
         <%# button to open notes modal %>
         <div class="col-3 d-flex justify-content-start align-items-center ps-2 ">
             <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
-                onclick= "openNoteModal('<%= card.card_id%>', '<%=card.card_name%>', '<%= card.card_number %>', '<%= card.set.set_name %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].note %> <% } else { %>   <% } %>' )" >
+                onclick= "openNoteModal('<%= card.card_id%>', '<%=card.card_name%>', '<%= card.card_number %>', '<%= card.set.set_name %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].note %> <% } else { %>   <% } %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id%> <% } else { %>   <% } %>' )" >
                 <i class="far fa-clipboard" style="color: grey" ></i>
             </button>
 
@@ -56,7 +56,7 @@
         <div class="col-6 d-flex justify-content-center  align-items-center">
 
             <button id="minusButton<%= card.card_id %>" class="btn-sm border-0 bgColour" 
-                onclick="decreaseCounter('collected<%= card.card_id %>')" title="Decrease number owned"  href="#">
+                onclick="decreaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id %> <% } else { %><% } %>')" title="Decrease number owned"  href="#">
                 <i class="fas fa-minus" style="color: grey"></i>
             </button>
 
@@ -65,7 +65,7 @@
             </span>
 
             <button id="plusButton<%= card.card_id %>" class="btn-sm border-0 bgColour"
-                onclick="increaseCounter('collected<%= card.card_id %>')" title="Increase number owned"  href="#">
+                onclick="increaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id %> <% } else { %><% } %>')" title="Increase number owned"  href="#">
                 <i class="fas fa-plus" style="color: grey"></i>
             </button>
 
