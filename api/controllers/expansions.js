@@ -7,11 +7,10 @@ const { json } = require('express');
 const getAllExpansions = async (req, res) => {
     // get query parameters
     const includeSets = (req.query.includeSets === 'true');
-    const userId = req.userId;
+    const userId = req.query.userId;
 
     // call the model to retrieve all expansions
     const allExpansions = await expansionsModel.getAllExpansions(includeSets);
-    console.log(allExpansions);
     let jsonResponse= allExpansions;
 
     //construct the response based on whether we need to present set information
@@ -22,10 +21,13 @@ const getAllExpansions = async (req, res) => {
             return expansionsFunctions.formatNewExpansion(expansion, false); // construct json object with expansions only
         })
     }
-        
+
     //get the user's collected cards and add the count to the response
      if(userId && includeSets){
         const userCollected = await collectionsModel.getCardsInDefaultCollection(userId);
+        console.log(userId);
+        console.log(userCollected);
+    
 
         jsonResponse[0].sets.forEach(set => {
             // get the cards the user has collected in the current set            
