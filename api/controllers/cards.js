@@ -58,6 +58,51 @@ const getAllCards = async (req, res) => {
 
 };
 
+// get all cards from the database, and format the response
+const getCardsBySetId = async (req, res) => {
+    const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
+    const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
+    const setId = req.params.setId;
+
+    const filterParams = queryParamFunctions.getFilterParams(req.query);
+
+    // call the model function to retrieve all cards
+    const result = await cardsModel.getCardsBySetId(setId, sortBy, filterParams);
+
+    // get the wishlist for the user if they are logged in
+    const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
+
+    // get the collections for the user if they are logged in
+    const collectedCards = req.query.userId ? await collectionModel.getCollectionsCards(req.query.userId) : [];
+    const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+
+    // Create a Set of card IDs present in the wishlist
+    const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+    
+    // format the response and add necessary objects such as rarity and set info
+    const jsonResponse= result.cards.map(card => {
+        const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
+        const isInWishlist = wishlistCardIds.has(card.card_id);
+
+        return {
+            card_id: card.card_id,
+            card_number: card.card_number,
+            card_name: card.card_name,
+            set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
+            rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
+            image: imageURL,
+            wishlist: isInWishlist,
+            collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
+        };
+    })
+ 
+    // Send the retrieved cards as a response
+    res.status(200).json({
+        cardData: jsonResponse
+    });
+
+};
+
 // get all details required for a single card and format the response
 const getSingleCard = async (req, res) => {
     const cardId = req.params.cardId;
@@ -145,4 +190,8 @@ const getSingleCard = async (req, res) => {
 
 
 
-module.exports = { getAllCards, getSingleCard };
+module.exports = { 
+    getAllCards, 
+    getSingleCard, 
+    getCardsBySetId 
+};

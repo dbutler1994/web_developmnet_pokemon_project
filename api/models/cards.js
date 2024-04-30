@@ -2,12 +2,8 @@
 const dbPool = require('../db/connect');
 const constructFilterWhereClause = require('../js/constructFIlterWhereClause');
 
-// Get all cards from the database
-const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filterParams) => {
-
-    // SQL to get the total number of cards
-    let countSQL = 'SELECT COUNT(Distinct card_id) as totalCards FROM view_CardGridInformation WHERE 1=1';
-
+// Get all cards sql
+const cardsSQLAggregate = () => {
     // SQL to get all cards
     let cardsSQL = 'SELECT card_id, '
     cardsSQL += 'MIN(card_number) as card_number, ' 
@@ -21,7 +17,20 @@ const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filter
     cardsSQL += 'MIN(expansion_api_id) as expansion_api_id, '
     cardsSQL += 'MIN(release_set_api_id) as release_set_api_id '
     cardsSQL += 'FROM view_cardgridinformation '
-    cardsSQL += 'WHERE 1=1 ' // initial where clause
+    cardsSQL += 'WHERE 1=1 '; 
+
+    return cardsSQL;
+}
+
+
+// Get all cards from the database
+const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filterParams) => {
+
+    // SQL to get the total number of cards
+    let countSQL = 'SELECT COUNT(Distinct card_id) as totalCards FROM view_CardGridInformation WHERE 1=1';
+
+    // SQL to get all cards
+    let cardsSQL = cardsSQLAggregate();
     
     // add the filter parameters to the SQL statement
     const whereClause = constructFilterWhereClause.constructFilterWhereClause(filterParams);
@@ -50,6 +59,37 @@ const getAllCards = async (startIndex, cardsPerPage, sortBy, releaseSort, filter
         throw new Error(error.message);
     }
 };
+
+
+const getCardsBySetId = async (setId, sortBy, filterParams) => { 
+    // SQL to get the total number of cards
+    let countSQL = 'SELECT COUNT(Distinct card_id) as totalCards FROM view_CardGridInformation WHERE 1=1';
+
+    // SQL to get all cards
+    let cardsSQL = cardsSQLAggregate();
+    cardsSQL += ' AND release_set_id = ?';
+
+    // add the filter parameters to the SQL statement
+    const whereClause = constructFilterWhereClause.constructFilterWhereClause(filterParams);
+    cardsSQL += whereClause.whereClause;
+
+    // add group by clause to the SQL statement
+    cardsSQL += ' GROUP BY card_id';
+
+    // add the order by an limit clauses to the SQL statement
+    cardsSQL += getOrderByString(sortBy);
+
+    try {
+        // get the total number of cards and all cards
+        const cardsResult = await dbPool.query(cardsSQL, [setId,...whereClause.values, sortBy]);
+        
+        return{
+            cards: cardsResult[0]
+        } ;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 
 // generate the order by string 
 const getOrderByString =  (sortBy, releaseSort) => {
@@ -185,5 +225,6 @@ module.exports = {
      getSingleCardResistance, 
      getSingleCardWeakness, 
      getSingleCardRetreat,
-     getSingleCardAbility
+     getSingleCardAbility,
+     getCardsBySetId
 };

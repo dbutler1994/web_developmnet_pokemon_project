@@ -14,6 +14,21 @@ const getAllSets = async () => {
     }
 };
 
+// Get all sets from the database
+const getSetById = async (setId) => {
+
+    let sql = 'select * from view_expansionsets where release_set_id =?;';
+
+    try {
+        const result = await dbPool.query(sql, [setId]);
+        return result[0];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+
 module.exports = {
-     getAllSets
+     getAllSets,
+     getSetById 
 };
