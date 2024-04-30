@@ -114,10 +114,236 @@ const getUserLogout = ( async (req, res) =>{
 });
 
 
+// controller to get user settings
+const getAccountSettings = ((req, res) =>{
+    
+    // redicrect user to login page if not logged in
+    if(typeof req.userId === 'undefined'){
+        res.redirect("/account/login")
+    };
+    
+    // user is logged in, render the account settings page
+    res.render("accountSettings", {
+        user: req.session.user});
+});
+
+// Controller for updating the username
+const postUpdateUsername = ( async (req, res) =>{   
+    try {
+        let endPoint = 'http://localhost:4000/account/settings/updateUsername';
+
+        // redirect user to login page if not logged in
+        if(typeof req.userId === 'undefined'){
+            res.redirect("/account/login")
+        };
+
+        // get data from the request body
+        const userId = req.userId;
+        const username = req.body.username;
+        const password = req.body.password;
+
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        // send post request to the API to create a new account
+        const response = await axios.post(endPoint, {
+            userId,
+            username,
+            password
+        }, config); 
+
+
+        // handle response from the API for successful account creation
+        if(response.status === 201){
+            req.session.user.account.user_name = username;
+            res.render('accountSettings', {success: 'Username updated successfully'})
+        }
+
+    } catch (error) {
+        // handle response from the API for incorrect password
+        if(error.response.status === 401){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        if(error.response.status === 409){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        // handle general error
+        if(error.response.status === 500){
+            res.status(500).json({ error: error.response.data.error });
+        }
+        
+    }
+});
+
+
+// Controller for updating the email
+const postUpdateEmail = ( async (req, res) =>{   
+    try {
+        let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+
+        // redirect user to login page if not logged in
+        if(typeof req.userId === 'undefined'){
+            res.redirect("/account/login")
+        };
+
+        // get data from the request body
+        const userId = req.userId;
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        // send post request to the API to create a new account
+        const response = await axios.post(endPoint, {
+            userId,
+            email,
+            password
+        }, config); 
+
+
+        // handle response from the API for successful account creation
+        if(response.status === 201){
+            req.session.user.account.email = email;
+            res.render('accountSettings', {success: 'Email updated successfully'})
+        }
+
+    } catch (error) {
+        // handle response from the API for incorrect password
+        if(error.response.status === 401){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        if(error.response.status === 409){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        // handle general error
+        if(error.response.status === 500){
+            res.status(500).json({ error: error.response.data.error });
+        }
+        
+    }
+});
+
+// Controller for updating the email
+const postUpdatePassword = ( async (req, res) =>{   
+    try {
+        let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+
+        // redirect user to login page if not logged in
+        if(typeof req.userId === 'undefined'){
+            res.redirect("/account/login")
+        };
+
+        // get data from the request body
+        const userId = req.userId;
+        const newPassword = req.body.newPassword;
+        const currentPassword = req.body.password;
+
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        // send post request to the API to create a new account
+        const response = await axios.post(endPoint, {
+            userId,
+            newPassword,
+            currentPassword
+        }, config); 
+
+
+        // handle response from the API for successful account creation
+        if(response.status === 201){
+            res.render('accountSettings', {success: 'Password updated successfully'})
+        }
+
+    } catch (error) {
+        // handle response from the API for incorrect password
+        if(error.response.status === 401){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        if(error.response.status === 409){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        // handle general error
+        if(error.response.status === 500){
+            res.status(500).json({ error: error.response.data.error });
+        }
+        
+    }
+});
+
+
+// Controller for updating the email
+const postCloseAccount = ( async (req, res) =>{   
+    try {
+        let endPoint = 'http://localhost:4000/account/settings/closeAccount';
+
+        // redirect user to login page if not logged in
+        if(typeof req.userId === 'undefined'){
+            res.redirect("/account/login")
+        };
+
+        // get data from the request body
+        const userId = req.userId;
+        const password = req.body.password;
+
+
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        // send post request to the API to create a new account
+        const response = await axios.post(endPoint, {
+            userId,
+            password
+        }, config); 
+
+        console.log('just before redirecting to logout');
+        console.log(response);
+        // destroy the session and redirect to the home page
+        if(response.status === 200){
+        
+            res.redirect('/account/logout');
+        }
+        console.log('just after redirecting to logout');
+
+    } catch (error) {
+        // handle response from the API for incorrect password
+        if(error.response.status === 401){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        if(error.response.status === 409){
+            res.render('accountSettings', {error: error.response.data.error});
+        }
+
+        // handle general error
+        if(error.response.status === 500){
+            res.status(500).json({ error: error.response.data.error });
+        }
+        
+    }
+});
+
+
+
 module.exports ={
     getCreateAccount,
     postCreateAccount,
     getUserLogin,
     postUserLogin,
-    getUserLogout
+    getUserLogout,
+    getAccountSettings,
+    postUpdateUsername,
+    postUpdateEmail,
+    postUpdatePassword,
+    postCloseAccount
 }
