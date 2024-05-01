@@ -96,7 +96,7 @@ const getCardsByCollectionId = async (collectionId, startIndex, cardsPerPage, so
     let countSQL = 'select COUNT(*) from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
 
     // SQL to get all cards
-    let cardsSQL = 'select t2.* from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
+    let cardsSQL = 'select t2.name as card_name, t2.* from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
     
     
     // add the filter parameters to the SQL statement
