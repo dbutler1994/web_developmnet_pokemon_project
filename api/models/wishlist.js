@@ -10,8 +10,8 @@ const addToWishlist = async (userId, cardId) => {
         const insertQuery = 'INSERT IGNORE INTO Wishlist (account_id, card_id) VALUES (?, ?)';
         const result = await dbPool.query(insertQuery, [userId, cardId]);
 
-        // check if insertion occurred (insertId is non-zero)
-        if (result.insertId !== 0) {
+        // check if insertion occurred (affectedRows is non-zero)
+        if (result.affectedRows  != 0) {
             return { message: "Card added to wishlist" };
         } else {
             return { message: "Card already exists in the wishlist" };
@@ -29,8 +29,8 @@ const removeFromWishlist = async (userId, cardId) => {
         const deleteQuery = 'DELETE FROM Wishlist WHERE account_id = ? AND card_id = ?';
         const result = await dbPool.query(deleteQuery, [userId, cardId]);
 
-        // check if insertion occurred (insertId is non-zero)
-        if (result.insertId !== 0) {
+        // check if deletion occurred (affectedRows is non-zero)
+        if (result.affectedRows  != 0) {
             return { message: "Card removed from wishlist" };
         } else {
             return { message: "Card did not exist in the wishlist" };
@@ -42,9 +42,9 @@ const removeFromWishlist = async (userId, cardId) => {
 
 };
 
-// get all cards in a specified user's wishlist
+// get all cards in a specified user's wishlist. Allows for filtering by card id
 const getWishlist = async (userId, cardId) => {
-    // get all cards in the wishlist 
+    // build the query string and initialise the query values array 
     let sql = 'SELECT card_id FROM Wishlist WHERE 1 = 1';
     let queryValues = [];
 
@@ -59,7 +59,7 @@ const getWishlist = async (userId, cardId) => {
         sql += ' AND card_id = ?';
         queryValues.push(cardId);
     };
-    console.log(sql);
+
     try {
         const result = await dbPool.query(sql, [...queryValues]);
         return result[0];

@@ -3,9 +3,10 @@ const dbPool = require('../db/connect');
 
 // Get all sets from the database
 const getAllSets = async () => {
-
+    // sql statement
     let sql = 'select * from view_expansionsets;';
 
+    // query the database and return the result
     try {
         const result = await dbPool.query(sql);
         return result[0];
@@ -14,11 +15,12 @@ const getAllSets = async () => {
     }
 };
 
-// Get all sets from the database
+// Get all sets from the database, and filter by the setId
 const getSetById = async (setId) => {
-
+    // sql statement
     let sql = 'select * from view_expansionsets where release_set_id =?;';
 
+    // query the database and return the result
     try {
         const result = await dbPool.query(sql, [setId]);
         return result[0];

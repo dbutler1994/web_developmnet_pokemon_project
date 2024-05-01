@@ -8,22 +8,21 @@ const getAccountByUserName = async (userName) => {
     // sql statement
     let sql = 'SELECT * FROM account WHERE user_name = ?'
 
-    // try and find the user
+    // try and find the user and return result
     try {
         const result = await dbPool.query(sql, [userName]);
-        console.log(result[0][0]);
         return result[0][0];
     } catch (error) {
         throw new Error(error.message);
     }
 }
 
-//get all accounts from the database based on given email
+// get all accounts from the database based on given email
 const getAccountByEmail = async (email) => {
     // sql statement
     let sql = 'SELECT * FROM account_email WHERE email = ?'
 
-    // try and find the user
+    // try and find the user and return result
     try {
         const result = await dbPool.query(sql, [email]);
         return result[0][0];
@@ -31,8 +30,6 @@ const getAccountByEmail = async (email) => {
         throw new Error(error.message);
     }
 }
-
-
 
 // create a new account in the database. Inserts into account, account_password, and account_email tables
 // could have used multi statements here but decided to use transactions instead for better security 
@@ -85,7 +82,7 @@ const createAccount = async ( firstName, lastName, username, email, password ) =
     }
 };
 
-// controller function to login a user
+// model to valudate a user when attempt to login account. Returns the account if successful
 const loginAccount = async ( email, password ) => {
     try {
         // get the password and acount id from the database if they exist
@@ -99,7 +96,6 @@ const loginAccount = async ( email, password ) => {
 
         if (!passwordMatch) {
             const error = new Error("Incorrect Password.");
-            //error.code = 401;
             throw error;
         }
 
@@ -111,28 +107,30 @@ const loginAccount = async ( email, password ) => {
     }
 };
 
-
+// retrieve the stored password for a given account id. Password stored as varbinary in the database so converts to string and returns
 const getAccountPasswordById = async (accountId) => {
     try{
         const passwordSql = 'SELECT password FROM account_password WHERE account_id = ?';
+
         const [passwordResult] = await dbPool.query(passwordSql, accountId);
-        return passwordResult[0].password.toString('utf-8'); // another 2.5 hours wasted on this line
+        
+        return passwordResult[0].password.toString('utf-8');
 
     } catch (error) {
         throw new Error(error.message);
     }
 };
 
-
+// get the account details for a given email address
 const getAccountbyEmail = async (email) => {
     try{
+        // build sql string and query the database
         const emailSql = `SELECT * FROM view_account WHERE email = ?;`;
         const [accountResult] = await dbPool.query(emailSql, [email]);
 
         // check if user exists and throw an error if they don't
         if (accountResult.length === 0) {
             const error = new Error("Email address not found. Please register first.");
-            //error.code = 401;
             throw error;
         }
 
@@ -144,11 +142,11 @@ const getAccountbyEmail = async (email) => {
     }
 };
 
-// update the users username
+// update the Username in the database for a given user
 const updateUsername = async (accountId, username) => {
     try{
+        // build query string and update the database
         const emailSql = `update account set user_name = ? where account_id = ?;`;
-
         const result = await dbPool.query(emailSql, [username,accountId]);
 
         // check if the update was successful
@@ -158,15 +156,15 @@ const updateUsername = async (accountId, username) => {
             return false; 
         }
 
-
     } catch (error) {
         throw new Error(error.message);
     }  
 };
 
-// update the users email
+// update the email in the database for a given user
 const updateEmail = async (accountId, email ) => {
     try{
+        // build query string and update the database
         const emailSql = `update account_email set email = ? where account_id = ?;`;
         const result = await dbPool.query(emailSql, [email,accountId]);
 
@@ -186,6 +184,7 @@ const updateEmail = async (accountId, email ) => {
 // update the users password
 const updatePassword = async (accountId, password ) => {
     try{
+        // build query string and update the database
         const passwordSql = `update account_password set password = ? where account_id = ?;`;
         const result = await dbPool.query(passwordSql, [password,accountId]);
 
@@ -203,9 +202,10 @@ const updatePassword = async (accountId, password ) => {
 };
 
 
-// update the users password
+// delete the account from the database
 const closeAccount = async (accountId ) => {
     try{
+        // build query string and attempt to delete account from database.
         const passwordSql = `delete from account  where account_id = ?;`;
         const result = await dbPool.query(passwordSql, [accountId]);
 
@@ -221,8 +221,6 @@ const closeAccount = async (accountId ) => {
         throw new Error(error.message);
     }  
 };
-
-
 
 module.exports = {
     getAccountByUserName,
