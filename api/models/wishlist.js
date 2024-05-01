@@ -59,7 +59,7 @@ const getWishlist = async (userId, cardId) => {
         sql += ' AND card_id = ?';
         queryValues.push(cardId);
     };
-
+    console.log(sql);
     try {
         const result = await dbPool.query(sql, [...queryValues]);
         return result[0];

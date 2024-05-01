@@ -145,7 +145,7 @@ const getAccountbyEmail = async (email) => {
 };
 
 // update the users username
-const updateUsername = async (accountId, username ) => {
+const updateUsername = async (accountId, username) => {
     try{
         const emailSql = `update account set user_name = ? where account_id = ?;`;
 

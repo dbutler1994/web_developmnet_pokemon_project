@@ -47,4 +47,7 @@ const getAllExpansions = async (req, res) => {
 
 };
 
-module.exports = { getAllExpansions };
+
+module.exports = { 
+    getAllExpansions
+};

@@ -7,6 +7,9 @@ const collectionFunctions = require('../js/collectionFunctions');
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
+    // see it the collection if is in the query
+    const collectionId = req.params.collectionId;
+
     // get pagination details from the request
     const page = parseInt(req.query.page) || 1; //  default to 1 if not specified
 
@@ -19,8 +22,16 @@ const getAllCards = async (req, res) => {
     // calculate the start index for the query
     const startIndex = (page - 1) * cardsPerPage; // figure out first card to retrieve
 
+    let result;
+    console.log('collection id:', collectionId);
+    console.log('collection id:', typeof collectionId);
     // call the model function to retrieve all cards
-    const result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+    if(!collectionId){
+        result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+    } else {   
+        console.log('collection id:', collectionId);
+        result = await cardsModel.getCardsByCollectionId(collectionId,startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+    }
 
     // get the wishlist for the user if they are logged in
     const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
@@ -106,6 +117,8 @@ const getCardsBySetId = async (req, res) => {
 // get all details required for a single card and format the response
 const getSingleCard = async (req, res) => {
     const cardId = req.params.cardId;
+    const userId = req.query.userId;    
+
 
     try {
         // Get the card details from the model
@@ -129,13 +142,13 @@ const getSingleCard = async (req, res) => {
         const formattedAttacks = await cardFunctions.formatCardAttacks(cardAttacks);
 
         // get the wishlist for the user if they are logged in
-        const wishlist = 6 ? await wishlistModel.getWishlist(6, cardId) : [];
+        const wishlist = userId ? await wishlistModel.getWishlist(userId, cardId) : [];
         const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
         const isInWishlist = wishlistCardIds.has(parseInt(cardId));
-        console.log(wishlistCardIds);
+        console.log(wishlist);
 
         // get the collections for the user if they are logged in
-        const collectedCards = 6 ? await collectionModel.getCollectionsCards(6, cardId) : [];
+        const collectedCards = userId ? await collectionModel.getCollectionsCards(userId, cardId) : [];
         const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
 
         // setup response object

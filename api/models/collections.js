@@ -1,6 +1,26 @@
 // get access to dbPool
 const dbPool = require('../db/connect');
 
+// get all collections
+const getAllCollections = async (userId) => {
+    try {
+        let collectionSql = 'SELECT * FROM view_collectionsummary';
+
+        // add a where clause if a user id is specified
+        if(userId){
+            collectionSql += ' WHERE account_id = ?';
+        }
+
+        const result = await dbPool.query(collectionSql, [userId]);
+
+        return result[0];
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+
+// get all collections for a specific user
 
 // create a new collection with the collection name and default collection status
 const createCollection = async (userId, collectionName, isDefaultCollection, connection ) => {
@@ -18,6 +38,25 @@ const createCollection = async (userId, collectionName, isDefaultCollection, con
     } catch (error) {
         throw new Error(error.message);
     }
+};
+
+// update the users password
+const deleteCollection = async (collectionId) => {
+    try{
+        const deleteSQl = `delete from collection  where collection_id = ?;`;
+        const result = await dbPool.query(deleteSQl, [collectionId]);
+
+        // check if the update was successful
+        if (result[0].affectedRows > 0) {
+            return true; 
+        } else {
+            return false; 
+        }
+
+
+    } catch (error) {
+        throw new Error(error.message);
+    }  
 };
 
 // get the collection data optional where clauses for user id, card id and collection id
@@ -58,21 +97,39 @@ const addCardCollectionEntry = async (userId, collectionId, cardId, copies, note
     try {
         // build sql string
         // unique constraint on the card_collection table will prevent duplicate entries. therefore can use insert ignore
-        let cardCollectionSql = 'INSERT IGNORE INTO card_collection (collection_id, card_id, note, copies) VALUES (?, ?, ?, ?)';
+        let cardCollectionSql = 'INSERT  INTO card_collection (collection_id, card_id, note, copies) VALUES (?, ?, ?, ?)';
  
         // if no collection id is specified we get the default collection id for the user and update that
-        console.log(collectionId.length);
-        console.log(typeof collectionId);
         if(collectionId.length ===0){
-            console.log('no collection id specified');
-            const collectionIdSQl = 'SELECT collection_id FROM collection WHERE is_default = 1 AND account_id = ?';
+            let collectionIdSQl = 'SELECT collection_id FROM collection WHERE account_id = ? AND is_default = 1';
             collectionId = await dbPool.query(collectionIdSQl, [userId]);
             collectionId = collectionId[0][0].collection_id;
-            console.log(collectionId);
+
         }
 
         // insert the new entry into the card_collection table
         const result = await dbPool.query(cardCollectionSql, [collectionId, cardId, notes, copies]);
+
+        return result[0];
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+// add a new entry into the card collection table for a specific user and collection (or default collection if none specified)
+const removeCardCollectionEntry = async (collectionId, cardId) => {
+    try {
+        // build sql string
+        let deletecardCollectionSql = 'delete  from card_collection where collection_id = ? and card_id = ?';
+
+        console.log(collectionId);
+        console.log(cardId);
+        // if no collection id is specified we get the default collection id for the user and update that
+        // insert the new entry into the card_collection table
+        const result = await dbPool.query(deletecardCollectionSql, [collectionId, cardId]);
+        console.log(result[0]);
+        return result[0];
 
     } catch (error) {
         throw new Error(error.message);
@@ -121,6 +178,7 @@ const updateCollectionEntryNotes = async (userId, collectionId, cardId, notes) =
     }
 }; 
 
+// get all the cards in the default collection for a specific user
 const getCardsInDefaultCollection = async (userId) => {
     try {
         let collectionSql = 'SELECT * from view_allcollectionsentries as t1 left join view_cardgridinformation as t2 on t1.card_id = t2.card_id WHERE account_id = ? AND is_default = 1';
@@ -136,11 +194,16 @@ const getCardsInDefaultCollection = async (userId) => {
 
 
 
+
+
 module.exports = {
     createCollection,
+    deleteCollection,
     getCollectionsCards,
     addCardCollectionEntry,
+    removeCardCollectionEntry,
     updateCollectionEntryCopies,
     updateCollectionEntryNotes,
-    getCardsInDefaultCollection
+    getCardsInDefaultCollection,
+    getAllCollections
 };

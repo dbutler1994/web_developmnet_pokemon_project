@@ -91,6 +91,41 @@ const getCardsBySetId = async (setId, sortBy, filterParams) => {
     }
 }
 
+const getCardsByCollectionId = async (collectionId, startIndex, cardsPerPage, sortBy, releaseSort, filterParams) => {
+    // SQL to get the total number of cards
+    let countSQL = 'select COUNT(*) from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
+
+    // SQL to get all cards
+    let cardsSQL = 'select t2.* from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
+    
+    
+    // add the filter parameters to the SQL statement
+    const whereClause = constructFilterWhereClause.constructFilterWhereClause(filterParams);
+    cardsSQL += whereClause.whereClause;
+    countSQL += whereClause.whereClause;
+
+
+    // add the order by an limit clauses to the SQL statement
+    cardsSQL += getOrderByString(sortBy, releaseSort);
+    cardsSQL += ' LIMIT ?, ?';
+
+    console.log(cardsSQL);
+
+    try {
+        // get the total number of cards and all cards
+        const cardsResult = await dbPool.query(cardsSQL, [collectionId,...whereClause.values, startIndex, cardsPerPage]);
+        const countResult = await dbPool.query(countSQL, [collectionId,...whereClause.values]);
+        
+        return{
+            totalCards: countResult[0][0],
+            cards: cardsResult[0]
+        } ;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+
+}
+
 // generate the order by string 
 const getOrderByString =  (sortBy, releaseSort) => {
     let orderString = ' ';
@@ -226,5 +261,6 @@ module.exports = {
      getSingleCardWeakness, 
      getSingleCardRetreat,
      getSingleCardAbility,
-     getCardsBySetId
+     getCardsBySetId,
+     getCardsByCollectionId
 };

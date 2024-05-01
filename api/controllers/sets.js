@@ -5,7 +5,7 @@ const { get } = require('../routes/cards');
 // get all cards from the database, and format the response
 const getAllSets = async (req, res) => {
     // get the user id from the request
-    const userId = req.userId;
+    const userId = req.query.userId;
 
     // call the model function to retrieve all cards
     const allSets = await setsModel.getAllSets();
@@ -34,8 +34,9 @@ const getAllSets = async (req, res) => {
 // get set by id from the database, and format the response
 const getSetById = async (req, res) => {
     // get the user id from the request
-    const userId = req.userId;
+    const userId = req.query.userId;
     const setId = req.params.setId;
+    console.log(userId);
 
     // call the model function to retrieve all cards
     const allSets = await setsModel.getSetById(setId);

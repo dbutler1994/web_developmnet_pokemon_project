@@ -7,8 +7,11 @@ const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
         // search for the icon by looking for the i tag
         const heartIcon = heartButton.querySelector('i');
 
+        // determine whether to call add or remove route based on heart colour
+        const rotueToCall = (heartIcon.style.color === 'red' ? 'remove' : 'add'); 
         // change colour if found using  tenary if statement
         if (heartIcon) {
+            
             heartIcon.style.color = (heartIcon.style.color === 'red' ? 'grey' : 'red');
         }
 
@@ -24,7 +27,7 @@ const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
 
         // Make AJAX POST request to update wishlist
         const cardId = buttonId.replace('heartButton', ''); // get card ID from button ID
-        const rotueToCall = (inWishlist ? 'remove' : 'add'); // determine wishlist status based on heart color
+        
 
         $.ajax({
             url: `/wishlist/${rotueToCall}`, // enpdoint to update wishlist
