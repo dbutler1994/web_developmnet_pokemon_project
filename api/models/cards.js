@@ -93,7 +93,7 @@ const getCardsBySetId = async (setId, sortBy, filterParams) => {
 
 const getCardsByCollectionId = async (collectionId, startIndex, cardsPerPage, sortBy, releaseSort, filterParams) => {
     // SQL to get the total number of cards
-    let countSQL = 'select COUNT(*) from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
+    let countSQL = 'select COUNT(*) as totalCards from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
 
     // SQL to get all cards
     let cardsSQL = 'select t2.name as card_name, t2.* from  view_allcollectionsentries t1 left JOIN view_cardgridinformation t2 on t1.card_id = t2.card_id where t1.collection_id  =?';
