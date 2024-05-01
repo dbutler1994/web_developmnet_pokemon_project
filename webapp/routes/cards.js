@@ -9,6 +9,7 @@ const cardControllers = require('../controllers/cards');
 router.get('/', cardControllers.getAllCards);
 router.get('/:id', cardControllers.getCardById);
 router.get('/sets/:id', cardControllers.getCardsBySetId);
+router.get('/collections/:collectionId', cardControllers.getAllCardsByCollectionId);
 
 
 // export router

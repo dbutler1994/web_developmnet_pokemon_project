@@ -45,27 +45,29 @@
     <div class="row">
 
         <%# button to open notes modal %>
-        <div class="col-3 d-flex justify-content-start align-items-center ps-2 ">
-            <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
-                onclick= "openNoteModal('<%= card.card_id%>', '<%=card.card_name%>', '<%= card.card_number %>', '<%= card.set.set_name %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].note %> <% } else { %>   <% } %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id%> <% } else { %>   <% } %>' )" >
+        <div class="col-3 d-flex justify-content-start align-items-center ps-0 ">
+
+            <%- include('./cardNoteModal.ejs', {card : card}) %>
+            <!-- <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
+                onclick= "openNoteModal('<%= JSON.stringify(card) %>' )" >
                 <i class="far fa-clipboard" style="color: grey" ></i>
-            </button>
+            </button> -->
 
         </div>
 
         <div class="col-6 d-flex justify-content-center  align-items-center">
 
             <button id="minusButton<%= card.card_id %>" class="btn-sm border-0 bgColour" 
-                onclick="decreaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id %> <% } else { %><% } %>')" title="Decrease number owned"  href="#">
+                onclick="decreaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.targetCollection) { %> <%= card.targetCollection.collection_id %> <% } else { %><% } %>')" title="Decrease number owned"  href="#">
                 <i class="fas fa-minus" style="color: grey"></i>
             </button>
 
             <span id="collected<%= card.card_id %>" class="fw-bold px-1 px-md-2 text-dark  ">
-                <% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].copies %> <% } else { %>  0 <% } %>
+                <% if (card.targetCollection) { %> <%= card.targetCollection.copies %> <% } else { %>  0 <% } %>
             </span>
 
             <button id="plusButton<%= card.card_id %>" class="btn-sm border-0 bgColour"
-                onclick="increaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.collections.defaultCollection[0]) { %> <%= card.collections.defaultCollection[0].collection_id %> <% } else { %><% } %>')" title="Increase number owned"  href="#">
+                onclick="increaseCounter('collected<%= card.card_id %>', '<%= card.card_id %>', '<% if (card.targetCollection) { %> <%= card.targetCollection.collection_id %> <% } else { %><% } %>')" title="Increase number owned"  href="#">
                 <i class="fas fa-plus" style="color: grey"></i>
             </button>
 
@@ -74,9 +76,9 @@
 
         <%# button to open card entries modal %>
         <div class="col-3 d-flex justify-content-end align-items-center ">
-            <button id="cardEntries<%= card.card_id %>" class="btn-sm border-0 bgColour pe-0" title="View card entries" onclick="openCardEntriesModal()">
-                <i class="fa fa-list" style="color: grey" ></i>
-            </button>
+            
+            <%- include('./cardEntriesModal.ejs', {card : card, collectionList: collectionList}) %>
+            
         </div>
 
     </div>

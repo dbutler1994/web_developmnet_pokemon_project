@@ -1,92 +1,43 @@
 <!-- partial to allow user to add notes -->
-<div class="modal fade" id="noteModal" tabindex="-1" role="dialog">
+<%# button for opening username modal %>
+<button id="cardNote<%= card.card_id %>" type="button" class="btn-sm border-0 bgColour pe-0"<% if (loggedIn) { %>data-bs-toggle="modal" <% } %>     data-bs-target="#cardNoteModal<%= card.card_id %>">
+    <i class="far fa-clipboard" style="color: grey" ></i>
+</button>
+<!-- <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
+    onclick= "openNoteModal('<%= JSON.stringify(card) %>' )" >
+    <i class="far fa-clipboard" style="color: grey" ></i>
+</button> -->
+
+    <!-- Modal for changing username-->
+<div class="modal fade" id="cardNoteModal<%= card.card_id %>" tabindex="-1" role="dialog" aria-labelledby="cardNoteModal<%= card.card_id %>" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h6 class="modal-title fw-bold " id="noteModalLabel<%=  %>">Hello </h6>
+                <h6 class="modal-title fw-bold " id="cardEntryLabel"> <%= card.card_name %> - ( <%= card.set.set_name%> - <%= card.card_number %> / <%= card.set.total_cards %> )</h6>
             </div>
-
             <div class="modal-body">
+
+              
+            <div>
                 <div>
-                    <textarea class="form-control" id="cardNoteTextArea" rows="6" maxlength="500" placeholder="Enter note for card"></textarea>
+                    <textarea class="form-control" id="cardNoteTextArea<%= card.card_id%>" rows="6" maxlength="500" placeholder="Enter note for card"><% if (card.targetCollection) { %><%= card.targetCollection.note.trim() %><% } %></textarea>
                 </div>
-            </div>
+            </div>    
+            
+            
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary     me-2" data-dismiss="modal"
-                    onclick="closeNoteModal()">Cancel</button>
-                <button type="button" class="btn actionBtn" onclick="submitNote()">Submit</button>
+                <button type="button"  class="btn negativeActionBtn" data-bs-dismiss="modal">Close</button>
+                <button type="button" data-bs-dismiss="modal" onclick="submitNote('<%=card.card_id%>','<% if (card.targetCollection) { %><%= card.targetCollection.collection_id %><% } %>',document.getElementById('cardNoteTextArea<%= card.card_id%>').value)" class="btn actionBtn">Save changes</button>
             </div>
+      
+        </div>
         </div>
     </div>
 </div>
 
 
-
 <script>
-    // modal label and text area compontents
-    const modalLabel = document.getElementById('noteModalLabel');
-    const textArea = document.getElementById('cardNoteTextArea');
-    let lastOpenedCardId = null;
-
-    const openNoteModal = (cardId, cardName, cardNumber, set_name, cardNote, collectionId ) => {
-        // update the modal label to show current cards name and set
-        modalLabel.innerHTML = `Add note for ${cardName} (${set_name} - Card no. ${cardNumber} )`;
-
-        // check to see if we need to update the text area
-        if(lastOpenedCardId != cardId){
-            // populate text area  with existing note, if any
-            $('#cardNoteTextArea').val(cardNote.trim());
-        }
-        
-        // store attribute values for card and colelction id for use when submitting note
-        $('#noteModal').attr('data-card-id', cardId);
-        $('#noteModal').attr('data-collection-id', collectionId);
-
-        // show the modal
-        const modal = document.getElementById('noteModal');
-        modal.classList.add('show');
-        modal.style.display = 'block';
-        document.body.classList.add('modal-open');
-
-        // allow modal to close when clicking outside
-        document.addEventListener('click', handleClickOutside('noteModal', closeNoteModal));
-
-    };
-
-    // invoke post reques to update the record in the database or create a new one if required.
-    const submitNote = () => {
-        $.ajax({
-        url: `/collections/updateRecord`,
-        type: 'POST',
-        data: { 
-            cardId:  $('#noteModal').attr('data-card-id').trim(), 
-            collectionId: $('#noteModal').attr('data-collection-id').trim(),
-            copies: null,
-            notes: textArea.value
-        },
-        success: (response) => {
-            console.log('Collection entry updated successfully:', response);
-        },
-        error: (xhr, status, error) => {
-            console.error('Error updating Collection entry:', error);
-        }
-    });
-
-        closeNoteModal();
-    };
-
-    const closeNoteModal = () => {
-        // get this modal and hide it
-        const modal = document.getElementById('noteModal');
-        modal.classList.remove('show');
-        modal.style.display = 'none';
-        document.body.classList.remove('modal-open');
-
-        // remove event listener for clicking outside
-        document.removeEventListener('click', handleClickOutside('noteModal', closeNoteModal));
-    };
-
 
 
 </script>

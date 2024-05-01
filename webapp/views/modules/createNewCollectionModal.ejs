@@ -1,0 +1,76 @@
+
+
+                <%# button for opening username modal %>
+                <button type="button" class="btn  actionBtn col-12 accountSettingsBtn " data-bs-toggle="modal" data-bs-target="#createCollectionModal">
+                    <i class="fas fa-pen-to-square pe-2"></i> <span>Create Collection</span>
+                </button>
+              
+                    <!-- Modal for changing username-->
+                <div class="modal fade" id="createCollectionModal" tabindex="-1" role="dialog" aria-labelledby="createCollectionModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h6 class="modal-title fw-bold " id="noteModalLabel"> Create new collection </h6>
+                            </div>
+                            <div class="modal-body">
+                              
+                                <form action="/collections/createCollection" method="POST"  class="row g-3 needs-validation" novalidate  >
+                                    <div class="col-12 pe-0 me-md-2">
+                                        <label for="collectionNameLabel" class="form-label">Collection Name</label>
+                                        <div class="input-group has-validation">
+                                            <input type="text" class="form-control" id="collectionName" name="collectionName" placeholder="Collection name...." minlength="3" maxlength="20" required>
+                                            <div class="invalid-feedback">
+                                                Please enter a valid collection name.
+                                            </div>
+                                        </div>
+                                        <small id="collectionHelpBlock" class="form-text text-muted">
+                                            Your collection name must be 3-20 characters long.
+                                        </small>
+                                    </div>
+
+                                    <%# default values %>
+                                    <input type="hidden" name="isDefault" value= 0>
+
+                            
+                            <div class="modal-footer">
+                                <button type="button"  class="btn negativeActionBtn" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn actionBtn">Save changes</button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<script>
+    // Boilerplater code from Bootstrap
+    // Checks each form in the page and applies some check such as ensuring it is not empty if required and meets the min and max length requirements
+        (function () {
+            'use strict'
+    
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+    
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity() || !validateMatchingEmail()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+    
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+</html>
+
+
+
+
+
