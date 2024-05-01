@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const setsModel = require('../controllers/sets');
 
-router.get('/', setsModel.getAllSets); // GET all sets
-router.get('/:setId', setsModel.getSetById); // GET all sets
+// setup get routes
+router.get('/', setsModel.getAllSets); 
+router.get('/:setId', setsModel.getSetById);
 
 
 module.exports = router;

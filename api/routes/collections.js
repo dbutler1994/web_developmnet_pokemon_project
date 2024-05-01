@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const collectionsController = require('../controllers/collections');
-const { route } = require('./cards');
-
 
 // routes to get all collections
 router.get('/', collectionsController.getAllCollections);
@@ -17,8 +15,5 @@ router.post('/delete', collectionsController.deleteCollection);
 router.post('/update', collectionsController.updateCollectionEntry);
 router.post('/update/add', collectionsController.addCollectionEntry);
 router.post('/update/remove', collectionsController.removeCollectionEntry);
-
-
-
 
 module.exports = router;
