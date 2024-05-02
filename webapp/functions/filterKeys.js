@@ -1,12 +1,15 @@
+const { FILTER_PREFIX } = require("../config/config");
+
+// Centralised list of the filter keys used in the application to filter the cards 
 const filterKeys = {
-  categoryId: "filter_categoryId",
-  nameString: "filter_name",
-  energyTypeId: "filter_energyTypeId",
-  rarityId: "filter_rarityId",
-  evolutionStageId: "filter_evolutionStageId",
-  illustrator: "filter_illustrator",
-  weaknessId: "filter_weaknessId",
-  resistanceId: "filter_resistanceId",
+  categoryId: `${FILTER_PREFIX}categoryId`,
+  nameString: `${FILTER_PREFIX}name`,
+  energyTypeId: `${FILTER_PREFIX}energyTypeId`,
+  rarityId: `${FILTER_PREFIX}rarityId`,
+  evolutionStageId: `${FILTER_PREFIX}evolutionStageId`,
+  illustrator: `${FILTER_PREFIX}illustrator`,
+  weaknessId: `${FILTER_PREFIX}weaknessId`,
+  resistanceId: `${FILTER_PREFIX}resistanceId`
 };
 
 

@@ -1,7 +1,7 @@
 // load moment library
 const moment = require('moment');
 
-// format the date
+// format the date in the format of 'DD MMMM YYYY'. Ensures consistency in the date format
 const formatDate = (dateString) => {
 
     // get componets of the date
