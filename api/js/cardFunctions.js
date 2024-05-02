@@ -1,3 +1,5 @@
+const { BASE_IMAGE_URL } = require("../config/config");
+
 // checks if an attack with the same name already exists in an array
 const findExistingAttack = (attackArray, attackName) => {
     return attackArray.find(attack => attack.attack_name === attackName);
@@ -45,8 +47,7 @@ const formatCardAttacks = (cardAttacks) => {
 // create URL to access card images
 const createCardURL = (expansion_api_id, release_set_api_id, card_number, image_quality) =>{
     // specify base URL and add arguments to create full URL
-    let imageURL = 'https://assets.tcgdex.net/en/';
-    imageURL += `${expansion_api_id}/${release_set_api_id}/${card_number}/${image_quality}.webp`;
+    let imageURL = `${BASE_IMAGE_URL}/${expansion_api_id}/${release_set_api_id}/${card_number}/${image_quality}.webp`;
 
     return imageURL;
 }
@@ -70,6 +71,7 @@ const formatRarityInformation = (rarityId, rarityName, rarityIconURL) => {
     }
 };
 
+// format category information so that it is its own object
 const formatCategoryInformation = (categoryId,categoryName) => {
     return{
         id : categoryId,
@@ -77,6 +79,7 @@ const formatCategoryInformation = (categoryId,categoryName) => {
     }
 };
 
+// format evolution information so that it is its own object
 const formatEvolutionInformation = (evolutionStageId, evolutionStageName, evolves_from) => {
     return{
         evolution_stage_id : evolutionStageId,

@@ -1,8 +1,12 @@
+// calls the groupByCardId function to group the collected cards by card_id and then separates them into default and custom collections
+// for example if Charizard exists in 5 of the users collections, 3 of which are default and 2 are custom, the data will be formatted as follows:
+// default collections: [{collection_id: 1, card_id: 6, is_default: 1, ...}, {collection_id: 2, card_id: 6, is_default: 1, ...}, {collection_id: 3, card_id: 6, is_default: 1, ...}]
+// custom collections: [{collection_id: 4, card_id: 6, is_default: 0, ...}, {collection_id: 5, card_id: 6, is_default: 0, ...}]
 const formatCollectionsData = (collectedCards) => {
     return groupByCardId(collectedCards);
 };
 
-
+// groups the collected cards by card_id and separates them into default and custom collections
 const groupByCardId = (collectedCards) => {
     // iterate through the collectedCards and accumulate them into a single object
     return collectedCards.reduce((groupedData, collectionEntry) => {

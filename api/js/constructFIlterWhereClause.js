@@ -3,13 +3,12 @@ const constructFilterWhereClause = (filterParams) => {
     let whereClause = '';
     let values = [];
 
-
-    console.log(filterParams);
-
+    // get the query parameters and iterate through them
     Object.keys(filterParams).forEach((key) => {
         const filterValue = filterParams[key];
         const filterValueLength = Array.isArray(filterValue) ? filterValue.length : 0;
 
+        // if the filter value is an array, we need to use IN clause and capture all values
         if (filterValueLength > 1) {
             
             // for array values, use IN
@@ -20,7 +19,7 @@ const constructFilterWhereClause = (filterParams) => {
             values.push(...filterValue);
 
         } else if (!isNaN(filterValue)) {
-            // if a number use = 
+            // if a number use equala 
             whereClause += ` AND ${key} = ?`;
             values.push(Number(filterValue));
 

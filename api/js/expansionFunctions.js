@@ -29,13 +29,12 @@ const setsByExpansion = (expansionSetData) =>{
         if (existingExpansion){
             updateExistingExpansion(existingExpansion, currentRow); //expansion exists so add new set to it
         } else {
-            //console.log(currentRow);
             expansionArray.push(formatNewExpansion(currentRow, true)); // expansion does not exist in array so create new expansion object
         }
 
         return expansionArray; // return arrat into callback function
 
-      }, []); // initialise as an empty object
+      }, []); // initialise as an empty array
 }
 
 
