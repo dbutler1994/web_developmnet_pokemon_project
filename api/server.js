@@ -26,7 +26,7 @@ const wishlistRoutes = require('./routes/wishlist');
 const collectionRoutes = require('./routes/collections');   
 
 
-// Use middleware functions
+// Use middleware functions for all routes
 app.use(apiKeyMiddleware);
 
 app.use('/cards',cardsRoutes);

@@ -11,7 +11,7 @@ const addToWishlist = async (userId, cardId) => {
         const result = await dbPool.query(insertQuery, [userId, cardId]);
 
         // check if insertion occurred (affectedRows is non-zero)
-        if (result.affectedRows  != 0) {
+        if (result[0].affectedRows  != 0) {
             return { message: "Card added to wishlist" };
         } else {
             return { message: "Card already exists in the wishlist" };
@@ -30,7 +30,7 @@ const removeFromWishlist = async (userId, cardId) => {
         const result = await dbPool.query(deleteQuery, [userId, cardId]);
 
         // check if deletion occurred (affectedRows is non-zero)
-        if (result.affectedRows  != 0) {
+        if (result[0].affectedRows  != 0) {
             return { message: "Card removed from wishlist" };
         } else {
             return { message: "Card did not exist in the wishlist" };

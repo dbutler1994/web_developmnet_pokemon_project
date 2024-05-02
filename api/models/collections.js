@@ -69,7 +69,7 @@ const deleteCollection = async (collectionId) => {
 // get the collection data.  Allows for filtering by user id, card id and collection id
 const getCollectionsCards = async (userId, cardId, collectionId) => {
     try {
-        let collectionSql = 'SELECT * FROM view_allCollectionsEntries WHERE 1=1';
+        let collectionSql = 'SELECT * FROM view_allCollectionsEntries WHERE 1=1 ';
         const queryValues =[]; //holds the values to be passed to the query (dynamic)
 
         // add condition for account id if it is present and add the value to the queryValues array

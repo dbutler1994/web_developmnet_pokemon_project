@@ -7,120 +7,127 @@ const collectionFunctions = require('../js/collectionFunctions');
 
 // get all cards from the database, and format the response
 const getAllCards = async (req, res) => {
-    // see it the collection if is in the query
-    const collectionId = req.params.collectionId;
+    try{
+        // see if the collection is in the query
+        const collectionId = req.params.collectionId;
+        const userId = req.query.userId;
 
-    // get pagination details from the request
-    const page = parseInt(req.query.page) || 1; //  default to 1 if not specified
+        // get pagination details from the request
+        const page = parseInt(req.query.page) || 1; //  default to 1 if not specified
 
-    const cardsPerPage = parseInt(req.query.cardsPerPage) || 30; // default to 30 if not specified
-    const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
-    const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
+        const cardsPerPage = parseInt(req.query.cardsPerPage) || 30; // default to 30 if not specified
+        const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
+        const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
 
-    const filterParams = queryParamFunctions.getFilterParams(req.query);
+        const filterParams = queryParamFunctions.getFilterParams(req.query); // get filter parameters from the query
 
-    // calculate the start index for the query
-    const startIndex = (page - 1) * cardsPerPage; // figure out first card to retrieve
+        // calculate the start index for the query
+        const startIndex = (page - 1) * cardsPerPage; // figure out first card to retrieve
 
-    let result;
-    console.log('collection id:', collectionId);
-    console.log('collection id:', typeof collectionId);
-    // call the model function to retrieve all cards
-    if(!collectionId){
-        result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
-    } else {   
-        console.log('collection id:', collectionId);
-        result = await cardsModel.getCardsByCollectionId(collectionId,startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+        let result;
+        // assess if the user has requested all cards or cards from a specific collection and retrieve the cards accordingly
+        if(!collectionId){
+            result = await cardsModel.getAllCards(startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+        } else {   
+            result = await cardsModel.getCardsByCollectionId(collectionId,startIndex, cardsPerPage, sortBy, releaseSort, filterParams);
+        }
+
+        // get the wishlist for the user if they are logged in
+        const wishlist = userId ? await wishlistModel.getWishlist(userId) : [];
+
+        // get the collections for the user if they are logged in
+        const collectedCards = userId ? await collectionModel.getCollectionsCards(userId) : [];
+        const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+
+        // Create a Set of card IDs present in the wishlist
+        const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+
+        // format the response and add necessary objects such as rarity and set info
+        const jsonResponse= result.cards.map(card => {
+            const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
+            const isInWishlist = wishlistCardIds.has(card.card_id);
+            return {
+                card_id: card.card_id,
+                card_number: card.card_number,
+                card_name: card.card_name,
+                set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
+                rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
+                image: imageURL,
+                wishlist: isInWishlist,
+                collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
+            };
+        })
+
+        // Send the retrieved cards as a response
+        res.status(200).json({
+            summaryData: result.totalCards,
+            cardData: jsonResponse
+        });
+    } catch (error) {
+        console.error("Error retrieving all cards:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-
-    // get the wishlist for the user if they are logged in
-    const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
-
-    // get the collections for the user if they are logged in
-    const collectedCards = req.query.userId ? await collectionModel.getCollectionsCards(req.query.userId) : [];
-    const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
-
-    // Create a Set of card IDs present in the wishlist
-    const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
-    
-
-    // format the response and add necessary objects such as rarity and set info
-    const jsonResponse= result.cards.map(card => {
-        const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
-        const isInWishlist = wishlistCardIds.has(card.card_id);
-
-        return {
-            card_id: card.card_id,
-            card_number: card.card_number,
-            card_name: card.card_name,
-            set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
-            rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
-            image: imageURL,
-            wishlist: isInWishlist,
-            collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
-        };
-    })
- 
-    // Send the retrieved cards as a response
-    res.status(200).json({
-        summaryData: result.totalCards,
-        cardData: jsonResponse
-    });
-
 };
 
-// get all cards from the database, and format the response
+// get all cards from the database for a given set id, and format the response
 const getCardsBySetId = async (req, res) => {
-    const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
-    const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
-    const setId = req.params.setId;
+    try{
+        // get ordering and filter details from the request
+        const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
+        const setId = req.params.setId;
+        const filterParams = queryParamFunctions.getFilterParams(req.query);
 
-    const filterParams = queryParamFunctions.getFilterParams(req.query);
+        // get user id from the query
+        const userId = req.query.userId;
 
-    // call the model function to retrieve all cards
-    const result = await cardsModel.getCardsBySetId(setId, sortBy, filterParams);
+        // call the model function to retrieve all cards
+        const result = await cardsModel.getCardsBySetId(setId, sortBy, filterParams);
 
-    // get the wishlist for the user if they are logged in
-    const wishlist = req.query.userId ? await wishlistModel.getWishlist(req.query.userId) : [];
+        // get the wishlist for the user if they are logged in
+        const wishlist = userId ? await wishlistModel.getWishlist(userId) : [];
 
-    // get the collections for the user if they are logged in
-    const collectedCards = req.query.userId ? await collectionModel.getCollectionsCards(req.query.userId) : [];
-    const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+        // get the collections for the user if they are logged in
+        const collectedCards = userId ? await collectionModel.getCollectionsCards(userId) : [];
+        const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
 
-    // Create a Set of card IDs present in the wishlist
-    const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+        // Create a Set of card IDs present in the wishlist
+        const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
+        
+        // format the response and add necessary objects such as rarity and set info
+        const jsonResponse= result.cards.map(card => {
+            const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
+            const isInWishlist = wishlistCardIds.has(card.card_id);
+
+            return {
+                card_id: card.card_id,
+                card_number: card.card_number,
+                card_name: card.card_name,
+                set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
+                rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
+                image: imageURL,
+                wishlist: isInWishlist,
+                collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
+            };
+        })
     
-    // format the response and add necessary objects such as rarity and set info
-    const jsonResponse= result.cards.map(card => {
-        const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
-        const isInWishlist = wishlistCardIds.has(card.card_id);
+        // Send the retrieved cards as a response
+        res.status(200).json({
+            cardData: jsonResponse
+        });
+    } catch (error) {
+        console.error("Error retrieving cards by set id:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 
-        return {
-            card_id: card.card_id,
-            card_number: card.card_number,
-            card_name: card.card_name,
-            set: cardFunctions.formatSetInformation(card.set_name, card.set_code, card.release_set_total_cards),
-            rarity: cardFunctions.formatRarityInformation(card.rarity_id, card.rarity, card.rarity_icon_url),
-            image: imageURL,
-            wishlist: isInWishlist,
-            collections: collectedCardsGroupedById[card.card_id] || { defaultCollection: [], customCollections: [] }
-        };
-    })
- 
-    // Send the retrieved cards as a response
-    res.status(200).json({
-        cardData: jsonResponse
-    });
 
 };
 
 // get all details required for a single card and format the response
 const getSingleCard = async (req, res) => {
-    const cardId = req.params.cardId;
-    const userId = req.query.userId;    
-
-
     try {
+        const cardId = req.params.cardId;
+        const userId = req.query.userId;  
+
         // Get the card details from the model
         const cardDetails = await cardsModel.getSingleCard(cardId);
 
@@ -145,7 +152,6 @@ const getSingleCard = async (req, res) => {
         const wishlist = userId ? await wishlistModel.getWishlist(userId, cardId) : [];
         const wishlistCardIds = new Set(wishlist.map(item => item.card_id));
         const isInWishlist = wishlistCardIds.has(parseInt(cardId));
-        console.log(wishlist);
 
         // get the collections for the user if they are logged in
         const collectedCards = userId ? await collectionModel.getCollectionsCards(userId, cardId) : [];
@@ -192,15 +198,15 @@ const getSingleCard = async (req, res) => {
             jsonResponse.ability = cardAbility;
         }
 
-        res.json(jsonResponse);
+        res.status(200).json({
+            cardData: jsonResponse
+        });
+
     } catch (error) {
         console.error("Error retrieving card details:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
-
-
-
 
 
 module.exports = { 

@@ -1,7 +1,6 @@
 const filtersModel = require('../models/filters');
-const bcrypt = require('bcrypt');
 
-
+// get all filter options from the database. Calling functions to get filter values and construct the response
 const getFilterOptions = async (req, res) => {
     try {
 
@@ -14,10 +13,10 @@ const getFilterOptions = async (req, res) => {
 
         // send a success response
         res.status(200).json(jsonResponse);
+
     } catch (error) {
-        // send errors
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error("Error getting sets:", error);
+        res.status(500).json({error : "Internal Server Error"}  );
     }
 };
 

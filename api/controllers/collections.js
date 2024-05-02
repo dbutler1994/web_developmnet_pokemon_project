@@ -1,6 +1,6 @@
 const collectionsModel = require('../models/collections');
 
-
+// get all collections. This will be used to populate the collection dropdown in the UI
 const getAllCollections = async (req, res) => {
     try {
         // get the user id from the request
@@ -12,7 +12,8 @@ const getAllCollections = async (req, res) => {
         // send the response
         res.status(200).json(collections);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error updating collection entry:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 
 }
@@ -22,16 +23,23 @@ const createCollection = async (req, res) => {
     try {
         const { userId, collectionName, isDefaultCollection } = req.body;
 
-        // call the model to create a nw collection
+        // call the model to create a new collection
         const collections = await collectionsModel.createCollection(userId, collectionName, isDefaultCollection);
+        
         // send the response
-        res.status(200).json({ success: true, message: 'Collection created' });
+        if (collections) {
+            res.status(201).json({ message: 'Collection created' });
+        } else {    
+            res.status(500).json({ error: 'Problem creating collection' });
+        }
+
     } catch (error) {
-        res.status(500).json({ success: true, message: error.message });
+        console.error("Error updating collection entry:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
-// delete a  collection
+// delete a collection of the specified collection id 
 const deleteCollection = async (req, res) => {
     try {
         const { collectionId } = req.body;
@@ -41,8 +49,8 @@ const deleteCollection = async (req, res) => {
         // call the model to delete a collection
         const result = await collectionsModel.deleteCollection(collectionId);
 
-        if (result === true) {
-            // send a success response
+        // send the response
+        if (result) {
             res.status(200).json({ message: 'Account closed successfully' });
         } else {
             res.status(500).json({ error: 'Problem closing account' });
@@ -53,21 +61,18 @@ const deleteCollection = async (req, res) => {
     }
 }
 
+// update an existing collection entry. If the entry doesn't exist, create a new entry in the default collection for the user
 const updateCollectionEntry = async (req, res) => {
     try {
         // get the parameters from the request   
         const { cardId, userId, collectionId, copies, notes } = req.body;
 
-        console.log('notes' + notes);
-
         // Check if record exists
         const existingRecord = await collectionsModel.getCollectionsCards(userId, cardId, collectionId);
-
 
         // If record exists, update copies and notes
         if (existingRecord.length > 0) {
             // update copies
-            
             if (copies) {
                 await collectionsModel.updateCollectionEntryCopies(userId, collectionId, cardId, copies);
             }
@@ -78,27 +83,28 @@ const updateCollectionEntry = async (req, res) => {
             }
 
         } else {
-            // if record doesn't exist, add new entry
-            console.log('adding new entry');
+            // if record doesn't exist, attempt to add a new entry 
             await collectionsModel.addCardCollectionEntry(userId, collectionId, cardId, copies, notes);
         }
 
         res.status(201).json({ message: 'Collection entry successfully updated' });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error updating collection entry:", error);
+        res.status(500).json({ error: "Problem updating collection entry" });
     }
 };
 
-// add new entry to a collection
+// add new card entry to a collection
 const addCollectionEntry = async (req, res) => {
     try {
         // get the parameters from the request   
         const {userId, cardId, collectionId, copies, notes } = req.body;
-
-
         // Add new entry
         const result = await collectionsModel.addCardCollectionEntry(userId, collectionId, cardId, copies, notes);
-        if(result.affectedRows > 0){
+
+        // send the response
+        if(result){
             res.status(201).json({ message: 'Collection entry successfully updated' });
         } else {
             res.status(500).json({ error: 'Problem updating collection entry' });
@@ -117,6 +123,8 @@ const removeCollectionEntry = async (req, res) => {
 
         // remove entry
         const result = await collectionsModel.removeCardCollectionEntry(collectionId, cardId);
+
+        // send the response        
         if(result.affectedRows > 0){
             res.status(201).json({ message: 'Collection entry successfully updated' });
         } else {
@@ -124,7 +132,8 @@ const removeCollectionEntry = async (req, res) => {
         }
         
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error updating collection entry:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
