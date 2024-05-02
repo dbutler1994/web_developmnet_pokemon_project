@@ -3,10 +3,7 @@
 <button id="cardNote<%= card.card_id %>" type="button" class="btn-sm border-0 bgColour pe-0"<% if (loggedIn) { %>data-bs-toggle="modal" <% } %>     data-bs-target="#cardNoteModal<%= card.card_id %>">
     <i class="far fa-clipboard" style="color: grey" ></i>
 </button>
-<!-- <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
-    onclick= "openNoteModal('<%= JSON.stringify(card) %>' )" >
-    <i class="far fa-clipboard" style="color: grey" ></i>
-</button> -->
+
 
     <!-- Modal for changing username-->
 <div class="modal fade" id="cardNoteModal<%= card.card_id %>" tabindex="-1" role="dialog" aria-labelledby="cardNoteModal<%= card.card_id %>" aria-hidden="true">
@@ -25,7 +22,7 @@
                 </div>
             </div>    
             
-            
+            <%# call the submit note function in the public folder %>
             <div class="modal-footer">
                 <button type="button"  class="btn negativeActionBtn" data-bs-dismiss="modal">Close</button>
                 <button type="button" data-bs-dismiss="modal" onclick="submitNote('<%=card.card_id%>','<% if (card.targetCollection) { %><%= card.targetCollection.collection_id %><% } %>',document.getElementById('cardNoteTextArea<%= card.card_id%>').value)" class="btn actionBtn">Save changes</button>

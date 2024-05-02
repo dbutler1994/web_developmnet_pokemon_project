@@ -25,7 +25,7 @@ app.use(session({
 
 
 // Get custom middleware
-const {error404Handler} = require('./middleware/errorMiddleware');
+const {error404Handler, error500Handler} = require('./middleware/errorMiddleware');
 const {createQueryParameterString} = require('./middleware/addQueryParams');
 const {sessionDataToLocals} = require('./middleware/sessionDataToLocals');
 const {getUserIdFromSession}  = require('./middleware/getUserIdFromSession');
@@ -39,6 +39,7 @@ const accountRoutes = require('./routes/account');
 const wishlistRoutes = require('./routes/wishlist');
 const collectionsRoutes = require('./routes/collections');
 const aboutRoutes = require('./routes/about');
+const { PORT } = require('./config/config');
 
 // Use middleware before routes handled
 app.use(createQueryParameterString);
@@ -58,10 +59,11 @@ app.use('/about',aboutRoutes);
 
 // Use middleware after routes handled
 app.use(error404Handler);
+app.use(error500Handler);
 
 
 // Start the server or desired port or 3000 as default
-const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, (err) =>{
     if(err){
         console.log(`Error starting server: ${err.message}`);

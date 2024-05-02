@@ -4,7 +4,7 @@
                 <i class="fa fa-list" style="color: grey"></i>
     </button>
 
-    <!-- Modal for changing username-->
+   
     <div class="modal fade" id="cardEntriesModal<%= card.card_id %>" tabindex="-1" role="dialog"
         aria-labelledby="cardEntriesModal<%= card.card_id %>" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -16,10 +16,11 @@
                                 <%= card.card_number %> / <%= card.set.total_cards %> )
                     </h6>
                 </div>
+                
                 <div class="modal-body pt-0">
                     <div class="container">
                         <div class="row mb-5">
-                            <form id="pokemonActionForm<%= card.card_id %>" class="row g-3 needs-validation" novalidate>
+                            <form id="cardEntriesForm<%= card.card_id %>" class="row g-3 needs-validation" novalidate>
                                 <div class="col-12 pe-0 me-md-2">
                                     <label for="selectAction<%= card.card_id %>" class="form-label">Select Action</label>
                                     <select class="form-select" id="selectAction<%= card.card_id %>" name="selectAction">
@@ -38,10 +39,7 @@
                                     <div class="invalid-feedback">Select a collection</div>
                                 </div>
 
-                                <div class="col-12 pe-0 me-md-2">
-                                    <label for="noteTextArea<%= card.card_id %>" class="form-label">Note (Optional)</label>
-                                    <textarea class="form-control" id="noteTextArea<%= card.card_id %>" rows="4" maxlength="250" placeholder="Enter note for card"></textarea>
-                                </div>
+
                             </form>
 
                         </div>
@@ -50,7 +48,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn negativeActionBtn" data-bs-dismiss="modal">Close</button>
-                        <button onclick="addRemoveCardFromCollection('selectAction<%=card.card_id%>','selectOption<%=card.card_id%>', 'noteTextArea<%= card.card_id %>', '<%= card.card_id %>')" class="btn actionBtn">Update Collection</button>
+                        <button onclick="addRemoveCardFromCollection('selectAction<%=card.card_id%>','selectOption<%=card.card_id%>', '<%= card.card_id %>')" class="btn actionBtn">Update Collection</button>
                     </div>
 
                 </div>

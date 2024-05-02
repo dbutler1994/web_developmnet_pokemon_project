@@ -44,15 +44,9 @@
 <div class="container mt-1">
     <div class="row">
 
-        <%# button to open notes modal %>
+        <%# refactored, now including partial instead of using button to open %>
         <div class="col-3 d-flex justify-content-start align-items-center ps-0 ">
-
             <%- include('./cardNoteModal.ejs', {card : card}) %>
-            <!-- <button id="cardNote<%= card.card_id %>" class="btn-sm border-0 bgColour ps-0" title="Add note to card" 
-                onclick= "openNoteModal('<%= JSON.stringify(card) %>' )" >
-                <i class="far fa-clipboard" style="color: grey" ></i>
-            </button> -->
-
         </div>
 
         <div class="col-6 d-flex justify-content-center  align-items-center">
@@ -85,7 +79,7 @@
 
 </div>
     <script>
-
+        // event listener that runs when the page is loaded and switches off functionality of buttons if user isn't logged in
         window.addEventListener('DOMContentLoaded', (event) => {
             // get the loggedIn variable from res.locals and set it to a js variable
             const loggedIn = '<%= typeof loggedIn !== undefined ? JSON.stringify(loggedIn) : false %>';
