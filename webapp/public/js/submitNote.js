@@ -1,4 +1,5 @@
-    // invoke post reques to update the record in the database or create a new one if required.
+    // initiates post reques to update the record in the database or create a new one in te default collection if required.
+    // calls the collections/updateRecord route
     const submitNote = (cardId, collectionId, note) => {
         $.ajax({
         url: `/collections/updateRecord`,
@@ -10,10 +11,8 @@
             notes: note
         },
         success: (response) => {
-            console.log('Collection entry updated successfully:', response);
         },
         error: (xhr, status, error) => {
-            console.error('Error updating Collection entry:', error);
         }
     });
 

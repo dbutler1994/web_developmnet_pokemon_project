@@ -1,3 +1,5 @@
+// functio to update the heart colour and opacity of the image in the card grid
+// also sends a post request to update the wishlist in the database for the specific card and user combo
 const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
     // Get the heart button
     const heartButton = document.getElementById(buttonId);
@@ -26,7 +28,7 @@ const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
         }
 
         // Make AJAX POST request to update wishlist
-        const cardId = buttonId.replace('heartButton', ''); // get card ID from button ID
+        const cardId = buttonId.replace('heartButton', '');
         
 
         $.ajax({
@@ -34,10 +36,8 @@ const toggleHeartColour = (buttonId, cardGridImage, inWishlist) => {
             type: 'POST',
             data: { cardId: cardId},
             success: (response) => {
-                console.log('Wishlist updated successfully:', response);
             },
             error: (xhr, status, error) => {
-                console.error('Error updating wishlist:', error);
              }
         });
 
