@@ -9,7 +9,7 @@ const registerAccount = async (req, res) => {
 
         // check if username already exists and send a conflict response if it does
         const existingUser = await accountModel.getAccountByUserName(username);
-        //console.log(existingUser);
+
         if (existingUser) {
             return res.status(409).json({ error: `Username: ${username} already exists` });
         }
@@ -50,7 +50,6 @@ const loginAccount = async (req, res) => {
 
         // send errors. Send a unauthorized response if the email is not found or the password is incorrect        
         if (error.message === 'Email address not found. Please register first.' || error.message === 'Incorrect Password.') {
-            console.log('hello');
             res.status(401).json({ error: 'Invalid username or password' });
         } else {
             res.status(500).json({ error: 'Internal server error' });
