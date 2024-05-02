@@ -1,32 +1,28 @@
 
 const axios = require('axios');
+const { API_ROOT_URL } = require('../config/config');
 
 // endpoint to get the wishlist for a user
-const getUserWishlist = ( async (req, res) =>{ 
+const getUserWishlist = ( async (req, res, next) =>{ 
     try {
-        let endPoint = 'http://localhost:4000/wishlist';
-
         const userId = req.session.user.account.id;
+        let endPoint = `${API_ROOT_URL}/wishlist?userId=${userId}`;
 
-        const url =`${endPoint}?userId=${userId}`
-        
-        //console.log(req.session);
-        const response = await axios.get(endPoint);
+        const response = await axios.get(url);
 
+        // return the data from the response
         return response.data;
 
     } catch (error) { 
-        console.error('Error fetching wishlist data:', error.message);
-        res.status(500).render('error');    
+        next(error);    
     }
 });
 
 // endpoint to add a card to the wishlist
-const addCardToWishlist = ( async (req, res) =>{ 
+const addCardToWishlist = ( async (req, res, next) =>{ 
     try {
         let endPoint = 'http://localhost:4000/wishlist/add';
         const config = {headers: res.customHeaders};
-
 
         // get data from the request body
         const cardId = req.body.cardId;
@@ -47,17 +43,14 @@ const addCardToWishlist = ( async (req, res) =>{
         res.status(201).send('success');
 
     } catch (error) { 
-        console.error('Error fetching wishlist data:', error.message);
-        res.status(500).render('error');    
+        next(error);   
     }
 });
 
 // endpoint to remove a card from the wishlist
-const removeCardFromWishlist = ( async (req, res) =>{ 
+const removeCardFromWishlist = ( async (req, res, next) =>{ 
     try {
-        console.log(req.body);
-
-        let endPoint = 'http://localhost:4000/wishlist/remove';
+        let endPoint = `${API_ROOT_URL}/wishlist/remove`;
         const config = {headers: res.customHeaders};
 
         // get data from the request body
@@ -79,8 +72,7 @@ const removeCardFromWishlist = ( async (req, res) =>{
         res.status(201).send('success');
 
     } catch (error) { 
-        console.error('Error fetching wishlist data:', error.message);
-        res.status(500).render('error');    
+        next(error);
     }
 });
 

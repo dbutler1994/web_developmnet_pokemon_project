@@ -2,14 +2,14 @@ const axios = require('axios');
 const filterController = require('./filters');
 const filterDefinitions = require('../functions/filterKeys');
 const constructUrlWithUserId = require('../functions/constructURLWithUserId');
-const constants = require('../config/config');
+const { API_ROOT_URL } = require('../config/config');
 
 
-// get all cards from the API
-const getAllCards = async (req, res) => {
+// get all cards from the API with filers and pagination. Render the card grid view
+const getAllCards = async (req, res, next) => {
     try {
         // specify endpoint and add the userId to the endpoint along with the query parameters
-        let endPoint = `${constants.API_ROOT_URL}/cards`  + req.paramString;
+        let endPoint = `${API_ROOT_URL}/cards${req.paramString}` ;
         endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.userId);
 
         const config = {headers: res.customHeaders};
@@ -17,15 +17,15 @@ const getAllCards = async (req, res) => {
         // get card data from the API
         let response = await axios.get(endPoint, config);
         
-        // get card data and count data
+        // extract card data and count data from response
         let cardData = response.data.cardData;
         let cardCount = response.data.summaryData.totalCards;
 
         // get the filter data
         let filterData = await filterController.getAllFilters(req, res);
 
-        // let collection endpooint
-        let collectionEndPoint = `${constants.API_ROOT_URL}/collections?userId=${req.userId}`;
+        // set collection endpooint and get collection data
+        let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
         let collectionResponse = await axios.get(collectionEndPoint, config);
 
         // get the cardsPerPage parameter value and page value from the request
@@ -56,23 +56,21 @@ const getAllCards = async (req, res) => {
             filters : filterData,
             filterKeys: filterDefinitions.filterKeys,
             collectionList: collectionResponse.data,
-            content: 'all',
-            
+            content: 'all', 
         });
 
 
     } catch (error) {
-        console.error('Error fetching card data:', error.message);
-        res.status(500).render('error');
+        next(error);
     }
 };
 
 
-// get all cards from the API
-const getAllCardsByCollectionId = async (req, res) => {
+// get all cards from the API from a specific collection with filers and pagination. Render the card grid view
+const getAllCardsByCollectionId = async (req, res, next) => {
     try {
         // specify endpoint and add the userId to the endpoint along with the query parameters
-        let endPoint = `${constants.API_ROOT_URL}/cards/collections/${req.params.collectionId}`  + req.paramString;
+        let endPoint = `${API_ROOT_URL}/cards/collections/${req.params.collectionId}${req.paramString}`;
         endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.userId);
 
         const config = {headers: res.customHeaders};
@@ -80,15 +78,15 @@ const getAllCardsByCollectionId = async (req, res) => {
         // get card data from the API
         let response = await axios.get(endPoint, config);
         
-        // get card data and count data
+        // get card data and count data from the response
         let cardData = response.data.cardData;
         let cardCount = response.data.summaryData.totalCards;
 
         // get the filter data
         let filterData = await filterController.getAllFilters(req, res);
 
-        // let collection endpooint
-        let collectionEndPoint = `${constants.API_ROOT_URL}/collections?userId=${req.userId}`;
+        // set collection endpooint and get collection data
+        let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
         let collectionResponse = await axios.get(collectionEndPoint, config);
 
         // get the cardsPerPage parameter value and page value from the request
@@ -109,7 +107,6 @@ const getAllCardsByCollectionId = async (req, res) => {
             }
         });
 
-
         // render the card grid view
         res.render('cardGrid', { 
             cards: cardData, 
@@ -119,52 +116,51 @@ const getAllCardsByCollectionId = async (req, res) => {
             filters : filterData,
             filterKeys: filterDefinitions.filterKeys,
             collectionList: collectionResponse.data,
-            content: 'collection',
-            
+            content: 'collection', 
         });
 
 
     } catch (error) {
-        console.error('Error fetching card data:', error.message);
-        res.status(500).render('error');
+        next(error);
     }
 };
 
 
-// get card by id from the API
+// get card data by card id 
 const getCardById = async (req, res, next) =>{
 
     try {
         let cardId = req.params.id;
-        let endPoint = `http://localhost:4000/cards/${cardId}?userId=${req.userId}`;
+        let endPoint = `${API_ROOT_URL}/cards/${cardId}?userId=${req.userId}`;
         const config = {headers: res.customHeaders};
 
         const response = await axios.get(endPoint,config);
 
-        // let collection endpooint
-        let collectionEndPoint = `${constants.API_ROOT_URL}/collections?userId=${req.userId}`;
+        // set collection endpooint and get collection data
+        let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
         let collectionResponse = await axios.get(collectionEndPoint, config);
 
-        const cardData = response.data;
+        // get card data from the response and render the single card view
+        const cardData = response.data.cardData;
         res.render('singleCard', {
              card: cardData,
              filterKeys: filterDefinitions.filterKeys,
              collectionList: collectionResponse.data
         });
+
     } catch (error) {
-        next(error.response.statuscode);
+        next(error);
     }    
 };
 
-
-const getCardsBySetId = async (req, res) => {
+// get card data by set id
+const getCardsBySetId = async (req, res, next) => {
     try {
-        // setup parameters and endpoint
+        // setup parameters and endpoint for the card data and the set data
         let setId = req.params.id;
-        let endPoint = `http://localhost:4000/cards/sets/${setId}`+`?&userId=${req.userId}`  + req.paramString ;
-        let setEndPoint = `http://localhost:4000/sets/${setId}`+`?&userId=${req.userId}`;
+        let endPoint = `${API_ROOT_URL}/cards/sets/${setId}?&userId=${req.userId} ${req.paramString}` ;
+        let setEndPoint = `${API_ROOT_URL}/sets/${setId}?&userId=${req.userId}`;
 
-        console.log(endPoint);
         const config = {headers: res.customHeaders};
 
         // get card data from the API
@@ -175,8 +171,8 @@ const getCardsBySetId = async (req, res) => {
         const setResponse = await axios.get(setEndPoint, config);
         const setData = setResponse.data[0];
 
-        // let collection endpooint
-        let collectionEndPoint = `${constants.API_ROOT_URL}/collections?userId=${req.userId}`;
+        // set collection endpooint and get collection data
+        let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
         let collectionResponse = await axios.get(collectionEndPoint, config);
 
         // get the target collection from the request
@@ -207,8 +203,7 @@ const getCardsBySetId = async (req, res) => {
             set: setData});
 
     } catch (error) {
-        console.error('Error fetching card data:', error.message);
-        res.status(500).render('error');
+        next(error);
     }
 };
 

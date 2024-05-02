@@ -1,17 +1,18 @@
 
 const axios = require('axios');
+const { API_ROOT_URL } = require('../config/config');
 
 
 // BEGIN CONTROLLERS FOR CREATE ACCOUNT
-// Controller for rendering the create account page to the user
+// controller for rendering the create account page to the user
 const getCreateAccount = ((req, res) =>{
     res.render("account", {content: "createAccount"});
 })
 
-// Controller for crtating a new account
-const postCreateAccount = ( async (req, res) =>{   
+// controller for creating a new account
+const postCreateAccount = ( async (req, res, next) =>{   
     try {
-        let endPoint = 'http://localhost:4000/account/createAccount';
+        let endPoint = `${API_ROOT_URL}/account/createAccount`;
         const config = {headers: res.customHeaders};
 
         // get data from the request body
@@ -21,8 +22,6 @@ const postCreateAccount = ( async (req, res) =>{
         const email = req.body.email;
         const password = req.body.password;
 
-
-
         // send post request to the API to create a new account
         const response = await axios.post(endPoint, {
             firstName,
@@ -31,7 +30,6 @@ const postCreateAccount = ( async (req, res) =>{
             email,
             password
         }, config);
-
 
         // handle response from the API for successful account creation
         if(response.status === 201){
@@ -44,10 +42,7 @@ const postCreateAccount = ( async (req, res) =>{
             res.render('account', {content: 'createAccount', error: error.response.data.error});
         }
 
-        // handle general error
-        if(error.response.status === 500){
-            res.status(500).json({ error: 'Internal server error' });
-        }
+        next(error);
         
     }
 });
@@ -59,26 +54,24 @@ const getUserLogin = ((req, res) =>{
     res.render("account", {content: "login"});
 });
 
-const postUserLogin = ( async (req, res) =>{
+// Controller for logging the user into the website
+const postUserLogin = ( async (req, res, next) =>{
 
     try{
-        let endPoint = 'http://localhost:4000/account/loginAccount';
+        let endPoint = `${API_ROOT_URL}/account/loginAccount`;
         const config = {headers: res.customHeaders};
-        
 
         // get data from the request body
         const email = req.body.email;
         const password = req.body.password; 
-
-
     
-        // send post request to the API to create a new account
+        // send post request to the API to check user credentials
         const response = await axios.post(endPoint, {
             email,
             password
         }, config);
 
-        // handle response from the API for successful account creation
+        // handle response from the API for successful account login (creastes a session for the user and redirects to the home page)
         if(response.status === 200){
             req.session.user = response.data;
             req.session.loggedIn = true;
@@ -86,14 +79,11 @@ const postUserLogin = ( async (req, res) =>{
         }
 
     } catch(error){
-        // handle response from the API for duplicate name or email entered
+        // handle response from the API for unauthorized user/incorrect credentials
         if(error.response.status === 401){
             res.render('account', {content: 'login', error: error.response.data.error});
         }
-        // handle response from the API for duplicate name or email entered
-        if(error.response.status === 500){
-            res.status(500).json({ error: 'Internal server error' });
-        }
+        next(error);
         
     }
 });
@@ -101,9 +91,8 @@ const postUserLogin = ( async (req, res) =>{
 
 // BEGIN CONTROLLERS FOR USER LOGOUT
 // Controller for logging user out, destroying the session and redirecting to the home page
-const getUserLogout = ( async (req, res) =>{
+const getUserLogout = ( async (req, res, next) =>{
     await req.session.destroy();
-    //console.log(req.session);
 
     res.redirect("/");
 });
@@ -123,9 +112,9 @@ const getAccountSettings = ((req, res) =>{
 });
 
 // Controller for updating the username
-const postUpdateUsername = ( async (req, res) =>{   
+const postUpdateUsername = ( async (req, res, next) =>{   
     try {
-        let endPoint = 'http://localhost:4000/account/settings/updateUsername';
+        let endPoint = `${API_ROOT_URL}/account/settings/updateUsername`;
         const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
@@ -138,23 +127,18 @@ const postUpdateUsername = ( async (req, res) =>{
         const username = req.body.username;
         const password = req.body.password;
 
-        
-
-        // send post request to the API to create a new account
+        // send post request to the API to update username
         const response = await axios.post(endPoint, {
             userId,
             username,
             password
         }, config); 
 
-
-        // handle response from the API for successful account creation
+        // handle response from the API for successful username update
         if(response.status === 201){
             req.session.user.account.user_name = username;
             res.render('accountSettings', {success: 'Username updated successfully'})
         }
-
-        
 
     } catch (error) {
         // handle response from the API for incorrect password
@@ -162,23 +146,22 @@ const postUpdateUsername = ( async (req, res) =>{
             res.render('accountSettings', {error: error.response.data.error});
         }
 
+        // handle response from the API for incorrect username
         if(error.response.status === 409){
             res.render('accountSettings', {error: error.response.data.error});
         }
 
-        // handle general error
-        if(error.response.status === 500){
-            res.status(500).json({ error: error.response.data.error });
-        }
+        next(error);
         
     }
 });
 
 
 // Controller for updating the email
-const postUpdateEmail = ( async (req, res) =>{   
+const postUpdateEmail = ( async (req, res, next) =>{   
     try {
-        let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+        // set the endpoint and the custom headers
+        let endPoint = `${API_ROOT_URL}/account/settings/updatePassword`;
         const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
@@ -191,16 +174,15 @@ const postUpdateEmail = ( async (req, res) =>{
         const email = req.body.email;
         const password = req.body.password;
 
-
-        // send post request to the API to create a new account
+        // send post request to the API to update email
         const response = await axios.post(endPoint, {
             userId,
             email,
             password
         }, config); 
 
-
-        // handle response from the API for successful account creation
+        // handle response from the API for successful email update
+        // update sessions user email and render the account settings page
         if(response.status === 201){
             req.session.user.account.email = email;
             res.render('accountSettings', {success: 'Email updated successfully'})
@@ -212,22 +194,21 @@ const postUpdateEmail = ( async (req, res) =>{
             res.render('accountSettings', {error: error.response.data.error});
         }
 
+        // handle response from the API for incorrect email
         if(error.response.status === 409){
             res.render('accountSettings', {error: error.response.data.error});
         }
 
-        // handle general error
-        if(error.response.status === 500){
-            res.status(500).json({ error: error.response.data.error });
-        }
+        next(error);
         
     }
 });
 
-// Controller for updating the email
-const postUpdatePassword = ( async (req, res) =>{   
+// Controller for updating the password
+const postUpdatePassword = ( async (req, res, next) =>{   
     try {
-        let endPoint = 'http://localhost:4000/account/settings/updatePassword';
+        // set the endpoint and the custom headers
+        let endPoint = `${API_ROOT_URL}/account/settings/updatePassword`;
         const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
@@ -240,16 +221,14 @@ const postUpdatePassword = ( async (req, res) =>{
         const newPassword = req.body.newPassword;
         const currentPassword = req.body.password;
 
-
-        // send post request to the API to create a new account
+        // send post request to the API to update password
         const response = await axios.post(endPoint, {
             userId,
             newPassword,
             currentPassword
         }, config); 
 
-
-        // handle response from the API for successful account creation
+        // handle response from the API for successful password update
         if(response.status === 201){
             res.render('accountSettings', {success: 'Password updated successfully'})
         }
@@ -260,23 +239,17 @@ const postUpdatePassword = ( async (req, res) =>{
             res.render('accountSettings', {error: error.response.data.error});
         }
 
-        if(error.response.status === 409){
-            res.render('accountSettings', {error: error.response.data.error});
-        }
-
-        // handle general error
-        if(error.response.status === 500){
-            res.status(500).json({ error: error.response.data.error });
-        }
+        next(error);
         
     }
 });
 
 
-// Controller for updating the email
-const postCloseAccount = ( async (req, res) =>{   
+// Controller for closing the account
+const postCloseAccount = ( async (req, res, next) =>{   
     try {
-        let endPoint = 'http://localhost:4000/account/settings/closeAccount';
+        // set the endpoint and the custom headers
+        let endPoint = `${API_ROOT_URL}/account/settings/closeAccount`;
         const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in
@@ -294,14 +267,12 @@ const postCloseAccount = ( async (req, res) =>{
             password
         }, config); 
 
-        console.log('just before redirecting to logout');
-        console.log(response);
         // destroy the session and redirect to the home page
         if(response.status === 200){
         
             res.redirect('/account/logout');
         }
-        console.log('just after redirecting to logout');
+
 
     } catch (error) {
         // handle response from the API for incorrect password
@@ -313,14 +284,10 @@ const postCloseAccount = ( async (req, res) =>{
             res.render('accountSettings', {error: error.response.data.error});
         }
 
-        // handle general error
-        if(error.response.status === 500){
-            res.status(500).json({ error: error.response.data.error });
-        }
+        next(error);
         
     }
 });
-
 
 
 module.exports ={

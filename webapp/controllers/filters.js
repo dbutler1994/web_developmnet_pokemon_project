@@ -1,20 +1,19 @@
 const axios = require('axios');
+const { API_ROOT_URL } = require('../config/config');
 
-// get all filters from the API
-const getAllFilters = async (req, res) => {
+// get all filter data from the API
+const getAllFilters = async (req, res, next) => {
     try {
-        endPoint = 'http://localhost:4000/filters' + req.paramString;
+        endPoint = `${API_ROOT_URL}/filters${req.paramString}`;
 
         const config = {headers: res.customHeaders}
 
         let response = await axios.get(endPoint, config);
         
-        //console.log(response.data);
         return response.data;
 
     } catch (error) {
-        console.error('Error fetching filter data:', error.message);
-        res.status(500).render('error');
+        next(error);
     }
 };
 

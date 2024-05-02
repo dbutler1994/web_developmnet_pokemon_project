@@ -27,31 +27,6 @@ const getAllCollections = ( async (req, res) =>{
     }
 });
 
-
-// get collections and render the collections page
-const getCollectionList = ( async (req, res) =>{
-    let endPoint = `http://localhost:4000/collections?userId=${req.userId}`;
-
-    console.log('collections:', req.userId);
-    // ensure user is logged in and protect against users trying to view other users collections
-    if(!req.userId){
-        return null;
-    }
-
-
-    try {
-        // get collections from the API
-        const response = await axios.get(endPoint, {headers: res.customHeaders});
-    
-        // render the collections page
-        return response.data;
-
-    } catch (error) {
-        console.error('Error fetching wishlist data:', error);
-        res.status(500).render('error');    
-    }
-});
-
 // endpoint to create a new collection
 const createCollection = ( async (req, res) =>{ 
     try {
