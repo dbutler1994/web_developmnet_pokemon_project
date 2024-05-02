@@ -125,7 +125,7 @@ const removeCollectionEntry = async (req, res) => {
         const result = await collectionsModel.removeCardCollectionEntry(collectionId, cardId);
 
         // send the response        
-        if(result.affectedRows > 0){
+        if(result){
             res.status(201).json({ message: 'Collection entry successfully updated' });
         } else {
             res.status(500).json({ error: 'No record found' });
