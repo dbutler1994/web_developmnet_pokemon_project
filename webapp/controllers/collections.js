@@ -5,10 +5,8 @@ const axios = require('axios');
 const getAllCollections = ( async (req, res) =>{
     let endPoint = `http://localhost:4000/collections?userId=${req.userId}`;
 
-    console.log('collections:', req.userId);
     // ensure user is logged in and protect against users trying to view other users collections
     if(!req.userId){
-        console.log('collections:', req.userId);
         res.render('collections', {collections: []});
         return;
     }

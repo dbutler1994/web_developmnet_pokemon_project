@@ -280,7 +280,6 @@
             const paramValues = urlParams.getAll(paramName); // get all values for the parameter
             const checkboxValue = checkbox.value;
 
-            //console.log(paramValues);
 
             // check if the checkbox value is included in the query parameter values. need to split paramValues on comma to test each value in the array
             const isChecked = paramValues.some(value => value.split(',').includes(checkboxValue));
@@ -354,8 +353,6 @@
         const name = element.name;
         const type = element.type;
         const value  = element.value;
-
-        console.log(name, type, value);
 
         //console.log(name, type, value);
 
