@@ -1,9 +1,10 @@
-// Middleware to handle 404 page not found errors
+// middleware to handle 404 page not found errors
 const error404Handler = ( req, res, next) => {
     res.status(404).render('error', {message: "404 Error, Oops! We couldn't find that page in the Pokedex."});
     next();
   };
 
+// middleware to handle 500 server errorss
 const error500Handler = (err, req, res, next) => {
     console.error(err.stack);
     res.status(500).render('error', {message: "500 Error, Oops! Something went wrong on our end. Please try again later."});

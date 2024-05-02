@@ -2,7 +2,6 @@
 const createQueryParameterString = (req, res, next) => {
     let paramString = '';
     let queryParams = req.query;
-    //console.log('queryParams:', queryParams);
 
     // check if any query parameters are included
     if (Object.keys(queryParams).length > 0) {
@@ -14,9 +13,7 @@ const createQueryParameterString = (req, res, next) => {
         // remove the trailing '&' from the paramString after the last query parameter
         paramString = paramString.slice(0, -1);
     }
-
-    // update endPoint in the request object to now include query parameters
-    //console.log('paramstring:', paramString);
+    // add paramString to the request object so I can access it in the controller
     req.paramString = paramString;
 
     next();
