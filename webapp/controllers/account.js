@@ -161,7 +161,7 @@ const postUpdateUsername = ( async (req, res, next) =>{
 const postUpdateEmail = ( async (req, res, next) =>{   
     try {
         // set the endpoint and the custom headers
-        let endPoint = `${API_ROOT_URL}/account/settings/updatePassword`;
+        let endPoint = `${API_ROOT_URL}/account/settings/updateEmail`;
         const config = {headers: res.customHeaders};
 
         // redirect user to login page if not logged in

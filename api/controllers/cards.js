@@ -14,7 +14,7 @@ const getAllCards = async (req, res) => {
 
         // get pagination details from the request
         const page = parseInt(req.query.page) || 1; //  default to 1 if not specified
-
+        
         const cardsPerPage = parseInt(req.query.cardsPerPage) || 30; // default to 30 if not specified
         const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
         const releaseSort = req.query.releaseDateSort || 'ASC'; // default to ASC if not specified
@@ -73,6 +73,7 @@ const getAllCards = async (req, res) => {
 const getCardsBySetId = async (req, res) => {
     try{
         // get ordering and filter details from the request
+        console.log(req.query.sortBy)
         const sortBy = req.query.sortBy || 'card_number'; // default to card_number if not specified
         const setId = req.params.setId;
         const filterParams = queryParamFunctions.getFilterParams(req.query);
@@ -155,10 +156,13 @@ const getSingleCard = async (req, res) => {
 
         // get the collections for the user if they are logged in
         const collectedCards = userId ? await collectionModel.getCollectionsCards(userId, cardId) : [];
+
         const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
+
 
         // setup response object
         const jsonResponse = {
+            card_id: cardDetails.card_id,
             card_name: cardDetails.card_name,
             card_number: cardDetails.card_number,
             category : cardFunctions.formatCategoryInformation(cardDetails.category_id, cardDetails.category_name),
@@ -170,7 +174,7 @@ const getSingleCard = async (req, res) => {
             evolution : cardFunctions.formatEvolutionInformation(cardDetails.evolution_stage_id, cardDetails.evolution_stage_name, cardDetails.evolves_from),
             image: cardFunctions.createCardURL(cardDetails.expansion_api_id, cardDetails.release_set_api_id, cardDetails.card_number, 'high'),
             wishlist: isInWishlist,
-            collections: collectedCardsGroupedById[cardId] || { defaultCollection: [], customCollections: [] }
+            collections: collectedCardsGroupedById[cardDetails.card_id] || { defaultCollection: [], customCollections: [] }
         };
 
         // add attacks if there are any

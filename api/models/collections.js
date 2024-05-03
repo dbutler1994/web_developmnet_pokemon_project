@@ -157,6 +157,7 @@ const updateCollectionEntryCopies = async (userId, collectionId, cardId, copies)
         // perform the update if the record exists
         if(existingRecord.length > 0){
             let recordToUpdateId = existingRecord[0].entry_id;
+
             let updateSQL = 'UPDATE card_collection SET copies = ? WHERE card_collection_id = ?'; 
             let result = await dbPool.query(updateSQL, [copies,recordToUpdateId]);
             return result[0].affectedRows > 0;

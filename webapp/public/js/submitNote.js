@@ -8,7 +8,8 @@
             cardId:  cardId ,
             collectionId: collectionId,
             copies: null,
-            notes: note
+            notes: note,
+            action: "note"
         },
         success: (response) => {
         },

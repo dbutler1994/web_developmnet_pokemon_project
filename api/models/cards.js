@@ -74,11 +74,12 @@ const getCardsBySetId = async (setId, sortBy, filterParams) => {
     cardsSQL += ' GROUP BY card_id';
 
     // add the order by clause to the SQL statement
+    console.log(sortBy);
     cardsSQL += getOrderByString(sortBy);
 
     try {
         // get the matching cards from teh database
-        const cardsResult = await dbPool.query(cardsSQL, [setId,...whereClause.values, sortBy]);
+        const cardsResult = await dbPool.query(cardsSQL, [setId,...whereClause.values]);
         
         return{
             cards: cardsResult[0]

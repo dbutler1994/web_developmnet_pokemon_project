@@ -65,29 +65,38 @@ const deleteCollection = async (req, res) => {
 const updateCollectionEntry = async (req, res) => {
     try {
         // get the parameters from the request   
-        const { cardId, userId, collectionId, copies, notes } = req.body;
+        let { cardId, userId, collectionId, copies, notes, action } = req.body;
 
         // Check if record exists
         const existingRecord = await collectionsModel.getCollectionsCards(userId, cardId, collectionId);
+        
+        // If any of the found records a default collection
+        const countIsDefault = existingRecord.filter(item => item.is_default === 1).length;
 
-        // If record exists, update copies and notes
-        if (existingRecord.length > 0) {
-            // update copies
-            if (copies) {
-                await collectionsModel.updateCollectionEntryCopies(userId, collectionId, cardId, copies);
-            }
+        // If no collection id is specified we use the default collection id if it is found for the card
+        if(countIsDefault > 0 && collectionId.length === 0){
+            collectionId = existingRecord.filter(item => item.is_default === 1)[0].collection_id;
+        }    
 
-            // update notes
-            if (notes) {
-                await collectionsModel.updateCollectionEntryNotes(userId, collectionId, cardId, notes);
-            }
-
-        } else {
-            // if record doesn't exist, attempt to add a new entry 
+        // If the collection id is still empty, we create a new entry for the card / collection combination in the table
+        if(collectionId.length === 0){
             await collectionsModel.addCardCollectionEntry(userId, collectionId, cardId, copies, notes);
+            return res.status(201).json({ message: 'Collection entry successfully updated' });
+        }
+         
+        // If the action is copies, update the copies field
+        if(action === "copies"){
+            await collectionsModel.updateCollectionEntryCopies(userId, collectionId, cardId, copies);
+            return res.status(201).json({ message: 'Collection entry successfully updated' });
         }
 
-        res.status(201).json({ message: 'Collection entry successfully updated' });
+        // If the action is notes, update the notes field
+        if(action === "note"){ 
+            await collectionsModel.updateCollectionEntryNotes(userId, collectionId, cardId, notes);
+            return res.status(201).json({ message: 'Collection entry successfully updated' });
+        }
+
+        res.status(500).json({ message: 'Problem updating collection entry' });
 
     } catch (error) {
         console.error("Error updating collection entry:", error);

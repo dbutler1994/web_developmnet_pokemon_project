@@ -99,6 +99,7 @@ const updateCollectionEntry = ( async (req, res) =>{
         const collectionId = req.body.collectionId;
         const copies = req.body.copies;
         const notes = req.body.notes; 
+        const action = req.body.action;
 
         // ensure user is logged in
         if(!userId){
@@ -112,7 +113,8 @@ const updateCollectionEntry = ( async (req, res) =>{
             collectionId,
             cardId,
             copies,
-            notes
+            notes, 
+            action
         }, config);
 
         res.status(201).send('success');

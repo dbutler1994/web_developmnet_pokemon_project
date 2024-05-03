@@ -36,7 +36,8 @@ const postUpdateNumberOfCopies = (cardId, numberOfCopies, collectionId) => {
             cardId: cardId, 
             copies: numberOfCopies,
             collectionId: collectionId,
-            notes: null
+            notes: null,
+            action : "copies"
         },
         success: (response) => {
         },

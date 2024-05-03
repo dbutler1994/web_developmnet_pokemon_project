@@ -140,8 +140,15 @@ const getCardById = async (req, res, next) =>{
         let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
         let collectionResponse = await axios.get(collectionEndPoint, config);
 
+
         // get card data from the response and render the single card view
         const cardData = response.data.cardData;
+
+        
+        // add targetCollection property to each card object
+        cardData.targetCollection = cardData.collections.defaultCollection[0];
+
+
         res.render('singleCard', {
              card: cardData,
              filterKeys: filterDefinitions.filterKeys,
@@ -158,7 +165,7 @@ const getCardsBySetId = async (req, res, next) => {
     try {
         // setup parameters and endpoint for the card data and the set data
         let setId = req.params.id;
-        let endPoint = `${API_ROOT_URL}/cards/sets/${setId}?&userId=${req.userId} ${req.paramString}` ;
+        let endPoint = `${API_ROOT_URL}/cards/sets/${setId}${req.paramString}&userId=${req.userId}` ;
         let setEndPoint = `${API_ROOT_URL}/sets/${setId}?&userId=${req.userId}`;
 
         const config = {headers: res.customHeaders};
