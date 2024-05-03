@@ -9,14 +9,14 @@ const { API_ROOT_URL } = require('../config/config');
 const getAllCards = async (req, res, next) => {
     try {
         // specify endpoint and add the userId to the endpoint along with the query parameters
-        let endPoint = `${API_ROOT_URL}/cards${req.paramString}` ;
+        let endPoint = `${API_ROOT_URL}/cards${req.paramString}`;
         endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.userId);
 
-        const config = {headers: res.customHeaders};
+        const config = { headers: res.customHeaders };
 
         // get card data from the API
         let response = await axios.get(endPoint, config);
-        
+
         // extract card data and count data from response
         let cardData = response.data.cardData;
         let cardCount = response.data.summaryData.totalCards;
@@ -48,15 +48,15 @@ const getAllCards = async (req, res, next) => {
 
 
         // render the card grid view
-        res.render('cardGrid', { 
-            cards: cardData, 
-            totalCards: cardCount, 
-            pageSize: pageSize, 
+        res.render('cardGrid', {
+            cards: cardData,
+            totalCards: cardCount,
+            pageSize: pageSize,
             page: page,
-            filters : filterData,
+            filters: filterData,
             filterKeys: filterDefinitions.filterKeys,
             collectionList: collectionResponse.data,
-            content: 'all', 
+            content: 'all',
         });
 
 
@@ -73,11 +73,11 @@ const getAllCardsByCollectionId = async (req, res, next) => {
         let endPoint = `${API_ROOT_URL}/cards/collections/${req.params.collectionId}${req.paramString}`;
         endPoint = constructUrlWithUserId.constructUrlWithUserId(endPoint, req.userId);
 
-        const config = {headers: res.customHeaders};
+        const config = { headers: res.customHeaders };
 
         // get card data from the API
         let response = await axios.get(endPoint, config);
-        
+
         // get card data and count data from the response
         let cardData = response.data.cardData;
         let cardCount = response.data.summaryData.totalCards;
@@ -108,15 +108,15 @@ const getAllCardsByCollectionId = async (req, res, next) => {
         });
 
         // render the card grid view
-        res.render('cardGrid', { 
-            cards: cardData, 
-            totalCards: cardCount, 
-            pageSize: pageSize, 
+        res.render('cardGrid', {
+            cards: cardData,
+            totalCards: cardCount,
+            pageSize: pageSize,
             page: page,
-            filters : filterData,
+            filters: filterData,
             filterKeys: filterDefinitions.filterKeys,
             collectionList: collectionResponse.data,
-            content: 'collection', 
+            content: 'collection',
         });
 
 
@@ -127,14 +127,14 @@ const getAllCardsByCollectionId = async (req, res, next) => {
 
 
 // get card data by card id 
-const getCardById = async (req, res, next) =>{
+const getCardById = async (req, res, next) => {
 
     try {
         let cardId = req.params.id;
         let endPoint = `${API_ROOT_URL}/cards/${cardId}?userId=${req.userId}`;
-        const config = {headers: res.customHeaders};
+        const config = { headers: res.customHeaders };
 
-        const response = await axios.get(endPoint,config);
+        const response = await axios.get(endPoint, config);
 
         // set collection endpooint and get collection data
         let collectionEndPoint = `${API_ROOT_URL}/collections?userId=${req.userId}`;
@@ -144,20 +144,20 @@ const getCardById = async (req, res, next) =>{
         // get card data from the response and render the single card view
         const cardData = response.data.cardData;
 
-        
+
         // add targetCollection property to each card object
         cardData.targetCollection = cardData.collections.defaultCollection[0];
 
 
         res.render('singleCard', {
-             card: cardData,
-             filterKeys: filterDefinitions.filterKeys,
-             collectionList: collectionResponse.data
+            card: cardData,
+            filterKeys: filterDefinitions.filterKeys,
+            collectionList: collectionResponse.data
         });
 
     } catch (error) {
         next(error);
-    }    
+    }
 };
 
 // get card data by set id
@@ -165,10 +165,17 @@ const getCardsBySetId = async (req, res, next) => {
     try {
         // setup parameters and endpoint for the card data and the set data
         let setId = req.params.id;
-        let endPoint = `${API_ROOT_URL}/cards/sets/${setId}${req.paramString}&userId=${req.userId}` ;
+        let endPoint = `${API_ROOT_URL}/cards/sets/${setId}${req.paramString}`;
         let setEndPoint = `${API_ROOT_URL}/sets/${setId}?&userId=${req.userId}`;
 
-        const config = {headers: res.customHeaders};
+        // add the userId to the endpoint
+        if (endPoint.includes('?')) {
+            endPoint += `&userId=${req.userId}`;
+        } else {
+            endPoint += `?userId=${req.userId}`;
+        }
+
+        const config = { headers: res.customHeaders };
 
         // get card data from the API
         const response = await axios.get(endPoint, config);
@@ -187,34 +194,31 @@ const getCardsBySetId = async (req, res, next) => {
 
         // add targetCollection property to each card object
         cardData.forEach(card => {
-            if (card.collections && collectionId) {
-                const defaultCollection = card.collections.defaultCollection.find(collection => collection.collection_id === collectionId);
-                const customCollection = card.collections.customCollections.find(collection => collection.collection_id === collectionId);
-                card.targetCollection = defaultCollection || customCollection || null;
-            } else {
-                card.targetCollection = card.collections.defaultCollection[0];
-            }
+
+            card.targetCollection = card.collections.defaultCollection[0];
+
         });
 
         // get the filter data
         let filterData = await filterController.getAllFilters(req, res);
 
         // render the card grid view with the appropriate content
-        res.render('cardGrid', { 
-            cards: cardData, 
+        res.render('cardGrid', {
+            cards: cardData,
             content: 'set',
-            filters : filterData,
+            filters: filterData,
             filterKeys: filterDefinitions.filterKeys,
             totalCards: cardData.length,
             collectionList: collectionResponse.data,
-            set: setData});
+            set: setData
+        });
 
     } catch (error) {
         next(error);
     }
 };
 
-module.exports ={
+module.exports = {
     getAllCards,
     getAllCardsByCollectionId,
     getCardById,

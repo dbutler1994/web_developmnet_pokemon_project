@@ -80,6 +80,7 @@ const getCardsBySetId = async (req, res) => {
 
         // get user id from the query
         const userId = req.query.userId;
+        console.log(userId);
 
         // call the model function to retrieve all cards
         const result = await cardsModel.getCardsBySetId(setId, sortBy, filterParams);
@@ -89,6 +90,7 @@ const getCardsBySetId = async (req, res) => {
 
         // get the collections for the user if they are logged in
         const collectedCards = userId ? await collectionModel.getCollectionsCards(userId) : [];
+        console.log(collectedCards);
         const collectedCardsGroupedById = collectionFunctions.formatCollectionsData(collectedCards);
 
         // Create a Set of card IDs present in the wishlist
@@ -98,6 +100,7 @@ const getCardsBySetId = async (req, res) => {
         const jsonResponse= result.cards.map(card => {
             const imageURL = cardFunctions.createCardURL(card.expansion_api_id, card.release_set_api_id, card.card_number, 'low');
             const isInWishlist = wishlistCardIds.has(card.card_id);
+
 
             return {
                 card_id: card.card_id,

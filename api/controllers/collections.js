@@ -43,8 +43,6 @@ const createCollection = async (req, res) => {
 const deleteCollection = async (req, res) => {
     try {
         const { collectionId } = req.body;
-        console.log('deleting collection');
-        console.log(collectionId);
 
         // call the model to delete a collection
         const result = await collectionsModel.deleteCollection(collectionId);
